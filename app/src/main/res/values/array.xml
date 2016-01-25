@@ -1,0 +1,14 @@
+<resources>
+    <string-array name="array1">
+        <item> 1 </item>
+        <item> 2 </item>
+        <item> 3 </item>
+    </string-array>
+
+    <string-array name="array2">
+        <item> Amy </item>
+        <item> Louis </item>
+        <item> kerker </item>
+    </string-array>
+
+</resources>

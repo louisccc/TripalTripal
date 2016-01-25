@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_sync"
+        android:title="first setting"
+        android:summary="123"
+        android:defaultValue="true" />
+    <ListPreference
+        android:dependency="pref_sync"
+        android:key="pref_syncConnectionType"
+        android:title="second setting"
+        android:dialogTitle="this is dialog title"
+        android:entries="@array/array2"
+        android:entryValues="@array/array1"
+        android:defaultValue="123" />
+</PreferenceScreen>
