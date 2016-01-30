@@ -47,18 +47,18 @@ public class DBManager {
 	public static final String RECORD_KEY_NEEDSYNC = "need_sync";
 
 	public static final String DATABASE_TABLE_RECORD_CREATE = "create table "
-			+ DATABASE_TABLE_RECORD + " (" 
+			+ DATABASE_TABLE_RECORD + " ("
 			+ RECORD_KEY_LOCALID + " integer not null primary key autoincrement, "
 			+ RECORD_KEY_CLOUDID + " integer default 0, "
-			+ RECORD_KEY_ACCOUNTID + " integer, " 
-			+ RECORD_KEY_ACCOUNTDSTID + " integer, " 
+			+ RECORD_KEY_ACCOUNTID + " integer, "
+			+ RECORD_KEY_ACCOUNTDSTID + " integer, "
 			+ RECORD_KEY_TYPE + " integer, "
-			+ RECORD_KEY_CATEGORYID + " integer, " 
-			+ RECORD_KEY_DESC + " text, " 
-			+ RECORD_KEY_AMOUNT + " real, " 
-			+ RECORD_KEY_AMOUNTDST + " real, " 
-			+ RECORD_KEY_FEE + " real, " 
-			+ RECORD_KEY_DATE + " date, " 
+			+ RECORD_KEY_CATEGORYID + " integer, "
+			+ RECORD_KEY_DESC + " text, "
+			+ RECORD_KEY_AMOUNT + " real, "
+			+ RECORD_KEY_AMOUNTDST + " real, "
+			+ RECORD_KEY_FEE + " real, "
+			+ RECORD_KEY_DATE + " date, "
 			+ RECORD_KEY_NEEDSYNC + " integer default 0,"
 			+ RECORD_KEY_TIMESTAMP + " timestamp default current_timestamp"
 			+ ");";
@@ -74,7 +74,7 @@ public class DBManager {
 	public static final String CATEGORY_KEY_NEEDSYNC = "need_sync";
 
 	public static final String DATABASE_TABLE_CATEGORY_CREATE = "create table "
-			+ DATABASE_TABLE_CATEGORY + " (" 
+			+ DATABASE_TABLE_CATEGORY + " ("
 			+ CATEGORY_KEY_LOCALID + " integer not null primary key autoincrement, "
 			+ CATEGORY_KEY_CLOUDID + " integer default 0, "
 			+ CATEGORY_KEY_PARENTID + " integer, "
@@ -85,7 +85,7 @@ public class DBManager {
 			+ CATEGORY_KEY_NEEDSYNC + " integer default 0 " + ");";
 
 	public static final String DATABASE_TABLE_ACCOUNT = "account";
-	
+
 	public static final String ACCOUNT_KEY_LOCALID = "local_id";
 	public static final String ACCOUNT_KEY_CLOUDID = "cloud_id";
 	public static final String ACCOUNT_KEY_NAME = "name";
@@ -101,19 +101,19 @@ public class DBManager {
 	public static final String ACCOUNT_KEY_ORDER = "account_order";
 
 	public static final String DATABASE_TABLE_ACCOUNT_CREATE = "create table "
-			+ DATABASE_TABLE_ACCOUNT + " (" 
+			+ DATABASE_TABLE_ACCOUNT + " ("
 			+ ACCOUNT_KEY_LOCALID + " integer not null primary key autoincrement, "
-			+ ACCOUNT_KEY_CLOUDID + " integer default 0, " 
-			+ ACCOUNT_KEY_TYPE + " integer, " 
+			+ ACCOUNT_KEY_CLOUDID + " integer default 0, "
+			+ ACCOUNT_KEY_TYPE + " integer, "
 			+ ACCOUNT_KEY_DISABLED + " integer default 0, "
-			+ ACCOUNT_KEY_INITBALANCE + " real, " 
-			+ ACCOUNT_KEY_REMAIN + " real, " 
-			+ ACCOUNT_KEY_RATE + " real, " 
-			+ ACCOUNT_KEY_NAME + " text, " 
+			+ ACCOUNT_KEY_INITBALANCE + " real, "
+			+ ACCOUNT_KEY_REMAIN + " real, "
+			+ ACCOUNT_KEY_RATE + " real, "
+			+ ACCOUNT_KEY_NAME + " text, "
 			+ ACCOUNT_KEY_CURRENCY + " text, "
-			+ ACCOUNT_KEY_CUSTOMCURRENCYNAME + " text, " 
-			+ ACCOUNT_KEY_NEEDSYNC + " integer default 0, " 
-			+ ACCOUNT_KEY_TIMESTAMP + " timestamp default current_timestamp, " 
+			+ ACCOUNT_KEY_CUSTOMCURRENCYNAME + " text, "
+			+ ACCOUNT_KEY_NEEDSYNC + " integer default 0, "
+			+ ACCOUNT_KEY_TIMESTAMP + " timestamp default current_timestamp, "
 			+ ACCOUNT_KEY_ORDER + " integer default 0" + ");";
 
 	public static final String DATABASE_TABLE_DELETE = "deleted";
@@ -124,10 +124,10 @@ public class DBManager {
 	public static final String DELETE_KEY_TIMESTAMP = "timestamp";
 
 	public static final String DATABASE_TABLE_DELETE_CREATE = "create table "
-			+ DATABASE_TABLE_DELETE + " (" 
+			+ DATABASE_TABLE_DELETE + " ("
 			+ DELETE_KEY_ID + " integer not null primary key autoincrement, "
-			+ DELETE_KEY_TABLENAME + " text not null, " 
-			+ DELETE_KEY_ROWID + " integer not null, " 
+			+ DELETE_KEY_TABLENAME + " text not null, "
+			+ DELETE_KEY_ROWID + " integer not null, "
 			+ DELETE_KEY_TIMESTAMP + " timestamp default current_timestamp " + ");";
 
 	public static final String DATABASE_TABLE_CURRENCY = "currency";
@@ -155,43 +155,39 @@ public class DBManager {
 	}
 
 	private class DatabaseHelper extends SQLiteOpenHelper {
+
 		public DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
+
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			createAllTables(db);
+			db.execSQL(DATABASE_TABLE_RECORD_CREATE);
+			db.execSQL(DATABASE_TABLE_CATEGORY_CREATE);
+			db.execSQL(DATABASE_TABLE_ACCOUNT_CREATE);
+			db.execSQL(DATABASE_TABLE_CURRENCY_CREATE);
+			db.execSQL(DATABASE_TABLE_DELETE_CREATE);
+
+			Log.w(TAG, "The tables were created: "
+					+ DATABASE_TABLE_RECORD_CREATE + ", "
+					+ DATABASE_TABLE_CATEGORY_CREATE + ", "
+					+ DATABASE_TABLE_ACCOUNT_CREATE + ", "
+					+ DATABASE_TABLE_CURRENCY_CREATE + ", "
+					+ DATABASE_TABLE_DELETE_CREATE + ", version=" + db.getVersion()
+			); // trace warning
 		}
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			try {
-				db.execSQL("drop table if exists " + DATABASE_TABLE_ACCOUNT);
-				db.execSQL("drop table if exists " + DATABASE_TABLE_RECORD);
-				db.execSQL("drop table if exists " + DATABASE_TABLE_CATEGORY);
-				db.execSQL("drop table if exists " + DATABASE_TABLE_DELETE);
-				db.execSQL("drop table if exists " + DATABASE_TABLE_CURRENCY);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			db.execSQL("drop table if exists " + DATABASE_TABLE_ACCOUNT);
+			db.execSQL("drop table if exists " + DATABASE_TABLE_RECORD);
+			db.execSQL("drop table if exists " + DATABASE_TABLE_CATEGORY);
+			db.execSQL("drop table if exists " + DATABASE_TABLE_DELETE);
+			db.execSQL("drop table if exists " + DATABASE_TABLE_CURRENCY);
 			onCreate(db);
 		}
+
 	}
 
-	private void createDatabase(SQLiteDatabase db, String create){
-		try {
-			db.execSQL(create);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	private void createAllTables(SQLiteDatabase db){
-		createDatabase(db, DATABASE_TABLE_RECORD_CREATE);
-		createDatabase(db, DATABASE_TABLE_CATEGORY_CREATE);
-		createDatabase(db, DATABASE_TABLE_ACCOUNT_CREATE);
-		createDatabase(db, DATABASE_TABLE_CURRENCY_CREATE);
-		createDatabase(db, DATABASE_TABLE_DELETE_CREATE);
-	}
-	
 	public void deleteAllTable(){
 		mDB.delete(DATABASE_TABLE_ACCOUNT, null, null);
 		mDB.delete(DATABASE_TABLE_CATEGORY, null, null);
@@ -199,6 +195,7 @@ public class DBManager {
 		mDB.delete(DATABASE_TABLE_RECORD, null, null);
 		mDB.delete(DATABASE_TABLE_DELETE, null, null);
 	}
+
 	public DBManager open() throws SQLException {
 		mDB = mDBHelper.getWritableDatabase();
 		return this;
@@ -233,9 +230,9 @@ public class DBManager {
 	 * Related to table account
 	 * 
 	 */
-	
+
 	public int getAccountLocalId(int cloudId){
-        int local_id = 0;
+		int local_id = 0;
 		if (cloudId == 0)
 			return 0;
 		String sql = "select `" + ACCOUNT_KEY_LOCALID
@@ -244,7 +241,7 @@ public class DBManager {
 		Cursor result = mDB.rawQuery(sql, selectionArgs);
 		if(result != null && result.moveToFirst()){
 			local_id = result.getInt(result.getColumnIndex(ACCOUNT_KEY_LOCALID));
-            result.close();
+			result.close();
 		}
 		return local_id;
 	}
@@ -252,7 +249,7 @@ public class DBManager {
 	public TriAccount getAccount(int localId, int cloudId){
 		return null;
 	}
-	
+
 	public String getAccountName(int localId){
 		String sql = "select `" + ACCOUNT_KEY_NAME
 				+ "` from `account` where `" + ACCOUNT_KEY_LOCALID + "` = ?";
@@ -265,7 +262,7 @@ public class DBManager {
 		}
 		return result_string;
 	}
-	
+
 	private ContentValues getAccountContentValues(TriAccount account) {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(TriAccount.ACCOUNT_DB_KEY_CLOUDID, account.getCloudId());
@@ -282,13 +279,13 @@ public class DBManager {
 		contentValues.put(TriAccount.ACCOUNT_DB_KEY_NEEDSYNC, account.need_update());
 		return contentValues;
 	}
-	
+
 	public TriAccount createAccount(TriAccount account){
 		long local_id = mDB.insert(DATABASE_TABLE_ACCOUNT, null, getAccountContentValues(account));
 		account.setLocalId((int)local_id);
 		return account;
 	}
-	
+
 	public boolean updateAccount(TriAccount account){
 		int localId = account.getLocalId();
 		int rowAffected = mDB.update(DATABASE_TABLE_ACCOUNT, getAccountContentValues(account), ACCOUNT_KEY_LOCALID + " = ?", new String[]{Integer.toString(localId)});
@@ -297,14 +294,14 @@ public class DBManager {
 	public boolean deleteAccount(TriAccount account){
 		int localId = account.getLocalId();
 		int rowAffected = mDB.delete(DATABASE_TABLE_ACCOUNT, ACCOUNT_KEY_LOCALID + " = ?", new String[]{Integer.toString(localId)});
-		
+
 		long inserted_delete_id = insertDeleteAccount(account);
 		return (rowAffected == 1) & (inserted_delete_id != -1);
 	}
 	public boolean deleteRecord(TriRecord record){
 		int localId = record.getLocalId();
 		int rowAffected = mDB.delete(DATABASE_TABLE_RECORD, RECORD_KEY_LOCALID + " = ?", new String[]{Integer.toString(localId)});
-		
+
 		long inserted_delete_id = insertDeleteRecord(record, true);
 		return (rowAffected == 1) & (inserted_delete_id != -1);
 	}
@@ -333,33 +330,33 @@ public class DBManager {
 		contentValues.put(DELETE_KEY_TIMESTAMP, record.getTimestamp());
 		return contentValues;
 	}
-	
+
 	public Cursor getAccounts() {
 		String[] columns = new String[]{
-				ACCOUNT_KEY_LOCALID, ACCOUNT_KEY_TYPE, ACCOUNT_KEY_CLOUDID, 
-				ACCOUNT_KEY_NAME, ACCOUNT_KEY_INITBALANCE, ACCOUNT_KEY_REMAIN, 
-				ACCOUNT_KEY_CURRENCY, ACCOUNT_KEY_CUSTOMCURRENCYNAME, ACCOUNT_KEY_RATE, 
+				ACCOUNT_KEY_LOCALID, ACCOUNT_KEY_TYPE, ACCOUNT_KEY_CLOUDID,
+				ACCOUNT_KEY_NAME, ACCOUNT_KEY_INITBALANCE, ACCOUNT_KEY_REMAIN,
+				ACCOUNT_KEY_CURRENCY, ACCOUNT_KEY_CUSTOMCURRENCYNAME, ACCOUNT_KEY_RATE,
 				ACCOUNT_KEY_TIMESTAMP, ACCOUNT_KEY_DISABLED, ACCOUNT_KEY_ORDER, ACCOUNT_KEY_NEEDSYNC };
-		
+
 		Cursor result = mDB.query(DATABASE_TABLE_ACCOUNT, columns, null, null, null, null, ACCOUNT_KEY_TYPE +" ASC, " + ACCOUNT_KEY_ORDER + " ASC, " + ACCOUNT_KEY_CLOUDID);
 		if(result.moveToFirst())
 			return result;
 		return null;
 	}
-	
+
 	public Cursor getAccounts(TriAccountType type){
 		String[] columns = new String[]{
-				ACCOUNT_KEY_LOCALID, ACCOUNT_KEY_TYPE, ACCOUNT_KEY_CLOUDID, 
-				ACCOUNT_KEY_NAME, ACCOUNT_KEY_INITBALANCE, ACCOUNT_KEY_REMAIN, 
-				ACCOUNT_KEY_CURRENCY, ACCOUNT_KEY_CUSTOMCURRENCYNAME, ACCOUNT_KEY_RATE, 
+				ACCOUNT_KEY_LOCALID, ACCOUNT_KEY_TYPE, ACCOUNT_KEY_CLOUDID,
+				ACCOUNT_KEY_NAME, ACCOUNT_KEY_INITBALANCE, ACCOUNT_KEY_REMAIN,
+				ACCOUNT_KEY_CURRENCY, ACCOUNT_KEY_CUSTOMCURRENCYNAME, ACCOUNT_KEY_RATE,
 				ACCOUNT_KEY_TIMESTAMP, ACCOUNT_KEY_DISABLED, ACCOUNT_KEY_ORDER, ACCOUNT_KEY_NEEDSYNC };
-		
+
 		Cursor result = mDB.query(DATABASE_TABLE_ACCOUNT, columns, ACCOUNT_KEY_TYPE + "= ?", new String[]{Integer.toString(type.ordinal())}, null, null, ACCOUNT_KEY_ORDER + " ASC, " + ACCOUNT_KEY_CLOUDID);
 		if(result.moveToFirst())
 			return result;
 		return null;
 	}
-	
+
 
 	/*
 	 * 
@@ -377,7 +374,7 @@ public class DBManager {
 			return result.getInt(result.getColumnIndex(CATEGORY_KEY_LOCALID));
 		return 0;
 	}
-	
+
 	private ContentValues getCategoryContentValues(TriCategory c){
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(CATEGORY_KEY_NAME, c.getName());
@@ -399,13 +396,13 @@ public class DBManager {
 		TriCategory category = new TriCategory(0, cloudId, parentId, rank, type, name, time);
 		return createCategory(category);
 	}
-	
+
 	public boolean updateCategory(TriCategory category){
 		int localId = category.getLocalId();
 		int rowAffected = mDB.update(DATABASE_TABLE_CATEGORY, getCategoryContentValues(category), CATEGORY_KEY_LOCALID + " = ?", new String[]{Integer.toString(localId)});
 		return (rowAffected == 1);
 	}
-	
+
 	public Cursor getCategories(){
 		String[] columns = new String[]{
 				CATEGORY_KEY_LOCALID, CATEGORY_KEY_CLOUDID, CATEGORY_KEY_PARENTID,
@@ -417,21 +414,21 @@ public class DBManager {
 		}
 		return null;
 	}
-	
+
 	public ArrayList<TriCategory> getParentCategory(){
-        ArrayList<TriCategory> parents = new ArrayList<TriCategory>();
+		ArrayList<TriCategory> parents = new ArrayList<TriCategory>();
 		String[] columns = new String[]{
 				CATEGORY_KEY_LOCALID, CATEGORY_KEY_CLOUDID, CATEGORY_KEY_PARENTID,
 				CATEGORY_KEY_RANK, CATEGORY_KEY_TYPE, CATEGORY_KEY_NAME, CATEGORY_KEY_TIMESTAMP,
 				CATEGORY_KEY_NEEDSYNC};
 		Cursor result = mDB.query(DATABASE_TABLE_CATEGORY, columns, CATEGORY_KEY_PARENTID + " = ?" , new String[]{"0"}, null, null, null);
-        Log.d(TAG, "" + result.getCount());
+		Log.d(TAG, "" + result.getCount());
 		if (result != null && result.moveToFirst()){
-            do{
-                TriCategory category = new TriCategory(result);
-                parents.add(category);
-            }while(result.moveToNext());
-            result.close();
+			do{
+				TriCategory category = new TriCategory(result);
+				parents.add(category);
+			}while(result.moveToNext());
+			result.close();
 		}
 		return parents;
 	}
@@ -451,34 +448,34 @@ public class DBManager {
 		return null;
 	}
 
-    public ArrayList<ArrayList<TriCategory>> getChildCategories(){
+	public ArrayList<ArrayList<TriCategory>> getChildCategories(){
 
-        ArrayList<TriCategory> parents = getParentCategory();
-        ArrayList<ArrayList<TriCategory>> categories = new ArrayList<ArrayList<TriCategory>>();
-        for (TriCategory c : parents){
+		ArrayList<TriCategory> parents = getParentCategory();
+		ArrayList<ArrayList<TriCategory>> categories = new ArrayList<ArrayList<TriCategory>>();
+		for (TriCategory c : parents){
 
-           ArrayList<TriCategory> second_categories = new ArrayList<TriCategory>();
-           second_categories.add(c);
-           Cursor result = getChildCategory(c.getCloudId());
-           if (result != null && result.moveToFirst()){
-               do{
-                   TriCategory second_c = new TriCategory(result);
-                   second_categories.add(second_c);
-               }while(result.moveToNext());
+			ArrayList<TriCategory> second_categories = new ArrayList<TriCategory>();
+			second_categories.add(c);
+			Cursor result = getChildCategory(c.getCloudId());
+			if (result != null && result.moveToFirst()){
+				do{
+					TriCategory second_c = new TriCategory(result);
+					second_categories.add(second_c);
+				}while(result.moveToNext());
 
-               result.close();
-           }
-           categories.add(second_categories);
-        }
-        return categories;
-    }
+				result.close();
+			}
+			categories.add(second_categories);
+		}
+		return categories;
+	}
 
 	/*
 	 * 
 	 * Related to table record
 	 * 
 	 */
-	
+
 
 
 	public ContentValues getRecordContentValues(TriRecord record) {
@@ -512,13 +509,13 @@ public class DBManager {
 		return (row_affected >= 1);
 	}
 	public boolean updateRecordFromLocal(TriRecord record) {
-		
+
 		int original_account_src_id = 0;
-		int original_account_dst_id = 0; 
-		double original_amount = 0; 
+		int original_account_dst_id = 0;
+		double original_amount = 0;
 		double original_amount_dst = 0;
 		double original_fee = 0;
-		
+
 		Cursor result = getRecord(record.getLocalId(), 0);
 		if (result != null) {
 			original_account_dst_id = result.getInt(result.getColumnIndex(RECORD_KEY_ACCOUNTDSTID));
@@ -527,25 +524,25 @@ public class DBManager {
 			original_amount_dst = result.getDouble(result.getColumnIndex(RECORD_KEY_AMOUNTDST));
 			original_fee = result.getDouble(result.getColumnIndex(RECORD_KEY_FEE));
 		}
-		
+
 		if (record.getType() == TriCategoryType.TriCategoryTypeExpense) {
-			if(original_account_src_id != record.getLocalAccountId()) { 
+			if(original_account_src_id != record.getLocalAccountId()) {
 				updateAddAccountRemain(original_account_src_id, original_amount + original_fee);
 				updateDeductAccountRemain(record.getLocalAccountId(), record.getAmount() + record.getFee());
 			} else {
 				updateDeductAccountRemain(record.getLocalAccountId(), ( record.getAmount() + record.getFee() ) - (original_amount + original_fee));
 			}
-		} 
+		}
 		else if (record.getType() == TriCategoryType.TriCategoryTypeIncome) {
-			if(original_account_src_id != record.getLocalAccountId()) { 
+			if(original_account_src_id != record.getLocalAccountId()) {
 				updateDeductAccountRemain(original_account_src_id, original_amount + original_fee);
 				updateAddAccountRemain(record.getLocalAccountId(), record.getAmount() + record.getFee());
 			} else{
 				updateAddAccountRemain(record.getLocalAccountId(), ( record.getAmount() + record.getFee() ) - (original_amount + original_fee));
 			}
-		} 
+		}
 		else if (record.getType() == TriCategoryType.TriCategoryTypeTransfer) {
-			if(original_account_src_id != record.getLocalAccountId()) { 
+			if(original_account_src_id != record.getLocalAccountId()) {
 				updateAddAccountRemain(original_account_src_id, original_amount + original_fee);
 				updateDeductAccountRemain(record.getLocalAccountId(), record.getAmount() + record.getFee());
 			} else{
@@ -557,11 +554,11 @@ public class DBManager {
 			} else{
 				updateAddAccountRemain(record.getLocalAccountDstId(), record.getAmountDst() - original_amount_dst);
 			}
-		} 
+		}
 		mDB.update(DATABASE_TABLE_RECORD, getRecordContentValues(record), RECORD_KEY_LOCALID + " = ?", new String[]{Integer.toString(record.getLocalId())});
 		return false;
 	}
-	
+
 	private void updateAddAccountRemain(int account_id, double amount){
 		String sql = "";
 		String[] selectionArgs = new String[]{};
@@ -572,7 +569,7 @@ public class DBManager {
 		mDB.execSQL(sql, selectionArgs);
 		return;
 	}
-	
+
 	private void updateDeductAccountRemain(int account_id, double amount) {
 		String sql = "";
 		String[] selectionArgs = new String[]{};
@@ -587,14 +584,14 @@ public class DBManager {
 	private void updateAccountRemainByType(TriCategoryType type, double amount_and_fee, int account_src_id, int account_dst_id, double amount_dst){
 		if (type == TriCategoryType.TriCategoryTypeExpense) {
 			updateDeductAccountRemain(account_src_id, amount_and_fee);
-		} 
+		}
 		else if (type == TriCategoryType.TriCategoryTypeIncome) {
 			updateAddAccountRemain(account_src_id, amount_and_fee);
-		} 
+		}
 		else if (type == TriCategoryType.TriCategoryTypeTransfer) {
 			updateDeductAccountRemain(account_src_id, amount_and_fee);
 			updateAddAccountRemain(account_dst_id, amount_and_fee);
-		} 
+		}
 		return;
 	}
 
@@ -661,22 +658,22 @@ public class DBManager {
 			selection = "`?` = ? and `?` = ?";
 			selectionArgs = new String[]
 					{ RECORD_KEY_LOCALID, Integer.toString(localId),
-					  RECORD_KEY_CLOUDID, Integer.toString(cloudId) };
+							RECORD_KEY_CLOUDID, Integer.toString(cloudId) };
 		}
 		Cursor result = mDB.query(DATABASE_TABLE_RECORD, columns, selection, selectionArgs, null, null, null);
 		return ( result != null && result.moveToFirst() ) ? result : null;
 	}
 
-    public boolean updateRecord(int localId, int cloudId) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RECORD_KEY_CLOUDID, cloudId);
-        contentValues.put(RECORD_KEY_NEEDSYNC, false);
-        int rowAffected = mDB.update(DATABASE_TABLE_RECORD, contentValues, RECORD_KEY_LOCALID + " = ?", new String[]{Integer.toString(localId)});
-        return (rowAffected == 1);
-    }
+	public boolean updateRecord(int localId, int cloudId) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(RECORD_KEY_CLOUDID, cloudId);
+		contentValues.put(RECORD_KEY_NEEDSYNC, false);
+		int rowAffected = mDB.update(DATABASE_TABLE_RECORD, contentValues, RECORD_KEY_LOCALID + " = ?", new String[]{Integer.toString(localId)});
+		return (rowAffected == 1);
+	}
 
 	public Cursor getAllRecordInPeriod(long startDate, long endDate){
-		
+
 		String[] columns = new String[] { RECORD_KEY_LOCALID,
 				RECORD_KEY_CLOUDID, RECORD_KEY_ACCOUNTID,
 				RECORD_KEY_ACCOUNTDSTID, RECORD_KEY_TYPE,
@@ -694,29 +691,29 @@ public class DBManager {
 		}
 		return null;
 	}
-	
+
 	public Cursor getRecordInPeriod(String startDate, String endDate){
 		String command = "SELECT `record`.`" + RECORD_KEY_LOCALID + "`, `record`.`"
 				+ RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
 				+ RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
 				+ RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, `"
-				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" 
-				+ RECORD_KEY_TIMESTAMP +"`, `record`.`" 
-				+ RECORD_KEY_AMOUNTDST+"`, `record`.`" 
-				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC + "`, `record`.`" + RECORD_KEY_CLOUDID  
+				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`"
+				+ RECORD_KEY_TIMESTAMP +"`, `record`.`"
+				+ RECORD_KEY_AMOUNTDST+"`, `record`.`"
+				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC + "`, `record`.`" + RECORD_KEY_CLOUDID
 				+ "` from `record` LEFT OUTER JOIN `category` on `record`.`" + RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID + "`" + " where `"
 				+ RECORD_KEY_DATE + "` >= \"" + startDate+ "\" AND `"
 				+ RECORD_KEY_DATE + "` <= \"" + endDate + "\" order by `"
 				+ RECORD_KEY_DATE + "` DESC, `record`.`" + RECORD_KEY_TIMESTAMP
 				+ "` DESC";
 		Cursor result = mDB.rawQuery(command, null);
-        Log.d(TAG, "get record in period: " + command);
+		Log.d(TAG, "get record in period: " + command);
 		if (result.moveToFirst()) {
 			return result;
 		}
 		return null;
 	}
-	
+
 	public Cursor getRecordInPeriodWithType(String startDate, String endDate, TriCategoryType type) {
 //		String[] columns = new String[]{
 //				RECORD_KEY_ACCOUNTDSTID, RECORD_KEY_LOCALID, RECORD_KEY_CLOUDID,
@@ -728,10 +725,10 @@ public class DBManager {
 				+ RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
 				+ RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
 				+ RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, `"
-				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" + RECORD_KEY_TIMESTAMP +"`, `record`.`" 
-				+ RECORD_KEY_AMOUNTDST+"`, `record`.`" 
-				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC 
-				+ "`, `record`.`" + RECORD_KEY_CLOUDID  
+				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" + RECORD_KEY_TIMESTAMP +"`, `record`.`"
+				+ RECORD_KEY_AMOUNTDST+"`, `record`.`"
+				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC
+				+ "`, `record`.`" + RECORD_KEY_CLOUDID
 				+ "` from `record` LEFT OUTER JOIN `category` on `record`.`" + RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID + "`" + " where `record`.`"+  RECORD_KEY_TYPE+"`= \"" + type.ordinal() + "\" AND `"
 				+ RECORD_KEY_DATE + "` >= \"" + startDate+ "\" AND `"
 				+ RECORD_KEY_DATE + "` <= \"" + endDate + "\" order by `"
@@ -752,16 +749,16 @@ public class DBManager {
 	}
 	public ArrayList<TriRecord> getRecordByAccount(TriAccount account) {
 
-        ArrayList<TriRecord> records = new ArrayList<TriRecord>();
+		ArrayList<TriRecord> records = new ArrayList<TriRecord>();
 		String sql = "SELECT `record`.`" + RECORD_KEY_LOCALID + "`, `record`.`"
 				+ RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
 				+ RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
 				+ RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, `"
-				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" + RECORD_KEY_TIMESTAMP +"`, `record`.`" 
-				+ RECORD_KEY_AMOUNTDST+"`, `record`.`" 
-				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC 
-				+ "`, `record`.`" + RECORD_KEY_CLOUDID  
-				+ "` from `record` LEFT OUTER JOIN `category` on `record`.`" + RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID + "`" 
+				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" + RECORD_KEY_TIMESTAMP +"`, `record`.`"
+				+ RECORD_KEY_AMOUNTDST+"`, `record`.`"
+				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC
+				+ "`, `record`.`" + RECORD_KEY_CLOUDID
+				+ "` from `record` LEFT OUTER JOIN `category` on `record`.`" + RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID + "`"
 				+ " where `record`.`"+  RECORD_KEY_ACCOUNTID+"`= \"" + account.getLocalId() + "\" order by `"
 				+ RECORD_KEY_DATE + "` DESC, `record`.`" + RECORD_KEY_TIMESTAMP
 				+ "` DESC";
@@ -769,79 +766,79 @@ public class DBManager {
 		Log.d(TAG, sql);
 
 		if(result.moveToFirst()){
-            do{
+			do{
 				TriRecord record = new TriRecord(result);
-                String category_name = result.getString(result.getColumnIndex(DBManager.CATEGORY_KEY_NAME));
+				String category_name = result.getString(result.getColumnIndex(DBManager.CATEGORY_KEY_NAME));
 
-                if(record.getType() == TriCategoryType.TriCategoryTypeTransfer){
-                    record.setCategoryName("123");
-                }
-                else if(category_name == null || category_name.equals("")){
-                    record.setCategoryName("123");
-                }
-                else{
-                    record.setCategoryName(category_name);
-                }
+				if(record.getType() == TriCategoryType.TriCategoryTypeTransfer){
+					record.setCategoryName("123");
+				}
+				else if(category_name == null || category_name.equals("")){
+					record.setCategoryName("123");
+				}
+				else{
+					record.setCategoryName(category_name);
+				}
 
-                records.add(record);
-            }while(result.moveToNext());
-            result.close();
+				records.add(record);
+			}while(result.moveToNext());
+			result.close();
 
-            for(TriRecord record : records){
-                record.setLocalAccountName(getAccountName(record.getLocalAccountId()));
-                record.setLocalAccountNameDst(getAccountName(record.getLocalAccountDstId()));
-            }
+			for(TriRecord record : records){
+				record.setLocalAccountName(getAccountName(record.getLocalAccountId()));
+				record.setLocalAccountNameDst(getAccountName(record.getLocalAccountDstId()));
+			}
 		}
 		return records;
 	}
 
-    public ArrayList<TriRecord> getRecordByCategory(TriCategory category){
+	public ArrayList<TriRecord> getRecordByCategory(TriCategory category){
 
-        ArrayList<TriRecord> records = new ArrayList<TriRecord>();
-        String sql = "SELECT `record`.`" + RECORD_KEY_LOCALID + "`, `record`.`"
-                + RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
-                + RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
-                + RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, `"
-                + RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" + RECORD_KEY_TIMESTAMP +"`, `record`.`"
-                + RECORD_KEY_AMOUNTDST+"`, `record`.`"
-                + RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC
-                + "`, `record`.`" + RECORD_KEY_CLOUDID
-                + "` from `record` LEFT OUTER JOIN `category` on `record`.`" + RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID + "`"
-                + " where `record`.`"+  RECORD_KEY_CATEGORYID+"`= \"" + category.getLocalId() + "\" order by `"
-                + RECORD_KEY_DATE + "` DESC, `record`.`" + RECORD_KEY_TIMESTAMP
-                + "` DESC";
-        Cursor result = mDB.rawQuery(sql, null);
-        Log.d(TAG, sql);
-        if(result.moveToFirst()){
-            do{
+		ArrayList<TriRecord> records = new ArrayList<TriRecord>();
+		String sql = "SELECT `record`.`" + RECORD_KEY_LOCALID + "`, `record`.`"
+				+ RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
+				+ RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
+				+ RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, `"
+				+ RECORD_KEY_ACCOUNTDSTID + "`, `category`.`" + CATEGORY_KEY_NAME + "`, `record`.`" + RECORD_KEY_TIMESTAMP +"`, `record`.`"
+				+ RECORD_KEY_AMOUNTDST+"`, `record`.`"
+				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC
+				+ "`, `record`.`" + RECORD_KEY_CLOUDID
+				+ "` from `record` LEFT OUTER JOIN `category` on `record`.`" + RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID + "`"
+				+ " where `record`.`"+  RECORD_KEY_CATEGORYID+"`= \"" + category.getLocalId() + "\" order by `"
+				+ RECORD_KEY_DATE + "` DESC, `record`.`" + RECORD_KEY_TIMESTAMP
+				+ "` DESC";
+		Cursor result = mDB.rawQuery(sql, null);
+		Log.d(TAG, sql);
+		if(result.moveToFirst()){
+			do{
 				TriRecord record = new TriRecord(result);
-                String category_name = result.getString(result.getColumnIndex(DBManager.CATEGORY_KEY_NAME));
+				String category_name = result.getString(result.getColumnIndex(DBManager.CATEGORY_KEY_NAME));
 
-                if(record.getType() == TriCategoryType.TriCategoryTypeTransfer){
-                    record.setCategoryName("123");
-                }
-                else if(category_name == null || category_name.equals("")){
-                    record.setCategoryName("123");
-                }
-                else{
-                    record.setCategoryName(category_name);
-                }
+				if(record.getType() == TriCategoryType.TriCategoryTypeTransfer){
+					record.setCategoryName("123");
+				}
+				else if(category_name == null || category_name.equals("")){
+					record.setCategoryName("123");
+				}
+				else{
+					record.setCategoryName(category_name);
+				}
 
-                records.add(record);
-            }while(result.moveToNext());
-            result.close();
+				records.add(record);
+			}while(result.moveToNext());
+			result.close();
 
 			for(TriRecord record : records){
-                record.setLocalAccountName(getAccountName(record.getLocalAccountId()));
-                record.setLocalAccountNameDst(getAccountName(record.getLocalAccountDstId()));
-            }
+				record.setLocalAccountName(getAccountName(record.getLocalAccountId()));
+				record.setLocalAccountNameDst(getAccountName(record.getLocalAccountDstId()));
+			}
 
-        }
-        return records;
-    }
+		}
+		return records;
+	}
 
 	public Cursor getAllRecordInPeriodWithType(long startDate, long endDate, TriCategoryType type){
-		
+
 		String command = "SELECT `record`.`" + RECORD_KEY_LOCALID + "`, `record`.`"
 				+ RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
 				+ RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
@@ -878,32 +875,32 @@ public class DBManager {
 		return uploadedRecords;
 	}
 
-    public Cursor queryUnSyncRecords(){
+	public Cursor queryUnSyncRecords(){
 
 		String command = "SELECT `record`.`" + RECORD_KEY_LOCALID + "`, `record`.`"
-                + RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
-                + RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
-                + RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, "
-                + "`a1`.`" + ACCOUNT_KEY_CLOUDID +"` as a1_cloud_id, `a2`.`" + ACCOUNT_KEY_CLOUDID + "` as a2_cloud_id, `"
-                + RECORD_KEY_ACCOUNTDSTID +"`, `category`.`" + CATEGORY_KEY_NAME + "`, `category`.`" + CATEGORY_KEY_CLOUDID  + "` as c_cloud_id, `record`.`"
-                + RECORD_KEY_TIMESTAMP +"`, `record`.`"
-                + RECORD_KEY_AMOUNTDST+"`, `record`.`"
-                + RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC + "`, `record`.`" + RECORD_KEY_CLOUDID
-                + "`as r_cloud_id from `record` LEFT OUTER JOIN `category` on `record`.`"+RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID
-                + "` LEFT OUTER JOIN `account` a1 on `record`.`" + RECORD_KEY_ACCOUNTID + "` = `a1`.`" + ACCOUNT_KEY_LOCALID
-                + "` LEFT OUTER JOIN `account` a2 on `record`.`" + RECORD_KEY_ACCOUNTDSTID + "` = `a2`.`" + ACCOUNT_KEY_LOCALID
-                + "` where `record`.`" + RECORD_KEY_NEEDSYNC+"` = 1";
+				+ RECORD_KEY_TYPE + "`, `" + RECORD_KEY_CATEGORYID + "`, `"
+				+ RECORD_KEY_DESC + "`, `" + RECORD_KEY_AMOUNT + "`, `"
+				+ RECORD_KEY_ACCOUNTID + "`, `" + RECORD_KEY_DATE + "`, "
+				+ "`a1`.`" + ACCOUNT_KEY_CLOUDID +"` as a1_cloud_id, `a2`.`" + ACCOUNT_KEY_CLOUDID + "` as a2_cloud_id, `"
+				+ RECORD_KEY_ACCOUNTDSTID +"`, `category`.`" + CATEGORY_KEY_NAME + "`, `category`.`" + CATEGORY_KEY_CLOUDID  + "` as c_cloud_id, `record`.`"
+				+ RECORD_KEY_TIMESTAMP +"`, `record`.`"
+				+ RECORD_KEY_AMOUNTDST+"`, `record`.`"
+				+ RECORD_KEY_FEE+"`, `record`.`" + RECORD_KEY_NEEDSYNC + "`, `record`.`" + RECORD_KEY_CLOUDID
+				+ "`as r_cloud_id from `record` LEFT OUTER JOIN `category` on `record`.`"+RECORD_KEY_CATEGORYID + "` = `category`.`" + CATEGORY_KEY_LOCALID
+				+ "` LEFT OUTER JOIN `account` a1 on `record`.`" + RECORD_KEY_ACCOUNTID + "` = `a1`.`" + ACCOUNT_KEY_LOCALID
+				+ "` LEFT OUTER JOIN `account` a2 on `record`.`" + RECORD_KEY_ACCOUNTDSTID + "` = `a2`.`" + ACCOUNT_KEY_LOCALID
+				+ "` where `record`.`" + RECORD_KEY_NEEDSYNC+"` = 1";
 		String[] args = new String[]{};
 
 		Log.d(TAG, "Querying all sync-needed records by command: " + command);
 
 		Cursor result = mDB.rawQuery(command, args);
-        if(result.moveToFirst()){
-            return result;
-        }
+		if(result.moveToFirst()){
+			return result;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 	/*
 	 * 
@@ -935,13 +932,13 @@ public class DBManager {
 	public boolean updateCurrency(String from, String to, double rate, int time){
 		String whereClause = CURRENCY_KEY_FROM + " = ? and " + CURRENCY_KEY_TO + " = ? ";
 		String[] whereArgs = new String[]{ from, to } ;
-		
+
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(CURRENCY_KEY_RATE, rate);
 		contentValues.put(CURRENCY_KEY_TIMESTAMP, time);
-		
+
 		int row_affected = mDB.update(DATABASE_TABLE_CURRENCY, contentValues, whereClause, whereArgs);
-		return (row_affected >= 1); 
+		return (row_affected >= 1);
 	}
 
 	/*
@@ -968,7 +965,7 @@ public class DBManager {
 		}
 		return 0;
 	}
-	
+
 	public double totalBalanceData(long startDate, long endDate, TriCategoryType type, String currency) {
 		String command = "SELECT SUM(IFNULL(`currency`.`"
 				+ CURRENCY_KEY_RATE
