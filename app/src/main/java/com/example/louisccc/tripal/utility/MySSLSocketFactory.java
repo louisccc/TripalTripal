@@ -1,4 +1,4 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.utility;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;

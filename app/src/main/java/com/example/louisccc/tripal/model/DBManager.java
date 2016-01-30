@@ -1,4 +1,4 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.louisccc.tripal.utility.DateHelper;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,20 +18,12 @@ import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
-import com.example.louisccc.tripal.model.TriAccount;
-import com.example.louisccc.tripal.model.TriAccountType;
-import com.example.louisccc.tripal.model.TriCategory;
-import com.example.louisccc.tripal.model.TriCategoryType;
-import com.example.louisccc.tripal.model.TriRecord;
-
-
 public class DBManager {
 	public static final String TAG = "dbadapter";
 
 	public static final String DATABASE_NAME = "tripal.sqlite";
 
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 
 	public static final String DATABASE_TABLE_RECORD = "record";
 	public static final String RECORD_KEY_LOCALID = "local_id";
@@ -168,12 +162,15 @@ public class DBManager {
 			db.execSQL(DATABASE_TABLE_CURRENCY_CREATE);
 			db.execSQL(DATABASE_TABLE_DELETE_CREATE);
 
+			db.execSQL(TriTrip.TRIPS_CREATE);
+
 			Log.w(TAG, "The tables were created: "
 					+ DATABASE_TABLE_RECORD_CREATE + ", "
 					+ DATABASE_TABLE_CATEGORY_CREATE + ", "
 					+ DATABASE_TABLE_ACCOUNT_CREATE + ", "
 					+ DATABASE_TABLE_CURRENCY_CREATE + ", "
-					+ DATABASE_TABLE_DELETE_CREATE + ", version=" + db.getVersion()
+					+ DATABASE_TABLE_DELETE_CREATE + ", "
+					+ TriTrip.TRIPS_CREATE + ", version=" + db.getVersion()
 			); // trace warning
 		}
 		@Override
@@ -183,6 +180,8 @@ public class DBManager {
 			db.execSQL("drop table if exists " + DATABASE_TABLE_CATEGORY);
 			db.execSQL("drop table if exists " + DATABASE_TABLE_DELETE);
 			db.execSQL("drop table if exists " + DATABASE_TABLE_CURRENCY);
+
+			db.execSQL("drop table if exists " + TriTrip.DATABASE_TABLE_NAME);
 			onCreate(db);
 		}
 
@@ -194,11 +193,12 @@ public class DBManager {
 		mDB.delete(DATABASE_TABLE_CURRENCY, null, null);
 		mDB.delete(DATABASE_TABLE_RECORD, null, null);
 		mDB.delete(DATABASE_TABLE_DELETE, null, null);
+
+		mDB.delete(TriTrip.DATABASE_TABLE_NAME, null, null);
 	}
 
-	public DBManager open() throws SQLException {
+	public void open() throws SQLException {
 		mDB = mDBHelper.getWritableDatabase();
-		return this;
 	}
 
 	public void close() {
@@ -210,7 +210,7 @@ public class DBManager {
 		File data = Environment.getDataDirectory();
 		FileChannel source = null;
 		FileChannel destination = null;
-		String currentDBPath = "/data/" + "//tw.banck.Banck//" + "//databases//" + DATABASE_NAME;
+		String currentDBPath = "/data/" + "//com.example.louisccc.tripal//" + "//databases//" + DATABASE_NAME;
 		String backupDBPath = DATABASE_NAME;
 		File currentDB = new File(data, currentDBPath);
 		File backupDB = new File(sd, backupDBPath);
@@ -223,6 +223,13 @@ public class DBManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public long createTrip ( final TriTrip trip ) {
+		ContentValues contentValues = trip.getContentValues();
+		long localId = mDB.insert(TriTrip.DATABASE_TABLE_NAME, null, contentValues);
+		Log.i(TAG, "trip created at " + localId );
+		return localId;
 	}
 
 	/*
@@ -503,6 +510,8 @@ public class DBManager {
 		}
 		return record;
 	}
+
+
 	public boolean updateRecordFromCloud(TriRecord record) {
 		ContentValues contentValues = getRecordContentValues(record);
 		int row_affected = mDB.update(DATABASE_TABLE_RECORD, contentValues, RECORD_KEY_LOCALID + " = ?", new String[]{Integer.toString(record.getLocalId())});
@@ -900,118 +909,5 @@ public class DBManager {
 		}
 
 		return null;
-	}
-
-	/*
-	 * 
-	 * Related to table currency
-	 * 
-	 */
-
-	public boolean isCurrencyExist(String from, String to) {
-		String[] columns = new String[]{CURRENCY_KEY_FROM, CURRENCY_KEY_RATE, CURRENCY_KEY_TO, CURRENCY_KEY_TIMESTAMP};
-		String selection = CURRENCY_KEY_FROM + " = ? and " + CURRENCY_KEY_TO + " = ?";
-		String[] selectionArgs = new String[]{from, to};
-		Cursor result = mDB.query(DATABASE_TABLE_CURRENCY, columns, selection, selectionArgs, null, null, null);
-		if(result.moveToFirst()){
-			return true;
-		}
-		return false;
-	}
-	public boolean createCurrency(String from, double rate, String to,
-								  int time) {
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(CURRENCY_KEY_FROM, from);
-		contentValues.put(CURRENCY_KEY_RATE, rate);
-		contentValues.put(CURRENCY_KEY_TO, to);
-		contentValues.put(CURRENCY_KEY_TIMESTAMP, time);
-
-		mDB.insert(DATABASE_TABLE_CURRENCY, null, contentValues);
-		return false;
-	}
-	public boolean updateCurrency(String from, String to, double rate, int time){
-		String whereClause = CURRENCY_KEY_FROM + " = ? and " + CURRENCY_KEY_TO + " = ? ";
-		String[] whereArgs = new String[]{ from, to } ;
-
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(CURRENCY_KEY_RATE, rate);
-		contentValues.put(CURRENCY_KEY_TIMESTAMP, time);
-
-		int row_affected = mDB.update(DATABASE_TABLE_CURRENCY, contentValues, whereClause, whereArgs);
-		return (row_affected >= 1);
-	}
-
-	/*
-	 * 
-	 * Utilities
-	 * 
-	 */
-
-	public double totalBalance() {
-		String command = "SELECT SUM(IFNULL(`currency`.`"
-				+ CURRENCY_KEY_RATE
-				+ "`, `account`.`"
-				+ ACCOUNT_KEY_RATE
-				+ "`) * `account`.`"
-				+ ACCOUNT_KEY_REMAIN
-				+ "`) AS `sum` FROM `account` LEFT OUTER JOIN `currency` ON `account`.`currency`=`currency`.`"
-				+ CURRENCY_KEY_TO + "` AND `currency`.`" + CURRENCY_KEY_FROM
-				+ "`= \"TWD\"";
-		//Log.d(TAG, "get total balance: " + command);
-		Cursor result = mDB.rawQuery(command, null);
-		if (result != null && result.moveToFirst()) {
-			double sum = result.getDouble(0);
-			return sum;
-		}
-		return 0;
-	}
-
-	public double totalBalanceData(long startDate, long endDate, TriCategoryType type, String currency) {
-		String command = "SELECT SUM(IFNULL(`currency`.`"
-				+ CURRENCY_KEY_RATE
-				+ "`, `account`.`"
-				+ ACCOUNT_KEY_RATE
-				+ "`) * `account`.`"
-				+ ACCOUNT_KEY_REMAIN
-				+ "`) AS `sum` FROM `record` LEFT OUTER JOIN `account` ON `account`.`"
-				+ ACCOUNT_KEY_LOCALID + "` = `record`.`" + RECORD_KEY_ACCOUNTID
-				+ "` LEFT OUTER JOIN `currency` on `account`.`"
-				+ ACCOUNT_KEY_CURRENCY + "`=`currency`.`" + CURRENCY_KEY_TO
-				+ "` AND `currency`.`" + CURRENCY_KEY_FROM
-				+ "` = \""+currency+"\" WHERE `record`.`" + RECORD_KEY_TYPE + "` = "
-				+ type.ordinal() + " AND `record`.`" + RECORD_KEY_TIMESTAMP + "` >= \""
-				+ startDate / 1000L + "\" AND `record`.`" + RECORD_KEY_TIMESTAMP
-				+ "` <= \"" + endDate / 1000L + "\"";
-		Log.d(TAG, "get total balance in a period: " + command);
-		Cursor result = mDB.rawQuery(command, null);
-		if (result.moveToFirst()) {
-			double sum = result.getDouble(0);
-			return sum;
-		}
-		return 0;
-	}
-	public double totalBalanceData(String startDate, String endDate, TriCategoryType type, String currency) {
-		String command = "SELECT SUM(IFNULL(`currency`.`"
-				+ CURRENCY_KEY_RATE
-				+ "`, `account`.`"
-				+ ACCOUNT_KEY_RATE
-				+ "`) * `record`.`"
-				+ RECORD_KEY_AMOUNT
-				+ "`) AS `sum` FROM `record` LEFT OUTER JOIN `account` ON `account`.`"
-				+ ACCOUNT_KEY_LOCALID + "` = `record`.`" + RECORD_KEY_ACCOUNTID
-				+ "` LEFT OUTER JOIN `currency` on `account`.`"
-				+ ACCOUNT_KEY_CURRENCY + "`=`currency`.`" + CURRENCY_KEY_TO
-				+ "` AND `currency`.`" + CURRENCY_KEY_FROM
-				+ "` = \""+currency+"\" WHERE `record`.`" + RECORD_KEY_TYPE + "` = "
-				+ type.ordinal() + " AND `record`.`" + RECORD_KEY_DATE + "` >= \""
-				+ startDate  + "\" AND `record`.`" + RECORD_KEY_DATE
-				+ "` <= \"" + endDate + "\"";
-		Log.d(TAG, "get total balance in a period: " + command);
-		Cursor result = mDB.rawQuery(command, null);
-		if (result.moveToFirst()) {
-			double sum = result.getDouble(0);
-			return sum;
-		}
-		return 0;
 	}
 }

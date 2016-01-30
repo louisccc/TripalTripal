@@ -1,4 +1,4 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.utility;
 
 import android.app.ActionBar;
 import android.content.Context;

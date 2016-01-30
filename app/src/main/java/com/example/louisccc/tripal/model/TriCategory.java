@@ -4,8 +4,6 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.louisccc.tripal.DBManager;
-
 import org.json.JSONObject;
 
 public class TriCategory implements Parcelable {

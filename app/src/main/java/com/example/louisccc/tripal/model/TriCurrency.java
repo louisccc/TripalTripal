@@ -2,7 +2,6 @@ package com.example.louisccc.tripal.model;
 
 import android.database.Cursor;
 
-import com.example.louisccc.tripal.DBManager;
 import org.json.JSONObject;
 
 

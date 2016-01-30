@@ -3,7 +3,7 @@ package com.example.louisccc.tripal.model;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
-import com.example.louisccc.tripal.MySSLSocketFactory;
+import com.example.louisccc.tripal.utility.MySSLSocketFactory;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

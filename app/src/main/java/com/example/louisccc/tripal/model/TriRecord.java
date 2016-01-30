@@ -8,8 +8,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-import com.example.louisccc.tripal.DBManager;
-import com.example.louisccc.tripal.DateHelper;
+import com.example.louisccc.tripal.com.example.louisccc.tripal.utility.DateHelper;
 
 public class TriRecord implements Parcelable {
 	private final int NUM_COLUMN = 13;
