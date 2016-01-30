@@ -2,7 +2,7 @@ package com.example.louisccc.tripal;
 
 import android.test.AndroidTestCase;
 
-import com.example.louisccc.tripal.com.example.louisccc.tripal.utility.DateHelper;
+import com.example.louisccc.tripal.utility.DateHelper;
 import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriTrip;
 

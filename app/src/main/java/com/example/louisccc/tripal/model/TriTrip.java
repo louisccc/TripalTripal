@@ -2,7 +2,7 @@ package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
 
-import com.example.louisccc.tripal.com.example.louisccc.tripal.utility.DateHelper;
+import com.example.louisccc.tripal.utility.DateHelper;
 
 import java.util.Date;
 
