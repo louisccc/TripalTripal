@@ -36,7 +36,7 @@ public class DateHelper {
 	public static Date getDate(int year, int month, int day) {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, year);
-		c.set(Calendar.MONTH, month);
+		c.set(Calendar.MONTH, month-1);
 		c.set(Calendar.DAY_OF_MONTH, day);
 		return c.getTime();
 	}
