@@ -17,7 +17,7 @@ public class DBManager {
 	public static final String TAG = "dbadapter";
 
 	public static final String DATABASE_NAME = "tripal.sqlite";
-	public static final int DATABASE_VERSION = 6;
+	public static final int DATABASE_VERSION = 8;
 	private final Context mContext;
 	private DatabaseHelper mDBHelper;
 	private SQLiteDatabase mDB;
@@ -38,11 +38,15 @@ public class DBManager {
 			db.execSQL(TriTrip.TRIPS_CREATE);
 			db.execSQL(TriFriend.FRIENDS_CREATE);
 			db.execSQL(TriParticipation.TRIPS_PARTICIPATION_CREATE);
+			db.execSQL(TriItem.ITEMS_CREATE);
+			db.execSQL(TriDept.DEPTS_CREATE);
 
 			Log.w(TAG, "The tables were created: "
 					+ TriTrip.TRIPS_CREATE + ", "
 					+ TriFriend.FRIENDS_CREATE + ", "
-					+ TriParticipation.TRIPS_PARTICIPATION_CREATE + ", version=" + db.getVersion()
+					+ TriParticipation.TRIPS_PARTICIPATION_CREATE + ", "
+					+ TriItem.ITEMS_CREATE + ", "
+					+ TriDept.DEPTS_CREATE + ", version=" + db.getVersion()
 			); // trace warning
 		}
 		@Override
@@ -51,6 +55,8 @@ public class DBManager {
 			db.execSQL("drop table if exists " + TriTrip.DATABASE_TABLE_NAME);
 			db.execSQL("drop table if exists " + TriFriend.DATABASE_TABLE_NAME);
 			db.execSQL("drop table if exists " + TriParticipation.DATABASE_TABLE_NAME);
+			db.execSQL("drop table if exists " + TriItem.DATABASE_TABLE_NAME);
+			db.execSQL("drop table if exists " + TriDept.DATABASE_TABLE_NAME);
 			onCreate(db);
 		}
 
@@ -60,6 +66,8 @@ public class DBManager {
 		mDB.delete(TriTrip.DATABASE_TABLE_NAME, null, null);
 		mDB.delete(TriFriend.DATABASE_TABLE_NAME, null, null);
 		mDB.delete(TriParticipation.DATABASE_TABLE_NAME, null, null);
+		mDB.delete(TriItem.DATABASE_TABLE_NAME, null, null);
+		mDB.delete(TriDept.DATABASE_TABLE_NAME, null, null);
 	}
 
 	public void open() throws SQLException {
@@ -132,4 +140,31 @@ public class DBManager {
 		);
 	}
 
+	public long createItem ( final TriItem item ) {
+		long localId = mDB.insert( TriItem.DATABASE_TABLE_NAME, null, item.getContentValues() );
+		Log.i(TAG, "item created at " + localId );
+		return localId;
+	}
+
+	public long updateItem ( final TriItem item ) {
+		return mDB.update(TriItem.DATABASE_TABLE_NAME,
+				item.getContentValues(),
+				TriItem.KEY_LOCALID + " = ?",
+				new String[]{Integer.toString(item.getLocalId() )}
+		);
+	}
+
+	public long createDept ( final TriDept dept ) {
+		long localId = mDB.insert( TriDept.DATABASE_TABLE_NAME, null, dept.getContentValues() );
+		Log.i(TAG, "dept relation created at " + localId );
+		return localId;
+	}
+
+	public long updateDept ( final TriDept dept ) {
+		return mDB.update(TriDept.DATABASE_TABLE_NAME,
+				dept.getContentValues(),
+				TriDept.KEY_LOCALID + " = ?",
+				new String[]{Integer.toString(dept.getLocalId() )}
+		);
+	}
 }
