@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,13 +90,11 @@ public class TripalActivity extends FragmentActivity {
             }
         });
         list.setAdapter(menus_string);
-
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-//        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);
 //        this.getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.banck_bar_background_grey));
         tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
-        tabHost.getTabWidget().setVisibility(View.INVISIBLE);
         tabHost.addTab(tabHost.newTabSpec("Summary").setIndicator("Summary"), DashBoardFragment.class, null);
         tabHost.addTab(tabHost.newTabSpec("Account").setIndicator("Account"), DashBoardFragment.class, null);
 //        tabHost.addTab(tabHost.newTabSpec("Dashboard").setIndicator("Dashboard"), DashBoardFragment.class, null);
@@ -103,10 +103,23 @@ public class TripalActivity extends FragmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = this.getMenuInflater();
+        inflater.inflate(R.menu.menu_tripal, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
                 menu.toggle();
+                break;
+            case R.id.action_settings:
+                Intent intent = new Intent(TripalActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            default:
                 break;
         }
         return super.onOptionsItemSelected(item);

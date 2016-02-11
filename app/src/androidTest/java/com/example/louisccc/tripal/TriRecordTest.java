@@ -1,9 +1,6 @@
 package com.example.louisccc.tripal;
 
 import android.test.AndroidTestCase;
-
-import com.example.louisccc.tripal.model.TriRecord;
-
 import junit.framework.Assert;
 
 /**
@@ -17,8 +14,6 @@ public class TriRecordTest extends AndroidTestCase {
 
 
     public void test1 () throws Exception{
-        TriRecord record = null;
-        Assert.assertTrue(record == null);
     }
 
     @Override

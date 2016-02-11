@@ -104,4 +104,21 @@ public class TriTrip {
     public void setLocalId(long localId) {
         this.mLocal_id = (int)localId;
     }
+
+    public String getName() {
+        return mName;
+    }
+
+
+    public Date getDateFrom() {
+        return mTime_from;
+    }
+
+    public Date getDateTo() {
+        return mTime_to;
+    }
+
+    public double getBudget() {
+        return mInit_balance;
+    }
 }
