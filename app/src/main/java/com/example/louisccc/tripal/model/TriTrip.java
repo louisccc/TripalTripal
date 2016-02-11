@@ -10,21 +10,8 @@ import java.util.Date;
  * Created by louisccc on 1/30/16.
  */
 public class TriTrip {
-    public static final String DATABASE_TABLE_NAME = "trips";
-    /* members */
-    private int mLocal_id;
-    private int mCloud_id;
-    private String mName;
-    private double mInit_balance;
-    private double mCurr_balance;
-    private int mCategory_id;
-    private Date mTime_from;
-    private Date mTime_to;
-    private Long mTimestamp;
-    private boolean mNeedSync;
-    private int mOrder;
 
-    private int num_item; /* ? */
+    public static final String DATABASE_TABLE_NAME = "trips";
 
     public static final String KEY_LOCALID = "trip_local_id";
     public static final String KEY_CLOUDID = "trip_cloud_id";
@@ -40,20 +27,33 @@ public class TriTrip {
 
     public static final String TRIPS_CREATE =
             "create table " + DATABASE_TABLE_NAME
-            + " ("
-            + KEY_LOCALID       + " integer not null primary key autoincrement, "
-            + KEY_CLOUDID       + " integer default 0, "
-            + KEY_NAME          + " text, "
-            + KEY_INITBALANCE   + " real, "
-            + KEY_BALANCE       + " real, "
-            + KEY_CATEGORYID    + " integer, "
-            + KEY_TIMESTAMPFROM + " date, "
-            + KEY_TIMESTAMPTO   + " date, "
-            + KEY_TIMESTAMP     + " timestamp dafault current_timestamp, "
-            + KEY_NEEDSYNC      + " integer default 1, "
-            + KEY_ORDER         + " integer default 0  "
-            + ");";
+                    + " ("
+                    + KEY_LOCALID       + " integer not null primary key autoincrement, "
+                    + KEY_CLOUDID       + " integer default 0, "
+                    + KEY_NAME          + " text, "
+                    + KEY_INITBALANCE   + " real, "
+                    + KEY_BALANCE       + " real, "
+                    + KEY_CATEGORYID    + " integer, "
+                    + KEY_TIMESTAMPFROM + " date, "
+                    + KEY_TIMESTAMPTO   + " date, "
+                    + KEY_TIMESTAMP     + " timestamp default current_timestamp, "
+                    + KEY_NEEDSYNC      + " integer default 1, "
+                    + KEY_ORDER         + " integer default 0  "
+                    + ");";
 
+    /* members */
+    private int mLocal_id;
+    private int mCloud_id;
+    private String mName;
+    private double mInit_balance;
+    private double mCurr_balance;
+    private int mCategory_id;
+    private Date mTime_from;
+    private Date mTime_to;
+    private Long mTimestamp;
+    private boolean mNeedSync;
+    private int mOrder;
+    private int num_item; /* ? */
 
     public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();
@@ -74,7 +74,7 @@ public class TriTrip {
     public TriTrip () { /* clean constructor */
         mLocal_id = 0;
         mCloud_id = 0;
-        mName = " default trip name";
+        mName = "default trip name";
         mInit_balance = 0;
         mCurr_balance = 0;
         mCategory_id = 0;
@@ -97,5 +97,11 @@ public class TriTrip {
         mOrder = 0;
     }
 
+    public int getLocalId() {
+        return mLocal_id;
+    }
 
+    public void setLocalId(long localId) {
+        this.mLocal_id = (int)localId;
+    }
 }

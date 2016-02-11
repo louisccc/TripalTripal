@@ -69,7 +69,7 @@ public class TriFriend {
 
     public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();
-
+        // local id is assigned.
         contentValues.put( KEY_CLOUDID      , mCloud_id );
         contentValues.put( KEY_NAME         , mName );
         contentValues.put( KEY_FB           , mFB_token );
@@ -85,5 +85,9 @@ public class TriFriend {
 
     public int getLocalId() {
         return mLocal_id;
+    }
+
+    public void setlocalId(long localId) {
+        this.mLocal_id = (int)localId;
     }
 }
