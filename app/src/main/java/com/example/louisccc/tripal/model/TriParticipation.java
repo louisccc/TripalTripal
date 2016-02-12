@@ -31,8 +31,8 @@ public class TriParticipation {
     /* members */
     private int mLocal_id;
     private int mCloud_id;
-    private int mTrip_id;
-    private int mUser_id;
+    private TriTrip mTrip;
+    private TriFriend mUser;
     private double mDefault_rate; // TODO
     private Long mTimestamp;
     private boolean mNeedSync;
@@ -40,8 +40,8 @@ public class TriParticipation {
     public TriParticipation() { /* clean constructor */
         mLocal_id = 0;
         mCloud_id = 0;
-        mTrip_id = 0;
-        mUser_id = 0;
+        mTrip = null;
+        mUser = null;
         mTimestamp = System.currentTimeMillis();
         mNeedSync = true;
     }
@@ -49,7 +49,7 @@ public class TriParticipation {
     public TriParticipation( TriTrip trip, TriFriend user ) {
         mLocal_id = 0;
         mCloud_id = 0;
-        mTrip_id = trip.getLocalId(); mUser_id = user.getLocalId();
+        mTrip = trip; mUser = user;
         mTimestamp = System.currentTimeMillis();
         mNeedSync = true;
     }
@@ -58,8 +58,8 @@ public class TriParticipation {
         ContentValues contentValues = new ContentValues();
         // local id is assigned.
         contentValues.put( KEY_CLOUDID      , mCloud_id );
-        contentValues.put( KEY_TRIPID       , mTrip_id );
-        contentValues.put( KEY_USERID       , mUser_id );
+        contentValues.put( KEY_TRIPID       , mTrip.getLocalId() );
+        contentValues.put( KEY_USERID       , mUser.getLocalId() );
         contentValues.put( KEY_TIMESTAMP    , mTimestamp );
         contentValues.put( KEY_NEEDSYNC     , mNeedSync );
 
@@ -72,5 +72,13 @@ public class TriParticipation {
 
     public void setlocalId(long localId) {
         this.mLocal_id = (int)localId;
+    }
+
+    public TriTrip getTrip() {
+        return mTrip;
+    }
+
+    public TriFriend getFriend() {
+        return mUser;
     }
 }

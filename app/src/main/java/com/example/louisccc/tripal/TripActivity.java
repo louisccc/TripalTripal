@@ -2,13 +2,18 @@ package com.example.louisccc.tripal;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.model.TriFriend;
+import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by louisccc on 2/12/16.
@@ -19,8 +24,10 @@ public class TripActivity extends Activity {
     TextView mInitBalanceTextView;
     TextView mRemainTimesTextView;
 
-    ListView mMemebersListView;
+    ListView mMembersListView;
+    FriendsAdapter mMembersAdapter;
     ListView mRecordsListView;
+    RecordsAdapter mRecordsAdapter;
 
     TextView mCurrBalanceTextView;
     ImageButton mCheckImageButton;
@@ -49,8 +56,30 @@ public class TripActivity extends Activity {
             mRemainTimesTextView.setText("This trip is not ongoing! " +
                     mTrip.getDateFrom().toString() + " "  + mTrip.getDateTo().toString());
         }
-        mMemebersListView = (ListView) this.findViewById(R.id.trip_members);
+
+        mMembersListView = (ListView) this.findViewById(R.id.trip_members);
+        ArrayList<TriFriend> members = mTrip.getMembers();
+        mMembersAdapter = new FriendsAdapter( this, R.layout.activity_friends_list_item, members );
+        mMembersListView.setAdapter(mMembersAdapter);
+        TextView textview = new TextView(this);
+        textview.setText("Members list view");
+        textview.setTextColor(0xffa4a6a8);
+        textview.setPadding(0, 0, 0, 14);
+        textview.setGravity(Gravity.LEFT);
+        mMembersListView.addHeaderView(textview, null, false);
+        mMembersAdapter.notifyDataSetChanged();
+
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
+        ArrayList<TriItem> items = mTrip.getRecords();
+        mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_friends_list_item, items );
+        mRecordsListView.setAdapter(mRecordsAdapter);
+        TextView textview2 = new TextView(this);
+        textview2.setText("Trip items list view");
+        textview2.setTextColor(0xffa4a6a8);
+        textview2.setPadding(0, 0, 0, 14);
+        textview2.setGravity(Gravity.LEFT);
+        mRecordsListView.addHeaderView(textview2, null, false);
+        mRecordsAdapter.notifyDataSetChanged();;
 
         mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
         mCurrBalanceTextView.setText("curr balance: " + mTrip.getCurrBalance() );

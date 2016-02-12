@@ -8,6 +8,7 @@ import com.example.louisccc.tripal.TriApplication;
 import com.example.louisccc.tripal.utility.DateHelper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -188,4 +189,24 @@ public class TriTrip implements Parcelable {
             return new TriTrip[size];
         }
     };
+
+    public ArrayList<TriFriend> getMembers() {
+        ArrayList<TriFriend> members = new ArrayList<TriFriend>();
+        for ( TriParticipation p : TriApplication.getInstance().getgParticipations() ) {
+            if ( p.getTrip().getLocalId() == this.mLocal_id ) {
+                members.add(p.getFriend());
+            }
+        }
+        return members;
+    }
+
+    public ArrayList<TriItem> getRecords() {
+        ArrayList<TriItem> items = new ArrayList<TriItem>();
+        for( TriItem i : TriApplication.getInstance().getgItems() ) {
+            if ( i.getTripId() == this.mLocal_id ) {
+                items.add(i);
+            }
+        }
+        return items;
+    }
 }

@@ -94,4 +94,5 @@ public class TriFriend {
     public String getName() {
         return mName;
     }
+
 }

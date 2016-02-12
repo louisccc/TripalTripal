@@ -135,4 +135,8 @@ public class TriItem {
     public double getAmount() {
         return mAmount;
     }
+
+    public String getName() {
+        return mName;
+    }
 }

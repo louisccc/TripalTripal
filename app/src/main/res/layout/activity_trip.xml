@@ -23,18 +23,18 @@
     <ListView
         android:id="@+id/trip_members"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="160dp"
         android:dividerHeight="1dp"
         android:layout_below="@+id/trip_remain_times"
-        android:padding="20dp"
+        android:padding="10dp"
         />
 
     <ListView
         android:id="@+id/trip_records"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="160dp"
         android:dividerHeight="1dp"
-        android:padding="20dp"
+        android:padding="10dp"
         android:layout_below="@+id/trip_members"
         />
 
@@ -48,8 +48,8 @@
 
     <ImageButton
         android:id="@+id/trip_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/tripal_menu_sync"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/trip_curr_balance" />
