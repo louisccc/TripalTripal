@@ -127,4 +127,12 @@ public class TriItem {
     public void setlocalId(long localId) {
         this.mLocal_id = (int) localId;
     }
+
+    public int getTripId() {
+        return mTrip_id;
+    }
+
+    public double getAmount() {
+        return mAmount;
+    }
 }

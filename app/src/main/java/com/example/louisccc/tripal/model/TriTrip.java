@@ -1,15 +1,19 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import com.example.louisccc.tripal.TriApplication;
 import com.example.louisccc.tripal.utility.DateHelper;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by louisccc on 1/30/16.
  */
-public class TriTrip {
+public class TriTrip implements Parcelable {
 
     public static final String DATABASE_TABLE_NAME = "trips";
 
@@ -55,20 +59,8 @@ public class TriTrip {
     private int mOrder;
     private int num_item; /* ? */
 
-    public ContentValues getContentValues() {
-        ContentValues contentValues = new ContentValues();
-        // local id is assigned.
-        contentValues.put( KEY_CLOUDID      , mCloud_id);
-        contentValues.put( KEY_NAME         , mName);
-        contentValues.put( KEY_INITBALANCE  , mInit_balance);
-        contentValues.put( KEY_BALANCE      , mCurr_balance );
-        contentValues.put( KEY_CATEGORYID   , mCategory_id );
-        contentValues.put( KEY_TIMESTAMPFROM, DateHelper.getDateString(mTime_from) );
-        contentValues.put( KEY_TIMESTAMPTO  , DateHelper.getDateString(mTime_to) );
-        contentValues.put( KEY_TIMESTAMP    , mTimestamp );
-        contentValues.put( KEY_NEEDSYNC     , mNeedSync );
-        contentValues.put( KEY_ORDER        , mOrder );
-        return contentValues;
+    protected TriTrip(Parcel in) {
+        readFromParcel(in);
     }
 
     public TriTrip () { /* clean constructor */
@@ -97,6 +89,22 @@ public class TriTrip {
         mOrder = 0;
     }
 
+    public ContentValues getContentValues() {
+        ContentValues contentValues = new ContentValues();
+        // local id is assigned.
+        contentValues.put( KEY_CLOUDID      , mCloud_id);
+        contentValues.put( KEY_NAME         , mName);
+        contentValues.put( KEY_INITBALANCE  , mInit_balance);
+        contentValues.put( KEY_BALANCE      , mCurr_balance );
+        contentValues.put( KEY_CATEGORYID   , mCategory_id );
+        contentValues.put( KEY_TIMESTAMPFROM, DateHelper.getDateString(mTime_from) );
+        contentValues.put( KEY_TIMESTAMPTO  , DateHelper.getDateString(mTime_to) );
+        contentValues.put( KEY_TIMESTAMP    , mTimestamp );
+        contentValues.put( KEY_NEEDSYNC     , mNeedSync );
+        contentValues.put( KEY_ORDER        , mOrder );
+        return contentValues;
+    }
+
     public int getLocalId() {
         return mLocal_id;
     }
@@ -121,4 +129,63 @@ public class TriTrip {
     public double getBudget() {
         return mInit_balance;
     }
+
+    public double getCurrBalance() {
+        double curr_balance = getBudget();
+        for(TriItem item : TriApplication.getInstance().getgItems()) {
+            if ( item.getTripId() == this.mLocal_id ) {
+                curr_balance -= item.getAmount();
+            }
+        }
+        return curr_balance;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeInt(mLocal_id);
+        dest.writeInt(mCloud_id);
+        dest.writeString(mName);
+        dest.writeDouble(mInit_balance);
+        dest.writeDouble(mCurr_balance);
+        dest.writeInt(mCategory_id);
+        dest.writeString(DateHelper.getDateString(mTime_from));
+        dest.writeString(DateHelper.getDateString(mTime_to));
+        dest.writeLong(mTimestamp);
+        dest.writeByte((byte) (mNeedSync ? 1 : 0));
+        dest.writeInt(mOrder);
+        dest.writeInt(num_item);
+    }
+
+    public void readFromParcel ( Parcel in ) {
+        mLocal_id = in.readInt();
+        mCloud_id = in.readInt();
+        mName = in.readString();
+        mInit_balance = in.readDouble();
+        mCurr_balance = in.readDouble();
+        mCategory_id = in.readInt();
+        mTime_from = DateHelper.getDate(in.readString());
+        mTime_to = DateHelper.getDate(in.readString());
+        mTimestamp = in.readLong();
+        mNeedSync = in.readByte() != 0;
+        mOrder = in.readInt();
+        num_item = in.readInt();
+    }
+
+    public static final Creator<TriTrip> CREATOR = new Creator<TriTrip>() {
+        @Override
+        public TriTrip createFromParcel(Parcel in) {
+            return new TriTrip(in);
+        }
+
+        @Override
+        public TriTrip[] newArray(int size) {
+            return new TriTrip[size];
+        }
+    };
 }

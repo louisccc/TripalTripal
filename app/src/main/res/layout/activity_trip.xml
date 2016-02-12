@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".TripActivity">
+
+    <TextView
+        android:id="@+id/trip_init_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="init balance" />
+
+    <TextView
+        android:id="@+id/trip_remain_times"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/trip_init_balance"
+        android:text="Remaining times" />
+
+    <ListView
+        android:id="@+id/trip_members"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:dividerHeight="1dp"
+        android:layout_below="@+id/trip_remain_times"
+        android:padding="20dp"
+        />
+
+    <ListView
+        android:id="@+id/trip_records"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:dividerHeight="1dp"
+        android:padding="20dp"
+        android:layout_below="@+id/trip_members"
+        />
+
+    <TextView
+        android:id="@+id/trip_curr_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/trip_records"
+        android:text="Current balance" />
+
+    <ImageButton
+        android:id="@+id/trip_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tripal_menu_sync"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/trip_curr_balance" />
+
+</RelativeLayout>

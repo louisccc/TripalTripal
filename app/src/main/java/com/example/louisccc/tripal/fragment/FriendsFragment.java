@@ -49,7 +49,7 @@ public class FriendsFragment extends Fragment {
                 TriApplication.getInstance().getgFriends());
         mListview.setAdapter(mListViewAdapter);
         TextView textview = new TextView(getActivity());
-        textview.setText("Headers zone");
+        textview.setText(getActivity().getPackageName());
         textview.setTextColor(0xffa4a6a8);
         textview.setPadding(0, 0, 0, 14);
         textview.setGravity(Gravity.CENTER);
