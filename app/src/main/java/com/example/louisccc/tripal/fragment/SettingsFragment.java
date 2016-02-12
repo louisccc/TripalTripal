@@ -1,7 +1,9 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.fragment;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+
+import com.example.louisccc.tripal.R;
 
 /**
  * Created by louisccc on 1/3/16.

@@ -5,7 +5,6 @@ package com.example.louisccc.tripal;
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -22,6 +21,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.fragment.CategoriesFragment;
+import com.example.louisccc.tripal.fragment.DashBoardFragment;
+import com.example.louisccc.tripal.fragment.FriendsFragment;
+import com.example.louisccc.tripal.fragment.HelpFragment;
+import com.example.louisccc.tripal.fragment.SettingsFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class TripalActivity extends FragmentActivity {
@@ -36,14 +40,14 @@ public class TripalActivity extends FragmentActivity {
     private FragmentTabHost tabHost;
     private ListView list;
 
-    private String[] slidingMenuItems = {"Tripal", "account", "dashboard", "category", "settings", "help", "Log out"};
-    private int[] resources = { R.drawable.tripal_menu_dashboard,
+    private String[] slidingMenuItems = {"Tripal Dashboard", "Friends", "category", "settings", "help", "Log out"};
+    private int[] resources = {
+            R.drawable.tripal_menu_dashboard,
             R.drawable.tripal_menu_account,
             R.drawable.tripal_menu_category,
             R.drawable.tripal_menu_setting,
             R.drawable.tripal_menu_about,
             R.drawable.tripal_menu_sync,
-            R.drawable.tripal_menu_sync
     };
 
     @Override
@@ -57,9 +61,7 @@ public class TripalActivity extends FragmentActivity {
         menu.setBehindOffset(90);
         menu.setFadeDegree(0.35f);
         menu.setMenu(R.layout.menu_frame);
-
         list = (ListView) (menu.getMenu().findViewById(R.id.menu_list));
-
         final LayoutInflater mVi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ArrayAdapter<String> menus_string = new ArrayAdapter<String>(this, R.layout.slidingmenu_list_item, slidingMenuItems){
             @Override
@@ -78,30 +80,25 @@ public class TripalActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 menu.showContent();
+                if (position == slidingMenuItems.length) { // logout
+                    return;
+                }
                 list.setSelection(position);
-                if (position == 0) {
-                    Intent intent = new Intent(TripalActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    tabHost.setCurrentTab(position);
-                }
-
+                tabHost.setCurrentTab(position);
             }
         });
         list.setAdapter(menus_string);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         this.getActionBar().setDisplayHomeAsUpEnabled(true);
-//        this.getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.banck_bar_background_grey));
+
         tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
-        tabHost.addTab(tabHost.newTabSpec("Summary").setIndicator("Summary"), DashBoardFragment.class, null);
-        tabHost.addTab(tabHost.newTabSpec("Account").setIndicator("Account"), DashBoardFragment.class, null);
-//        tabHost.addTab(tabHost.newTabSpec("Dashboard").setIndicator("Dashboard"), DashBoardFragment.class, null);
+        tabHost.addTab(tabHost.newTabSpec("Dashboard").setIndicator("Dashboard"), DashBoardFragment.class, null);
+        tabHost.addTab(tabHost.newTabSpec("Friends").setIndicator("Friends"), FriendsFragment.class, null);
+        tabHost.addTab(tabHost.newTabSpec("Category").setIndicator("Category"), CategoriesFragment.class, null);
         tabHost.addTab(tabHost.newTabSpec("Settings").setIndicator("Settings"), SettingsFragment.class, null);
-//        tabHost.addTab(tabHost.newTabSpec("Help").setIndicator("Help"), DashBoardFragment.class, null);
+        tabHost.addTab(tabHost.newTabSpec("Help").setIndicator("Help"), HelpFragment.class, null);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = this.getMenuInflater();
@@ -115,10 +112,6 @@ public class TripalActivity extends FragmentActivity {
             case android.R.id.home:
                 menu.toggle();
                 break;
-            case R.id.action_settings:
-                Intent intent = new Intent(TripalActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                break;
             default:
                 break;
         }
@@ -126,7 +119,7 @@ public class TripalActivity extends FragmentActivity {
     }
     @Override
     public void onBackPressed(){
-        if (menu.isMenuShowing()){
+        if ( menu.isMenuShowing() ){
             menu.showContent();
         }
         else{

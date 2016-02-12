@@ -90,4 +90,8 @@ public class TriFriend {
     public void setlocalId(long localId) {
         this.mLocal_id = (int)localId;
     }
+
+    public String getName() {
+        return mName;
+    }
 }
