@@ -1,6 +1,8 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.louisccc.tripal.utility.DateHelper;
 
@@ -9,7 +11,7 @@ import java.util.Date;
 /**
  * Created by louisccc on 2/11/16.
  */
-public class TriItem {
+public class TriItem implements Parcelable {
 
     public static final String DATABASE_TABLE_NAME = "items";
 
@@ -62,6 +64,10 @@ public class TriItem {
     private boolean mResolved;
     private boolean mNeedSync;
     private int mOrder;
+
+    protected TriItem(Parcel in) {
+        readFromParcel(in);
+    }
 
     public TriItem(){
         this.mLocal_id = 0;
@@ -139,4 +145,68 @@ public class TriItem {
     public String getName() {
         return mName;
     }
+
+    public String getTimeStamp() {
+        return DateHelper.getDateString(mDate);
+    }
+
+    public String getNote() {
+        return mNote;
+    }
+
+    public int getOwner() {
+        return mOwner_id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mLocal_id);
+        dest.writeInt(mCloud_id);
+        dest.writeString(mName);
+        dest.writeDouble(mAmount);
+        dest.writeInt(mOwner_id);
+        dest.writeInt(mTrip_id);
+        dest.writeInt(mCategory_id);
+        dest.writeString(mNote);
+        dest.writeString(DateHelper.getDateString(mDate));
+        dest.writeLong(mCurr_timestamp);
+        dest.writeLong(mLast_modified_timestamp);
+        dest.writeByte( (byte) (mResolved ? 1 : 0) );
+        dest.writeByte( (byte) (mNeedSync ? 1 : 0) );
+        dest.writeInt(mOrder);
+    }
+
+    public void readFromParcel ( Parcel in ) {
+        mLocal_id = in.readInt();
+        mCloud_id = in.readInt();
+        mName = in.readString();
+        mAmount = in.readDouble();
+        mOwner_id = in.readInt();
+        mTrip_id = in.readInt();
+        mCategory_id = in.readInt();
+        mNote = in.readString();
+        mDate = DateHelper.getDate(in.readString());
+        mCurr_timestamp = in.readLong();
+        mLast_modified_timestamp = in.readLong();
+        mResolved = in.readByte() != 0;
+        mNeedSync = in.readByte() != 0;
+        mOrder = in.readInt();
+    }
+
+    public static final Parcelable.Creator<TriItem> CREATOR = new Parcelable.Creator<TriItem>() {
+        @Override
+        public TriItem createFromParcel(Parcel in) {
+            return new TriItem(in);
+        }
+
+        @Override
+        public TriItem[] newArray(int size) {
+            return new TriItem[size];
+        }
+    };
 }

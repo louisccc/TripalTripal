@@ -29,10 +29,17 @@
             android:configChanges="orientation"
             android:label="Trip"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.FriendActivity"
             android:configChanges="orientation"
             android:label="Friend"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.ItemActivity"
+            android:configChanges="orientation"
+            android:label="Item"
             android:screenOrientation="portrait" />
     </application>
 

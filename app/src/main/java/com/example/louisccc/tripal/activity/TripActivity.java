@@ -95,6 +95,16 @@ public class TripActivity extends Activity {
         mRecordsListView.addHeaderView(textview2, null, false);
         mRecordsAdapter.notifyDataSetChanged();;
 
+        mRecordsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TriItem item = (TriItem) parent.getAdapter().getItem(position);
+                Intent i = new Intent( getBaseContext(), ItemActivity.class );
+                i.putExtra("item", item);
+                startActivity(i);
+            }
+        });
+
         mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
         mCurrBalanceTextView.setText("curr balance: " + mTrip.getCurrBalance() );
 
