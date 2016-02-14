@@ -11,15 +11,15 @@ public class TriFriend implements Parcelable{
 
     public static final String DATABASE_TABLE_NAME = "friends";
 
-    public static final String KEY_LOCALID = "trip_local_id";
-    public static final String KEY_CLOUDID = "trip_cloud_id";
-    public static final String KEY_NAME = "trip_name";
+    public static final String KEY_LOCALID = "friend_local_id";
+    public static final String KEY_CLOUDID = "friend_cloud_id";
+    public static final String KEY_NAME = "friend_name";
     public static final String KEY_FB = "token";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_NEEDSYNC = "need_sync";
-    public static final String KEY_ORDER = "trip_order";
+    public static final String KEY_ORDER = "order";
 
     public static final String FRIENDS_CREATE =
             "create table " + DATABASE_TABLE_NAME

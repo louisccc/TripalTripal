@@ -12,7 +12,7 @@ public class TriParticipation {
     public static final String KEY_LOCALID = "part_local_id";
     public static final String KEY_CLOUDID = "part_cloud_id";
     public static final String KEY_TRIPID  = "trip_id";
-    public static final String KEY_USERID  = "usr_id";
+    public static final String KEY_USERID  = "friend_id";
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_NEEDSYNC = "need_sync";
 

@@ -19,7 +19,7 @@ public class TriItem implements Parcelable {
     public static final String KEY_CLOUDID = "item_cloud_id";
     public static final String KEY_NAME = "item_name";
     public static final String KEY_AMOUNT = "amount";
-    public static final String KEY_OWNERID = "owner_usr_id";
+    public static final String KEY_OWNERID = "owner_friend_id";
     public static final String KEY_TRIPID = "trip_id";
     public static final String KEY_CATEGORYID = "category_id";
     public static final String KEY_NOTE = "note";
@@ -28,7 +28,7 @@ public class TriItem implements Parcelable {
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_RESOLVED = "resolved";
     public static final String KEY_NEEDSYNC = "need_sync";
-    public static final String KEY_ORDER = "item_order";
+    public static final String KEY_ORDER = "order";
 
     public static final String ITEMS_CREATE =
             "create table " + DATABASE_TABLE_NAME

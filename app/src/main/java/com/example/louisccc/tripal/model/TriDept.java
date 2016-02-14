@@ -16,7 +16,7 @@ public class TriDept extends TriItem {
     public static final String KEY_CLOUDID  = "dept_cloud_id";
     public static final String KEY_ITEMID   = "item_id";
     public static final String KEY_USERID   = "user_id";
-    public static final String KEY_PROPOTION= "propotion";
+    public static final String KEY_PROPOTION= "proportion";
     public static final String KEY_PAID     = "paid";
     public static final String KEY_TIMESTAMP= "last_modified_timestamp";
     public static final String KEY_NEEDSYNC = "need_sync";

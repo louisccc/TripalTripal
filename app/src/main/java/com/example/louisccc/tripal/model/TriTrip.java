@@ -26,7 +26,7 @@ public class TriTrip implements Parcelable {
     public static final String KEY_TIMESTAMPTO = "time_to";
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_NEEDSYNC = "need_sync";
-    public static final String KEY_ORDER = "trip_order";
+    public static final String KEY_ORDER = "order";
 
     public static final String TRIPS_CREATE =
             "create table " + DATABASE_TABLE_NAME
