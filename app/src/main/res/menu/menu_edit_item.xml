@@ -6,12 +6,12 @@
         android:id="@+id/add_record_confirm"
         android:icon="@drawable/tripal_button_action_save"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:title="save" />
+        android:title="save"
+        app:showAsAction="always" />
     <item
         android:id="@+id/add_record_cancel"
         android:icon="@drawable/tripal_button_action_cancel"
         android:orderInCategory="101"
-        app:showAsAction="always"
-        android:title="cancel" />
+        android:title="cancel"
+        app:showAsAction="always" />
 </menu>

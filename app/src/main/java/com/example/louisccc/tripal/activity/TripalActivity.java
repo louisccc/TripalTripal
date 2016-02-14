@@ -4,8 +4,9 @@ package com.example.louisccc.tripal.activity;
  * Created by louisccc on 16/01/03.
  */
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -120,8 +121,40 @@ public class TripalActivity extends FragmentActivity {
                 startActivity(i);
                 break;
             case R.id.action_add_trip:
+                AlertDialog.Builder d = new AlertDialog.Builder(TripalActivity.this)
+                                        .setMessage("小元 alert").setMessage("回來再做給你用")
+                                        .setPositiveButton("爽", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                return;
+                                            }
+                                        })
+                                        .setNegativeButton("不爽", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                return;
+                                            }
+                                        });
+                AlertDialog dialog = d.create();
+                dialog.show();
                 break;
             case R.id.action_add_friend:
+                AlertDialog.Builder d_friend = new AlertDialog.Builder(TripalActivity.this)
+                        .setMessage("小元 alert").setMessage("回來再做給你用")
+                        .setPositiveButton("爽", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setNegativeButton("不爽", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        });
+                AlertDialog dialog_friend = d_friend.create();
+                dialog_friend.show();
                 break;
             default:
                 break;

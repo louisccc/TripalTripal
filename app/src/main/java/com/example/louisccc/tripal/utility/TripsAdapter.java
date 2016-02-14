@@ -39,8 +39,8 @@ public class TripsAdapter extends ArrayAdapter<TriTrip> {
         text.setText(mTrips.get(position).getName());
         date_from.setText("From: " + DateHelper.getDateString(mTrips.get(position).getDateFrom()));
         date_to.setText("To " + DateHelper.getDateString(mTrips.get(position).getDateTo()));
-        budget.setText("Budget: " + Double.toString(mTrips.get(position).getBudget()));
-        curr_balance.setText("Balance: " + Double.toString(mTrips.get(position).getCurrBalance()));
+        budget.setText("Bud: " + Double.toString(mTrips.get(position).getBudget()));
+        curr_balance.setText("Bal: " + Double.toString(mTrips.get(position).getCurrBalance()));
         return convertView;
     }
 }
