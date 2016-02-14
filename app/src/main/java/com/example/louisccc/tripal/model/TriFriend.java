@@ -95,4 +95,7 @@ public class TriFriend {
         return mName;
     }
 
+    public String getEmail() {
+        return mEmail;
+    }
 }

@@ -2,61 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_layout"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp" >
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/ItemDateFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ItemThumbnail"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:paddingRight="20dp"
-        android:text="2014/02/07"
-        android:textColor="#a4a6a8"
-        android:textSize="12dp" />
+        android:src="@drawable/tripal_menu_about" />
 
     <TextView
-        android:id="@+id/ItemDateTo"
+        android:id="@+id/ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/ItemDateFrom"
-        android:layout_below="@+id/ItemDateFrom"
-        android:paddingRight="20dp"
-        android:text="2014/02/07"
-        android:textColor="#a4a6a8"
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/ItemTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/ItemDateFrom"
-        android:layout_toRightOf="@+id/ItemDateFrom"
+        android:layout_alignTop="@+id/ItemThumbnail"
+        android:layout_toRightOf="@+id/ItemThumbnail"
         android:text="分類"
         android:textColor="#a4a6a8"
         android:textSize="10dp" />
 
     <TextView
-        android:id="@+id/ItemAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:text="10000元"
-        android:textColor="#a4a6a8"
-        android:textSize="16dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/ItemDesc"
+        android:id="@+id/ItemContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ItemThumbnail"
         android:layout_alignLeft="@+id/ItemTitle"
-        android:layout_alignBottom="@+id/ItemDateTo"
-        android:layout_toRightOf="@+id/ItemDateTo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ItemTitle"
+        android:layout_toRightOf="@+id/ItemThumbnail"
         android:text="吃大便"
         android:textColor="#a4a6a8"
         android:textSize="14dp" />

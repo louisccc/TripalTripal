@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.louisccc.tripal.model.TriFriend;
@@ -29,8 +30,12 @@ public class FriendsAdapter extends ArrayAdapter<TriFriend> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mVi.inflate(mResrc_id, null);
-        TextView text = (TextView) convertView.findViewById(R.id.ItemDesc);
-        text.setText(mFriends.get(position).getName());
+        TextView name = (TextView) convertView.findViewById(R.id.ItemName);
+        TextView contact = (TextView) convertView.findViewById(R.id.ItemContact);
+//        ImageView thumb = (ImageView) convertView.findViewById(R.id.ItemThumbnail);
+        name.setText(mFriends.get(position).getName());
+        contact.setText(mFriends.get(position).getEmail());
+//        thumb.setImageDrawable(getContext().getResources);
         return convertView;
     }
 }

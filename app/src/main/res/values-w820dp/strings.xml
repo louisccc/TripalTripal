@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_ongoing_trips">no ongoing trips~~</string>
+    <string name="empty_history_trips">no history trips~~</string>
+</resources>

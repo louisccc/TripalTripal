@@ -84,7 +84,30 @@ public class TriApplication extends Application {
     public ArrayList<TriTrip> getgTrips() {
         return gTrips;
     }
+    public ArrayList<TriTrip> getgOngoingTrips() {
+        ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
 
+        for ( TriTrip t : getgTrips() ) {
+            if (DateHelper.getCalendarDay(0).getTime().after(t.getDateFrom()) &&
+                DateHelper.getCalendarDay(0).getTime().before(t.getDateTo()) ) {
+                trips.add(t);
+            }
+        }
+        return trips;
+    }
+    public ArrayList<TriTrip> getgHistoryTrips() {
+        ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
+
+        for ( TriTrip t : getgTrips() ) {
+            if (DateHelper.getCalendarDay(0).getTime().after(t.getDateFrom()) &&
+                    DateHelper.getCalendarDay(0).getTime().before(t.getDateTo()) ) {}
+            else {
+                trips.add(t);
+            }
+        }
+
+        return trips;
+    }
     public void setgTrips(ArrayList<TriTrip> gTrips) {
         this.gTrips = gTrips;
     }

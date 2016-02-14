@@ -28,7 +28,7 @@ public class RecordsAdapter extends ArrayAdapter<TriItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mVi.inflate(mResrc_id, null);
-        TextView text = (TextView) convertView.findViewById(R.id.ItemDesc);
+        TextView text = (TextView) convertView.findViewById(R.id.ItemName);
         text.setText(mItems.get(position).getName());
         return convertView;
     }

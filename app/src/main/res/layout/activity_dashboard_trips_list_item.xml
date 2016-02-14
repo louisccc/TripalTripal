@@ -3,7 +3,7 @@
     android:id="@+id/item_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp" >
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/ItemDateFrom"
@@ -11,54 +11,61 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:gravity="right"
         android:paddingRight="20dp"
         android:text="2014/02/07"
         android:textColor="#a4a6a8"
-        android:textSize="12dp" />
+        android:textSize="10dp" />
 
     <TextView
         android:id="@+id/ItemDateTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/ItemDateFrom"
         android:layout_below="@+id/ItemDateFrom"
+        android:gravity="right"
         android:paddingRight="20dp"
         android:text="2014/02/07"
         android:textColor="#a4a6a8"
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/ItemTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/ItemDateFrom"
-        android:layout_toRightOf="@+id/ItemDateFrom"
-        android:text="分類"
-        android:textColor="#a4a6a8"
         android:textSize="10dp" />
-
-    <TextView
-        android:id="@+id/ItemAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:text="10000元"
-        android:textColor="#a4a6a8"
-        android:textSize="16dp"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/ItemDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ItemTitle"
-        android:layout_alignBottom="@+id/ItemDateTo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/ItemBudget"
         android:layout_toRightOf="@+id/ItemDateTo"
         android:text="吃大便"
         android:textColor="#a4a6a8"
         android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/ItemCurrBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ItemDateFrom"
+        android:layout_alignLeft="@+id/ItemBudget"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Balance: 6000"
+        android:textColor="#a4a6a8"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/ItemBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ItemCurrBalance"
+        android:gravity="center"
+        android:text="Budget: 10000"
+        android:textColor="#a4a6a8"
+        android:textSize="10dp" />
+
 
 </RelativeLayout>

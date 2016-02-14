@@ -3,6 +3,10 @@ package com.example.louisccc.tripal.utility;
 import android.app.ActionBar;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -87,4 +91,29 @@ public class DateHelper {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(date);
 	}
+
+	public static TextView getTextViewWithText (Context ctx, String text ) {
+		TextView textview = new TextView( ctx );
+		textview.setText( text );
+		textview.setTextColor(0xffa4a6a8);
+		textview.setPadding(0, 0, 0, 14);
+		textview.setGravity(Gravity.LEFT);
+		return textview;
+	}
+
+	public static TextView getEmptyTextViewWithText (Context ctx, String text ) {
+		TextView textview = new TextView( ctx );
+		textview.setLayoutParams(
+				new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT
+				)
+		);
+		textview.setText( text );
+		textview.setTextColor(0xffa4a6a8);
+		textview.setPadding(0, 0, 0, 14);
+		textview.setGravity(Gravity.CENTER);
+		return textview;
+	}
+
 }
