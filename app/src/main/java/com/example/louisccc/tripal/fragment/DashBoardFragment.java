@@ -11,9 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.louisccc.tripal.R;
-import com.example.louisccc.tripal.TriApplication;
-import com.example.louisccc.tripal.TripActivity;
-import com.example.louisccc.tripal.TripsAdapter;
+import com.example.louisccc.tripal.model.TriApplication;
+import com.example.louisccc.tripal.activity.TripActivity;
+import com.example.louisccc.tripal.utility.TripsAdapter;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
 

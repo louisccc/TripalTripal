@@ -1,8 +1,7 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.model;
 
 import android.app.Application;
 
-import com.example.louisccc.tripal.model.*;
 import com.example.louisccc.tripal.utility.DateHelper;
 
 import java.util.ArrayList;

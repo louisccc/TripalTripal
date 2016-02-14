@@ -1,4 +1,4 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.utility;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.model.TriFriend;
 
 import java.util.ArrayList;

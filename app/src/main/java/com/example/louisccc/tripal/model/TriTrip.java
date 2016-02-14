@@ -4,10 +4,8 @@ import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.louisccc.tripal.TriApplication;
 import com.example.louisccc.tripal.utility.DateHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 

@@ -1,29 +1,22 @@
 package com.example.louisccc.tripal.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.louisccc.tripal.FriendActivity;
-import com.example.louisccc.tripal.FriendsAdapter;
+import com.example.louisccc.tripal.activity.FriendActivity;
+import com.example.louisccc.tripal.utility.FriendsAdapter;
 import com.example.louisccc.tripal.R;
-import com.example.louisccc.tripal.TriApplication;
+import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriFriend;
-import com.example.louisccc.tripal.model.TriTrip;
-import com.example.louisccc.tripal.utility.DateHelper;
-
-import java.util.ArrayList;
 
 /**
  * Created by louisccc on 1/3/16.

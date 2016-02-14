@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.louisccc.tripal.R;
-import com.example.louisccc.tripal.TriApplication;
+import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriFriend;
 
 import java.util.ArrayList;

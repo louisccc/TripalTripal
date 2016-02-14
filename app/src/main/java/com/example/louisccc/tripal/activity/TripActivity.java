@@ -1,4 +1,4 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.utility.FriendsAdapter;
+import com.example.louisccc.tripal.R;
+import com.example.louisccc.tripal.utility.RecordsAdapter;
 import com.example.louisccc.tripal.model.TriFriend;
 import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.model.TriTrip;

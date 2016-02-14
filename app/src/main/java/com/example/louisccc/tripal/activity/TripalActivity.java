@@ -1,4 +1,4 @@
-package com.example.louisccc.tripal;
+package com.example.louisccc.tripal.activity;
 
 /**
  * Created by louisccc on 16/01/03.
@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.fragment.CategoriesFragment;
 import com.example.louisccc.tripal.fragment.DashBoardFragment;
 import com.example.louisccc.tripal.fragment.FriendsFragment;
