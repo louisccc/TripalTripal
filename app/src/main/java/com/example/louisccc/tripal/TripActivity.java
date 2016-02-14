@@ -1,9 +1,11 @@
 package com.example.louisccc.tripal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -68,6 +70,15 @@ public class TripActivity extends Activity {
         textview.setGravity(Gravity.LEFT);
         mMembersListView.addHeaderView(textview, null, false);
         mMembersAdapter.notifyDataSetChanged();
+        mMembersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TriFriend friend = (TriFriend) parent.getAdapter().getItem(position);
+                Intent i = new Intent(getBaseContext(), FriendActivity.class);
+                i.putExtra("friend", friend);
+                startActivity(i);
+            }
+        });
 
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
         ArrayList<TriItem> items = mTrip.getRecords();

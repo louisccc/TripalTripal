@@ -1,11 +1,13 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by louisccc on 2/10/16.
  */
-public class TriFriend {
+public class TriFriend implements Parcelable{
 
     public static final String DATABASE_TABLE_NAME = "friends";
 
@@ -42,6 +44,10 @@ public class TriFriend {
     private long mTimestamp;
     private boolean mNeedSync;
     private int mOrder;
+
+    protected TriFriend(Parcel in) {
+        readFromParcel(in);
+    }
 
     public TriFriend() { /* clean constructor */
         mLocal_id = 0;
@@ -98,4 +104,50 @@ public class TriFriend {
     public String getEmail() {
         return mEmail;
     }
+
+    public String getPhone() {
+        return mPhone;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mLocal_id);
+        dest.writeInt(mCloud_id);
+        dest.writeString(mName);
+        dest.writeString(mFB_token);
+        dest.writeString(mEmail);
+        dest.writeString(mPhone);
+        dest.writeLong(mTimestamp);
+        dest.writeByte( (byte) (mNeedSync ? 1 : 0) );
+        dest.writeInt(mOrder);
+    }
+
+    public void readFromParcel ( Parcel in ) {
+        mLocal_id = in.readInt();
+        mCloud_id = in.readInt();
+        mName = in.readString();
+        mFB_token = in.readString();
+        mEmail = in.readString();
+        mPhone = in.readString();
+        mTimestamp = in.readLong();
+        mNeedSync = in.readByte() != 0;
+        mOrder = in.readInt();
+    }
+
+    public static final Creator<TriFriend> CREATOR = new Creator<TriFriend>() {
+        @Override
+        public TriFriend createFromParcel(Parcel in) {
+            return new TriFriend(in);
+        }
+
+        @Override
+        public TriFriend[] newArray(int size) {
+            return new TriFriend[size];
+        }
+    };
 }

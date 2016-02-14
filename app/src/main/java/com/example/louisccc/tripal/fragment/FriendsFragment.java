@@ -2,6 +2,7 @@ package com.example.louisccc.tripal.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.FriendActivity;
 import com.example.louisccc.tripal.FriendsAdapter;
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.TriApplication;
@@ -55,7 +58,15 @@ public class FriendsFragment extends Fragment {
         textview.setPadding(0, 0, 0, 14);
         textview.setGravity(Gravity.CENTER);
         mListview.addHeaderView(textview, null, false);
-
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TriFriend f = (TriFriend) parent.getAdapter().getItem(position);
+                Intent i = new Intent(getActivity(), FriendActivity.class);
+                i.putExtra("friend", f);
+                startActivity(i);
+            }
+        });
         mListViewAdapter.notifyDataSetChanged();
     }
 
