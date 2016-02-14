@@ -14,7 +14,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.TripalActivity"
-            android:label="@string/app_name">
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,10 +26,14 @@
 
         <activity
             android:name=".activity.TripActivity"
-            android:label="Trip" />
+            android:configChanges="orientation"
+            android:label="Trip"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.FriendActivity"
-            android:label="Friend" />
+            android:configChanges="orientation"
+            android:label="Friend"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
