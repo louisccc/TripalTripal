@@ -30,7 +30,10 @@ import com.example.louisccc.tripal.fragment.DashBoardFragment;
 import com.example.louisccc.tripal.fragment.FriendsFragment;
 import com.example.louisccc.tripal.fragment.HelpFragment;
 import com.example.louisccc.tripal.fragment.SettingsFragment;
+import com.example.louisccc.tripal.model.DBManager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import java.sql.SQLException;
 
 public class TripalActivity extends FragmentActivity {
 
@@ -86,6 +89,16 @@ public class TripalActivity extends FragmentActivity {
                 menu.showContent();
                 if (position == slidingMenuItems.length) { // logout
                     return;
+                }
+                else if (position == slidingMenuItems.length-1) { // help
+                    DBManager db = new DBManager(TripalActivity.this);
+                    try {
+                        db.open();
+                        db.exportDB();
+                        db.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
                 list.setSelection(position);
                 tabHost.setCurrentTab(position);
