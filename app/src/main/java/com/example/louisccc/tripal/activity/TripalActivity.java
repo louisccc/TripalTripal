@@ -4,7 +4,9 @@ package com.example.louisccc.tripal.activity;
  * Created by louisccc on 16/01/03.
  */
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -112,6 +114,14 @@ public class TripalActivity extends FragmentActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 menu.toggle();
+                break;
+            case R.id.action_add_item:
+                Intent i = new Intent(this, EditItemActivity.class);
+                startActivity(i);
+                break;
+            case R.id.action_add_trip:
+                break;
+            case R.id.action_add_friend:
                 break;
             default:
                 break;

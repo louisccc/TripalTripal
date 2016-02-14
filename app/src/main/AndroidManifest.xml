@@ -41,6 +41,12 @@
             android:configChanges="orientation"
             android:label="Item"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.EditItemActivity"
+            android:configChanges="orientation"
+            android:label="Edit Item"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,6 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".activity.TripalActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.TripalActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_add_trip"
+        android:orderInCategory="100"
+        android:title="add trip"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_add_item"
+        android:orderInCategory="100"
+        android:title="add item"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_add_friend"
+        android:orderInCategory="100"
+        android:title="add friend"
+        app:showAsAction="never" />
 </menu>

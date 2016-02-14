@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.EditItemActivity">
+    <item
+        android:id="@+id/add_record_confirm"
+        android:icon="@drawable/tripal_button_action_save"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title="save" />
+    <item
+        android:id="@+id/add_record_cancel"
+        android:icon="@drawable/tripal_button_action_cancel"
+        android:orderInCategory="101"
+        app:showAsAction="always"
+        android:title="cancel" />
+</menu>
