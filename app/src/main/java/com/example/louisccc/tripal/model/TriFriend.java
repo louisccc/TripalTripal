@@ -1,8 +1,11 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.example.louisccc.tripal.utility.DateHelper;
 
 /**
  * Created by louisccc on 2/10/16.
@@ -19,7 +22,7 @@ public class TriFriend implements Parcelable{
     public static final String KEY_PHONE = "phone";
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_NEEDSYNC = "need_sync";
-    public static final String KEY_ORDER = "order";
+    public static final String KEY_ORDER = "friend_order";
 
     public static final String FRIENDS_CREATE =
             "create table " + DATABASE_TABLE_NAME
@@ -71,6 +74,18 @@ public class TriFriend implements Parcelable{
         mTimestamp = System.currentTimeMillis();
         mNeedSync = true;
         mOrder = 0;
+    }
+
+    public TriFriend(Cursor cursor) {
+        this.mLocal_id = cursor.getInt( cursor.getColumnIndex(KEY_LOCALID) );
+        this.mCloud_id = cursor.getInt( cursor.getColumnIndex(KEY_CLOUDID) );
+        this.mName = cursor.getString( cursor.getColumnIndex(KEY_NAME) );
+        this.mFB_token = cursor.getString( cursor.getColumnIndex(KEY_FB) );
+        this.mEmail = cursor.getString( cursor.getColumnIndex(KEY_EMAIL) );
+        this.mPhone = cursor.getString( cursor.getColumnIndex(KEY_PHONE) );
+        this.mTimestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
+        this.mOrder = cursor.getInt( cursor.getColumnIndex(KEY_ORDER) );
     }
 
     public ContentValues getContentValues() {

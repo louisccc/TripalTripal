@@ -99,6 +99,7 @@ public class TripalActivity extends FragmentActivity {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+                    return;
                 }
                 list.setSelection(position);
                 tabHost.setCurrentTab(position);

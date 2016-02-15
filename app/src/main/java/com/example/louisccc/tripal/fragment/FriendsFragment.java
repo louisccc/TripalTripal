@@ -43,7 +43,7 @@ public class FriendsFragment extends Fragment {
         mListview = (ListView)getActivity().findViewById(R.id.friends);
         mListViewAdapter = new FriendsAdapter(getActivity(),
                 R.layout.activity_friends_list_item,
-                TriApplication.getInstance().getgFriends());
+                ((TriApplication)getActivity().getApplication()).getgFriends());
         mListview.setAdapter(mListViewAdapter);
         TextView textview = new TextView(getActivity());
         textview.setText(getActivity().getPackageName());

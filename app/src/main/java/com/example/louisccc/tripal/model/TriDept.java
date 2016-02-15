@@ -1,6 +1,7 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.example.louisccc.tripal.utility.DateHelper;
 
@@ -64,6 +65,17 @@ public class TriDept extends TriItem {
         this.mPaid = paid;
         this.mLast_modified_timestamp = System.currentTimeMillis();
         this.mNeedSync = true;
+    }
+
+    public TriDept(Cursor cursor) {
+        this.mLocal_id = cursor.getInt( cursor.getColumnIndex(KEY_LOCALID) );
+        this.mCloud_id = cursor.getInt( cursor.getColumnIndex(KEY_CLOUDID) );
+        this.mItem_id = cursor.getInt( cursor.getColumnIndex(KEY_ITEMID) );
+        this.mUser_id = cursor.getInt( cursor.getColumnIndex(KEY_USERID) );
+        this.mPropotion = cursor.getDouble( cursor.getColumnIndex(KEY_USERID) );
+        this.mPaid = cursor.getDouble( cursor.getColumnIndex(KEY_PAID) );
+        this.mLast_modified_timestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
     }
 
     public ContentValues getContentValues() {

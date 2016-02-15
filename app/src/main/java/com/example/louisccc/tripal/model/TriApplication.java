@@ -4,34 +4,119 @@ import android.app.Application;
 
 import com.example.louisccc.tripal.utility.DateHelper;
 
+import junit.framework.Assert;
+
+import java.sql.Array;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
  * Created by louisccc on 2/11/16.
  */
 public class TriApplication extends Application {
-    private ArrayList<TriTrip> gTrips;
-    private ArrayList<TriFriend> gFriends;
-    private ArrayList<TriParticipation> gParticipations;
-    private ArrayList<TriItem> gItems;
-    private ArrayList<TriDept> gDepts;
+    private static ArrayList<TriTrip> gTrips;
+    private static ArrayList<TriFriend> gFriends;
+    private static ArrayList<TriParticipation> gParticipations;
+    private static ArrayList<TriItem> gItems;
+    private static ArrayList<TriDept> gDepts;
 
-    private static TriApplication mInstance = null;
-    public static synchronized TriApplication getInstance(){
-        if (mInstance == null) {
-            mInstance = new TriApplication();
-        }
-        return mInstance;
+    private DBManager mDB;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        gTrips = new ArrayList<TriTrip>();
+        gFriends = new ArrayList<TriFriend>();
+        gParticipations = new ArrayList<TriParticipation>();
+        gItems = new ArrayList<TriItem>();
+        gDepts = new ArrayList<TriDept>();
+        mDB = new DBManager(this);
+        testDBInit();
+
+//        testInit();
     }
 
-    public TriApplication(){
-        gTrips = new ArrayList<TriTrip>();
+//        testInit();
+        //testDBInit();
+
+    private void testDBInit() {
+        try {
+            mDB.open();
+
+            if ( mDB.getTrips().size() >= 1 ){
+                ArrayList<TriTrip> trips = mDB.getTrips();
+                gTrips.clear();
+                gTrips.addAll(trips);
+
+                ArrayList<TriFriend> friends = mDB.getFriends();
+                gFriends.clear();
+                gFriends.addAll(friends);
+
+                ArrayList<TriParticipation> parts = mDB.getParticipations();
+                gParticipations.clear();
+                gParticipations.addAll(parts);
+
+                ArrayList<TriItem> items = mDB.getItems();
+                gItems.clear();
+                gItems.addAll(items);
+
+                ArrayList<TriDept> depts = mDB.getDepts();
+                gDepts.clear();
+                gDepts.addAll(depts);
+                mDB.close();
+                return;
+            }
+
+
+
+            long ret_id;
+
+            TriFriend amy = new TriFriend("A.y Chen", "", "skyjo3@gmail.com", "0921866037" );
+            ret_id = mDB.createFriend(amy);
+            amy.setlocalId(ret_id);
+            Assert.assertTrue( ret_id != -1 );
+
+            TriFriend astrid = new TriFriend( "Astrid Li", "", "astridLi@gmail.com", "0123456789" );
+            ret_id = mDB.createFriend(astrid);
+            astrid.setlocalId(ret_id);
+            Assert.assertTrue( ret_id != -1 );
+
+            gFriends.add(amy);
+            gFriends.add(astrid);
+
+            TriTrip nagoya = new TriTrip("Nagoya Trip with Astrid", 40000, 1, DateHelper.getDate(2015, 2, 16), DateHelper.getDate(2016, 2, 20) );
+            ret_id = mDB.createTrip(nagoya);
+            nagoya.setLocalId(ret_id);
+            Assert.assertTrue( ret_id != -1 );
+
+            gTrips.add(nagoya);
+
+            TriParticipation part1 = new TriParticipation(nagoya, amy);
+            ret_id = mDB.createParticipation(part1);
+            part1.setlocalId(ret_id);
+            Assert.assertTrue( ret_id != -1 );
+
+            TriParticipation part2 = new TriParticipation(nagoya, astrid);
+            ret_id = mDB.createParticipation(part2);
+            part2.setlocalId(ret_id);
+            Assert.assertTrue( ret_id != -1 );
+
+            gParticipations.add(part1);
+            gParticipations.add(part2);
+
+
+
+            mDB.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testInit() {
         gTrips.add( new TriTrip("Mountain Ali", 15000, 1, DateHelper.getDate(2015, 12, 31), DateHelper.getDate(2016, 1, 2) ) );
         gTrips.get(0).setLocalId(0);
         gTrips.add( new TriTrip("Hong Kong trip", 20000, 1, DateHelper.getDate(2016, 2, 20), DateHelper.getDate(2016, 2, 24) ) );
         gTrips.get(1).setLocalId(1);
 
-        gFriends = new ArrayList<TriFriend>();
         gFriends.add( new TriFriend( "A.y Chen", "", "skyjo3@gmail.com", "0921866037" ) );
         gFriends.get(0).setlocalId(0);
         gFriends.add( new TriFriend( "Louis Yu", "", "louis29418401@gmail.com", "0915332210" ) );
@@ -39,7 +124,6 @@ public class TriApplication extends Application {
         gFriends.add( new TriFriend( "Louis Mom", "", "louis29418401@gmail.com", "0915900390" ) );
         gFriends.get(2).setlocalId(2);
 
-        gParticipations = new ArrayList<TriParticipation>();
         gParticipations.add( new TriParticipation( gTrips.get(0), gFriends.get(0) ) );
         gParticipations.get(0).setlocalId(0);
         gParticipations.add( new TriParticipation( gTrips.get(0), gFriends.get(1) ) );
@@ -51,7 +135,6 @@ public class TriApplication extends Application {
         gParticipations.add( new TriParticipation( gTrips.get(1), gFriends.get(2) ) );
         gParticipations.get(4).setlocalId(4);
 
-        gItems = new ArrayList<TriItem>();
         gItems.add( new TriItem(" for eat", 500, gFriends.get(1).getLocalId(), gTrips.get(0).getLocalId(), 0, "bento", DateHelper.getDate(2015, 12, 29) ));
         gItems.get(0).setlocalId(0);
         gItems.add( new TriItem(" refill oil", 300, gFriends.get(0).getLocalId(), gTrips.get(0).getLocalId(), 0, "oil", DateHelper.getDate(2015, 12, 29) ) );
@@ -65,7 +148,6 @@ public class TriApplication extends Application {
         gItems.add( new TriItem(" for run", 300, gFriends.get(0).getLocalId(), gTrips.get(1).getLocalId(), 0, "321", DateHelper.getDate(2016, 2, 10) ));
         gItems.get(5).setlocalId(5);
 
-        gDepts = new ArrayList<TriDept>();
         gDepts.add( new TriDept( gItems.get(0), gFriends.get(1), 30, 500 ) );
         gDepts.get(0).setlocalId(0);
         gDepts.add( new TriDept( gItems.get(0), gFriends.get(0), 70, 0 ) );

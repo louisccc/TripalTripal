@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.utility.FriendsAdapter;
 import com.example.louisccc.tripal.R;
@@ -21,6 +22,7 @@ import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -66,7 +68,7 @@ public class TripActivity extends Activity {
         }
 
         mMembersListView = (ListView) this.findViewById(R.id.trip_members);
-        ArrayList<TriFriend> members = mTrip.getMembers();
+        ArrayList<TriFriend> members = mTrip.getMembers((TriApplication)getApplication());
         mMembersAdapter = new FriendsAdapter( this, R.layout.activity_friends_list_item, members );
         mMembersListView.setAdapter(mMembersAdapter);
         TextView textview = new TextView(this);
@@ -87,7 +89,15 @@ public class TripActivity extends Activity {
         });
 
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
-        ArrayList<TriItem> items = mTrip.getRecords();
+        DBManager db = new DBManager(this);
+        try {
+            db.open();
+            ((TriApplication)getApplication()).setgItems(db.getItems());
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ArrayList<TriItem> items = mTrip.getRecords((TriApplication)getApplication());
         mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_friends_list_item, items );
         mRecordsListView.setAdapter(mRecordsAdapter);
         TextView textview2 = new TextView(this);
@@ -134,7 +144,7 @@ public class TripActivity extends Activity {
                                 break;
                             case 2: // delete
                                 item = (TriItem) parent.getAdapter().getItem(position);
-                                TriApplication.getInstance().getgItems().remove(item); // delete
+                                ((TriApplication)getApplication()).getgItems().remove(item); // delete
                                 mRecordsAdapter.remove(item);
                                 mRecordsAdapter.notifyDataSetChanged();
                                 break;
@@ -149,7 +159,7 @@ public class TripActivity extends Activity {
         });
 
         mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
-        mCurrBalanceTextView.setText("curr balance: " + mTrip.getCurrBalance() );
+        mCurrBalanceTextView.setText("curr balance: " + mTrip.getCurrBalance((TriApplication)getApplication()) );
 
         mCheckImageButton = (ImageButton) this.findViewById(R.id.trip_check);
         mCheckImageButton.setOnClickListener(new View.OnClickListener() {

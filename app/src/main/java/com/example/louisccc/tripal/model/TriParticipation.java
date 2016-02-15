@@ -1,6 +1,10 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+
+import java.util.ArrayList;
 
 /**
  * Created by louisccc on 2/11/16.
@@ -52,6 +56,29 @@ public class TriParticipation {
         mTrip = trip; mUser = user;
         mTimestamp = System.currentTimeMillis();
         mNeedSync = true;
+    }
+
+    public TriParticipation(Cursor cursor, Context ctx) {
+        this.mLocal_id = cursor.getInt( cursor.getColumnIndex(KEY_LOCALID) );
+        this.mCloud_id = cursor.getInt( cursor.getColumnIndex(KEY_CLOUDID) );
+        int trip_id = cursor.getInt( cursor.getColumnIndex(KEY_TRIPID) );
+        ArrayList<TriTrip> trips = ((TriApplication)ctx.getApplicationContext()).getgTrips();
+        for ( TriTrip t: trips ) {
+            if ( t.getLocalId() == trip_id) {
+                mTrip = t; break;
+            }
+        }
+        int user_id = cursor.getInt( cursor.getColumnIndex(KEY_USERID) );
+
+        ArrayList<TriFriend> friends = ((TriApplication)ctx.getApplicationContext()).getgFriends();
+        for ( TriFriend f: friends ) {
+            if ( f.getLocalId() == user_id) {
+                mUser = f; break;
+            }
+        }
+
+        this.mTimestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
     }
 
     public ContentValues getContentValues() {

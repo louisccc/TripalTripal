@@ -1,6 +1,7 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
@@ -12,12 +13,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DBManager {
 	public static final String TAG = "dbadapter";
 
 	public static final String DATABASE_NAME = "tripal.sqlite";
-	public static final int DATABASE_VERSION = 9;
+	public static final int DATABASE_VERSION = 10;
 	private final Context mContext;
 	private DatabaseHelper mDBHelper;
 	private SQLiteDatabase mDB;
@@ -111,6 +113,31 @@ public class DBManager {
 						  new String[]{Integer.toString( trip.getLocalId() )}
 		 				 );
 	}
+	public ArrayList<TriTrip> getTrips() {
+		ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
+		String[] columns = new String[] {
+				TriTrip.KEY_LOCALID,
+				TriTrip.KEY_CLOUDID,
+				TriTrip.KEY_NAME,
+				TriTrip.KEY_INITBALANCE,
+				TriTrip.KEY_BALANCE,
+				TriTrip.KEY_CATEGORYID,
+				TriTrip.KEY_TIMESTAMPFROM,
+				TriTrip.KEY_TIMESTAMPTO,
+				TriTrip.KEY_TIMESTAMP,
+				TriTrip.KEY_NEEDSYNC,
+				TriTrip.KEY_ORDER
+		};
+		Cursor cursor = mDB.query(TriTrip.DATABASE_TABLE_NAME, columns, null, null, null, null, null);
+		if ( cursor != null && cursor.moveToFirst() ) {
+			do {
+				TriTrip item = new TriTrip( cursor );
+				trips.add(item);
+			} while ( cursor.moveToNext() );
+			cursor.close();
+		}
+		return trips;
+	}
 
 	public long createFriend ( final TriFriend friend ) {
 		long localId = mDB.insert( TriFriend.DATABASE_TABLE_NAME, null, friend.getContentValues() );
@@ -124,6 +151,30 @@ public class DBManager {
 				  	 	  TriFriend.KEY_LOCALID + " = ?",
 						  new String[]{Integer.toString(friend.getLocalId() )}
 						 );
+	}
+
+	public ArrayList<TriFriend> getFriends() {
+		ArrayList<TriFriend> friends = new ArrayList<TriFriend>();
+		String[] columns = new String[] {
+				TriFriend.KEY_LOCALID,
+				TriFriend.KEY_CLOUDID,
+				TriFriend.KEY_NAME,
+				TriFriend.KEY_FB,
+				TriFriend.KEY_EMAIL,
+				TriFriend.KEY_PHONE,
+				TriFriend.KEY_TIMESTAMP,
+				TriFriend.KEY_NEEDSYNC,
+				TriFriend.KEY_ORDER
+		};
+		Cursor cursor = mDB.query(TriFriend.DATABASE_TABLE_NAME, columns, null, null, null, null, null);
+		if ( cursor != null && cursor.moveToFirst() ) {
+			do {
+				TriFriend friend = new TriFriend( cursor );
+				friends.add(friend);
+			} while ( cursor.moveToNext() );
+			cursor.close();
+		}
+		return friends;
 	}
 
 	public long createParticipation ( final TriParticipation part ) {
@@ -140,6 +191,27 @@ public class DBManager {
 		);
 	}
 
+	public ArrayList<TriParticipation> getParticipations() {
+		ArrayList<TriParticipation> parts = new ArrayList<TriParticipation>();
+		String[] columns = new String[] {
+				TriParticipation.KEY_LOCALID,
+				TriParticipation.KEY_CLOUDID,
+				TriParticipation.KEY_TRIPID,
+				TriParticipation.KEY_USERID,
+				TriParticipation.KEY_TIMESTAMP,
+				TriParticipation.KEY_NEEDSYNC
+		};
+		Cursor cursor = mDB.query(TriParticipation.DATABASE_TABLE_NAME, columns, null, null, null, null, null);
+		if ( cursor != null && cursor.moveToFirst() ) {
+			do {
+				TriParticipation part = new TriParticipation( cursor, mContext );
+				parts.add(part);
+			} while ( cursor.moveToNext() );
+			cursor.close();
+		}
+		return parts;
+	}
+
 	public long createItem ( final TriItem item ) {
 		long localId = mDB.insert( TriItem.DATABASE_TABLE_NAME, null, item.getContentValues() );
 		Log.i(TAG, "item created at " + localId );
@@ -152,6 +224,35 @@ public class DBManager {
 				TriItem.KEY_LOCALID + " = ?",
 				new String[]{Integer.toString(item.getLocalId() )}
 		);
+	}
+
+	public ArrayList<TriItem> getItems() {
+		ArrayList<TriItem> items = new ArrayList<TriItem>();
+		String[] columns = new String[] {
+				TriItem.KEY_LOCALID,
+				TriItem.KEY_CLOUDID,
+				TriItem.KEY_NAME,
+				TriItem.KEY_AMOUNT,
+				TriItem.KEY_OWNERID,
+				TriItem.KEY_TRIPID,
+				TriItem.KEY_CATEGORYID,
+				TriItem.KEY_NOTE,
+				TriItem.KEY_DATE,
+				TriItem.KEY_CURR_TIMESTAMP,
+				TriItem.KEY_TIMESTAMP,
+				TriItem.KEY_RESOLVED,
+				TriItem.KEY_NEEDSYNC,
+				TriItem.KEY_ORDER
+		};
+		Cursor cursor = mDB.query(TriItem.DATABASE_TABLE_NAME, columns, null, null, null, null, null);
+		if ( cursor != null && cursor.moveToFirst() ) {
+			do {
+				TriItem item = new TriItem( cursor );
+				items.add(item);
+			} while ( cursor.moveToNext() );
+			cursor.close();
+		}
+		return items;
 	}
 
 	public long createDept ( final TriDept dept ) {
@@ -167,4 +268,28 @@ public class DBManager {
 				new String[]{Integer.toString(dept.getLocalId() )}
 		);
 	}
+
+	public ArrayList<TriDept> getDepts() {
+		ArrayList<TriDept> depts = new ArrayList<TriDept>();
+		String[] columns = new String[] {
+				TriDept.KEY_LOCALID,
+				TriDept.KEY_CLOUDID,
+				TriDept.KEY_ITEMID,
+				TriDept.KEY_USERID,
+				TriDept.KEY_PROPOTION,
+				TriDept.KEY_PAID,
+				TriDept.KEY_TIMESTAMP,
+				TriDept.KEY_NEEDSYNC,
+		};
+		Cursor cursor = mDB.query(TriDept.DATABASE_TABLE_NAME, columns, null, null, null, null, null);
+		if ( cursor != null && cursor.moveToFirst() ) {
+			do {
+				TriDept dept = new TriDept( cursor );
+				depts.add(dept);
+			} while ( cursor.moveToNext() );
+			cursor.close();
+		}
+		return depts;
+	}
+
 }

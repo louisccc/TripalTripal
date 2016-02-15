@@ -1,6 +1,7 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,7 +29,7 @@ public class TriItem implements Parcelable {
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_RESOLVED = "resolved";
     public static final String KEY_NEEDSYNC = "need_sync";
-    public static final String KEY_ORDER = "order";
+    public static final String KEY_ORDER = "item_order";
 
     public static final String ITEMS_CREATE =
             "create table " + DATABASE_TABLE_NAME
@@ -103,6 +104,23 @@ public class TriItem implements Parcelable {
         this.mNeedSync = true;
         this.mResolved = false;
         this.mOrder = 0;
+    }
+
+    public TriItem(Cursor cursor) {
+        this.mLocal_id = cursor.getInt( cursor.getColumnIndex(KEY_LOCALID) );
+        this.mCloud_id = cursor.getInt( cursor.getColumnIndex(KEY_CLOUDID) );
+        this.mName = cursor.getString( cursor.getColumnIndex(KEY_NAME) );
+        this.mAmount = cursor.getDouble( cursor.getColumnIndex(KEY_AMOUNT) );
+        this.mOwner_id = cursor.getInt( cursor.getColumnIndex(KEY_OWNERID) );
+        this.mTrip_id = cursor.getInt( cursor.getColumnIndex(KEY_TRIPID) );
+        this.mCategory_id = cursor.getInt( cursor.getColumnIndex(KEY_CATEGORYID) );
+        this.mNote = cursor.getString( cursor.getColumnIndex(KEY_NOTE) );
+        this.mDate = DateHelper.getDate( cursor.getString( cursor.getColumnIndex(KEY_DATE) ) );
+        this.mCurr_timestamp = cursor.getLong( cursor.getColumnIndex(KEY_CURR_TIMESTAMP) );
+        this.mLast_modified_timestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mResolved = ( cursor.getInt( cursor.getColumnIndex(KEY_RESOLVED) ) == 1 );
+        this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
+        this.mOrder = cursor.getInt( cursor.getColumnIndex(KEY_ORDER) );
     }
 
     public ContentValues getContentValues() {

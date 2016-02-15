@@ -18,10 +18,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.louisccc.tripal.R;
+import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.utility.DateHelper;
 
+import junit.framework.Assert;
+
+import java.sql.SQLException;
 import java.util.Calendar;
 
 /**
@@ -117,17 +121,26 @@ public class EditItemActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_record_confirm:
-                if (mItem != null) {
+                if (mItem == null) {
                     TriItem i = new TriItem(
                             mItemTripTextView.getText().toString(),
                             Double.parseDouble(mItemAmountTextView.getText().toString()),
                             Integer.parseInt(mItemOwnerTextView.getText().toString()),
-                            1,
+                            ((TriApplication)getApplication()).getgTrips().get(0).getLocalId(),
                             0,
                             mItemNoteTextView.getText().toString(),
                             DateHelper.getDate(mItemTimeStampTextView.getText().toString())
                     );
-                    TriApplication.getInstance().getgItems().add(i);
+
+                    DBManager db = new DBManager(this);
+                    try {
+                        db.open();
+                        Assert.assertTrue( db.createItem(i) != -1 );
+                        ((TriApplication)getApplication()).setgItems(db.getItems());
+                        db.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
                     // set mItem's inner variables

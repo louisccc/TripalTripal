@@ -1,6 +1,7 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -26,7 +27,7 @@ public class TriTrip implements Parcelable {
     public static final String KEY_TIMESTAMPTO = "time_to";
     public static final String KEY_TIMESTAMP = "last_modified_timestamp";
     public static final String KEY_NEEDSYNC = "need_sync";
-    public static final String KEY_ORDER = "order";
+    public static final String KEY_ORDER = "trip_order";
 
     public static final String TRIPS_CREATE =
             "create table " + DATABASE_TABLE_NAME
@@ -88,6 +89,20 @@ public class TriTrip implements Parcelable {
         mOrder = 0;
     }
 
+    public TriTrip(Cursor cursor) {
+        this.mLocal_id = cursor.getInt( cursor.getColumnIndex(KEY_LOCALID) );
+        this.mCloud_id = cursor.getInt( cursor.getColumnIndex(KEY_CLOUDID) );
+        this.mName = cursor.getString( cursor.getColumnIndex(KEY_NAME) );
+        this.mInit_balance = cursor.getDouble( cursor.getColumnIndex(KEY_INITBALANCE) );
+        this.mCurr_balance = cursor.getDouble( cursor.getColumnIndex(KEY_BALANCE) );
+        this.mCategory_id = cursor.getInt( cursor.getColumnIndex(KEY_CATEGORYID) );
+        this.mTime_from = DateHelper.getDate( cursor.getString( cursor.getColumnIndex(KEY_TIMESTAMPFROM) ) );
+        this.mTime_to = DateHelper.getDate( cursor.getString( cursor.getColumnIndex(KEY_TIMESTAMPTO) ) );
+        this.mTimestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
+        this.mOrder = cursor.getInt( cursor.getColumnIndex(KEY_ORDER) );
+    }
+
     public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();
         // local id is assigned.
@@ -129,9 +144,9 @@ public class TriTrip implements Parcelable {
         return mInit_balance;
     }
 
-    public double getCurrBalance() {
+    public double getCurrBalance(TriApplication app) {
         double curr_balance = getBudget();
-        for(TriItem item : TriApplication.getInstance().getgItems()) {
+        for(TriItem item : app.getgItems()) {
             if ( item.getTripId() == this.mLocal_id ) {
                 curr_balance -= item.getAmount();
             }
@@ -188,9 +203,9 @@ public class TriTrip implements Parcelable {
         }
     };
 
-    public ArrayList<TriFriend> getMembers() {
+    public ArrayList<TriFriend> getMembers(TriApplication app) {
         ArrayList<TriFriend> members = new ArrayList<TriFriend>();
-        for ( TriParticipation p : TriApplication.getInstance().getgParticipations() ) {
+        for ( TriParticipation p : app.getgParticipations() ) {
             if ( p.getTrip().getLocalId() == this.mLocal_id ) {
                 members.add(p.getFriend());
             }
@@ -198,9 +213,9 @@ public class TriTrip implements Parcelable {
         return members;
     }
 
-    public ArrayList<TriItem> getRecords() {
+    public ArrayList<TriItem> getRecords(TriApplication app) {
         ArrayList<TriItem> items = new ArrayList<TriItem>();
-        for( TriItem i : TriApplication.getInstance().getgItems() ) {
+        for( TriItem i : app.getgItems() ) {
             if ( i.getTripId() == this.mLocal_id ) {
                 items.add(i);
             }

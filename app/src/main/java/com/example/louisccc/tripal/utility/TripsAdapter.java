@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.louisccc.tripal.R;
+import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
 
@@ -26,6 +27,7 @@ public class TripsAdapter extends ArrayAdapter<TriTrip> {
         this.mTrips = trips;
         this.mResrc_id = resrc_id;
         this.mVi = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override
@@ -40,7 +42,7 @@ public class TripsAdapter extends ArrayAdapter<TriTrip> {
         date_from.setText("From: " + DateHelper.getDateString(mTrips.get(position).getDateFrom()));
         date_to.setText("To " + DateHelper.getDateString(mTrips.get(position).getDateTo()));
         budget.setText("Bud: " + Double.toString(mTrips.get(position).getBudget()));
-        curr_balance.setText("Bal: " + Double.toString(mTrips.get(position).getCurrBalance()));
+        curr_balance.setText("Bal: " + Double.toString(mTrips.get(position).getCurrBalance((TriApplication)getContext().getApplicationContext())));
         return convertView;
     }
 }

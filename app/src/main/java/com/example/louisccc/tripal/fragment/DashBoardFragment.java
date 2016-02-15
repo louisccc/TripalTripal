@@ -45,7 +45,7 @@ public class DashBoardFragment extends Fragment {
         mListview = (ListView)getActivity().findViewById(R.id.trips_ongoing);
         mListViewAdapter = new TripsAdapter(getActivity(),
                 R.layout.activity_dashboard_trips_list_item,
-                TriApplication.getInstance().getgOngoingTrips() );
+                ((TriApplication)getActivity().getApplication()).getgOngoingTrips() );
         mListview.setAdapter(mListViewAdapter);
         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,7 +66,7 @@ public class DashBoardFragment extends Fragment {
         mListview2 = (ListView)getActivity().findViewById(R.id.trips_history);
         mListViewAdapter2 = new TripsAdapter(getActivity(),
                                             R.layout.activity_dashboard_trips_list_item,
-                                            TriApplication.getInstance().getgHistoryTrips() );
+                                            ((TriApplication)getActivity().getApplication()).getgHistoryTrips() );
         mListview2.setAdapter(mListViewAdapter2);
         mListview2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
