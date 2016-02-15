@@ -30,19 +30,15 @@ public class TriApplication extends Application {
         gItems = new ArrayList<TriItem>();
         gDepts = new ArrayList<TriDept>();
         mDB = new DBManager(this);
-        testDBInit();
-
-//        testInit();
+        DBInit();
     }
 
-//        testInit();
-        //testDBInit();
-
-    private void testDBInit() {
+    private void DBInit() {
         try {
             mDB.open();
 
             if ( mDB.getTrips().size() >= 1 ){
+                // second time will enter here
                 ArrayList<TriTrip> trips = mDB.getTrips();
                 gTrips.clear();
                 gTrips.addAll(trips);
@@ -66,8 +62,7 @@ public class TriApplication extends Application {
                 return;
             }
 
-
-
+            // first time will run till here.
             long ret_id;
 
             TriFriend amy = new TriFriend("A.y Chen", "", "skyjo3@gmail.com", "0921866037" );
@@ -83,7 +78,7 @@ public class TriApplication extends Application {
             gFriends.add(amy);
             gFriends.add(astrid);
 
-            TriTrip nagoya = new TriTrip("Nagoya Trip with Astrid", 40000, 1, DateHelper.getDate(2015, 2, 16), DateHelper.getDate(2016, 2, 20) );
+            TriTrip nagoya = new TriTrip("Nagoya Trip with Astrid", 40000, 1, DateHelper.getDate(2016, 2, 16), DateHelper.getDate(2016, 2, 20) );
             ret_id = mDB.createTrip(nagoya);
             nagoya.setLocalId(ret_id);
             Assert.assertTrue( ret_id != -1 );

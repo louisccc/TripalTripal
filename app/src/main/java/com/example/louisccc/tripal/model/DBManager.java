@@ -19,7 +19,7 @@ public class DBManager {
 	public static final String TAG = "dbadapter";
 
 	public static final String DATABASE_NAME = "tripal.sqlite";
-	public static final int DATABASE_VERSION = 10;
+	public static final int DATABASE_VERSION = 11;
 	private final Context mContext;
 	private DatabaseHelper mDBHelper;
 	private SQLiteDatabase mDB;

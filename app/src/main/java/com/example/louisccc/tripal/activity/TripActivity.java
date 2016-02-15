@@ -92,7 +92,8 @@ public class TripActivity extends Activity {
         DBManager db = new DBManager(this);
         try {
             db.open();
-            ((TriApplication)getApplication()).setgItems(db.getItems());
+            ((TriApplication)getApplication()).getgItems().clear();
+            ((TriApplication)getApplication()).getgItems().addAll(db.getItems());
             db.close();
         } catch (SQLException e) {
             e.printStackTrace();
