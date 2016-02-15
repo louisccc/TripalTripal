@@ -76,6 +76,7 @@ public class EditItemActivity extends Activity {
         }
         else {
             setTitle("New Item");
+            mItemOwnerTextView.setText("Owners-> amy: " + ((TriApplication)getApplication()).getgFriends().get(0).getLocalId() + " astrid: " +((TriApplication)getApplication()).getgFriends().get(1).getLocalId() );
         }
         mItemTimeStampTextView.setOnClickListener(new View.OnClickListener() {
             @Override

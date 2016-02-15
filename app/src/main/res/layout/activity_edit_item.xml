@@ -37,7 +37,7 @@
         android:layout_below="@+id/item_edit_timestamp"
         android:layout_margin="5dp"
         android:layout_toRightOf="@+id/item_edit_thumbnail"
-        android:text="good item" />
+        android:hint="item name" />
 
     <EditText
         android:id="@+id/item_edit_note"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_edit_thumbnail"
         android:layout_margin="5dp"
-        android:text="good item" />
+        android:hint="item note" />
 
     <EditText
         android:id="@+id/item_edit_amount"
@@ -54,7 +54,7 @@
         android:layout_below="@+id/item_edit_note"
         android:layout_margin="5dp"
         android:inputType="numberSigned"
-        android:text="$10000" />
+        android:hint="1000" />
 
     <TextView
         android:id="@+id/item_edit_owner"
@@ -62,6 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_edit_amount"
         android:layout_margin="5dp"
-        android:text="Click here to edit owner" />
+        android:text="Enter id of users" />
 
 </RelativeLayout>
