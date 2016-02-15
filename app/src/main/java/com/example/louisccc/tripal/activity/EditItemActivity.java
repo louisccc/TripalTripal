@@ -117,16 +117,21 @@ public class EditItemActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_record_confirm:
-                TriItem i = new TriItem(
-                                            mItemTripTextView.getText().toString(),
-                                            Double.parseDouble(mItemAmountTextView.getText().toString()),
-                                            Integer.parseInt(mItemOwnerTextView.getText().toString()),
-                                            1,
-                                            0,
-                                            mItemNoteTextView.getText().toString(),
-                                            DateHelper.getDate(mItemTimeStampTextView.getText().toString())
-                                        );
-                TriApplication.getInstance().getgItems().add(i);
+                if (mItem != null) {
+                    TriItem i = new TriItem(
+                            mItemTripTextView.getText().toString(),
+                            Double.parseDouble(mItemAmountTextView.getText().toString()),
+                            Integer.parseInt(mItemOwnerTextView.getText().toString()),
+                            1,
+                            0,
+                            mItemNoteTextView.getText().toString(),
+                            DateHelper.getDate(mItemTimeStampTextView.getText().toString())
+                    );
+                    TriApplication.getInstance().getgItems().add(i);
+                }
+                else {
+                    // set mItem's inner variables
+                }
                 this.finish();
                 break;
             case R.id.add_record_cancel:
@@ -148,7 +153,6 @@ public class EditItemActivity extends Activity {
                 new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        // 完成選擇，顯示日期
                         mItemTimeStampTextView.setText(year + "-" + (monthOfYear + 1) + "-"
                                 + dayOfMonth);
 

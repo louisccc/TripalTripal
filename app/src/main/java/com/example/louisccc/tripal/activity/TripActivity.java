@@ -1,6 +1,8 @@
 package com.example.louisccc.tripal.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.utility.FriendsAdapter;
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.utility.RecordsAdapter;
@@ -102,6 +105,46 @@ public class TripActivity extends Activity {
                 Intent i = new Intent( getBaseContext(), ItemActivity.class );
                 i.putExtra("item", item);
                 startActivity(i);
+            }
+        });
+
+        mRecordsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(TripActivity.this);
+                builder.setTitle("Select options");
+                CharSequence options[] = new CharSequence[] {"View", "Edit", "delete"};
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TriItem item;
+                        Intent i;
+                        switch (which) {
+                            case 0: // view
+                                item = (TriItem) parent.getAdapter().getItem(position);
+                                i = new Intent( getBaseContext(), ItemActivity.class );
+                                i.putExtra("item", item);
+                                startActivity(i);
+                                break;
+                            case 1: // edit
+                                item = (TriItem) parent.getAdapter().getItem(position);
+                                i = new Intent( getBaseContext(), EditItemActivity.class );
+                                i.putExtra("item", item);
+                                startActivity(i);
+                                break;
+                            case 2: // delete
+                                item = (TriItem) parent.getAdapter().getItem(position);
+                                TriApplication.getInstance().getgItems().remove(item); // delete
+                                mRecordsAdapter.remove(item);
+                                mRecordsAdapter.notifyDataSetChanged();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
             }
         });
 
