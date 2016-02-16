@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public class EditItemActivity extends Activity {
     ImageView mItemThumbnailImageView;
     ImageView mItemThumbnailCoverImageView;
     TextView mItemTimeStampTextView;
+    Button mItemTimeStampButton;
     TextView mItemLocationTextView;
     EditText mItemTripTextView;
     EditText mItemNoteTextView;
@@ -61,6 +63,8 @@ public class EditItemActivity extends Activity {
         mItemThumbnailCoverImageView = (ImageView) this.findViewById(R.id.item_edit_cover);
 
         mItemTimeStampTextView = (TextView) this.findViewById(R.id.item_edit_timestamp);
+        mItemTimeStampButton = (Button) this.findViewById(R.id.item_edit_timestamp_change);
+
         mItemTripTextView = (EditText) this.findViewById(R.id.item_edit_trip);
         mItemNoteTextView = (EditText) this.findViewById(R.id.item_edit_note);
         mItemAmountTextView = (EditText) this.findViewById(R.id.item_edit_amount);
@@ -81,7 +85,20 @@ public class EditItemActivity extends Activity {
         mItemTimeStampTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+
+            }
+        });
+
+        mItemTimeStampTextView.setText(DateHelper.getCalendarDay(0).get(Calendar.YEAR) + "-" +
+                                        (DateHelper.getCalendarDay(0).get(Calendar.MONTH) + 1) + "-" +
+                                        DateHelper.getCalendarDay(0).get(Calendar.DAY_OF_MONTH)
+        );
+        mItemTimeStampButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                c.setTime( DateHelper.getDate(mItemTimeStampTextView.getText().toString()) );
+                showDatePickerDialog(c);
             }
         });
         mItemOwnerTextView.setOnClickListener(new View.OnClickListener() {
@@ -157,8 +174,7 @@ public class EditItemActivity extends Activity {
         return false;
     }
     private int mYear, mMonth, mDay;
-    public void showDatePickerDialog() {
-        final Calendar c = Calendar.getInstance();
+    public void showDatePickerDialog(Calendar c) {
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
