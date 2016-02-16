@@ -16,11 +16,14 @@ import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.utility.FriendsAdapter;
 import com.example.louisccc.tripal.R;
+import com.example.louisccc.tripal.utility.MembersAdapter;
 import com.example.louisccc.tripal.utility.RecordsAdapter;
 import com.example.louisccc.tripal.model.TriFriend;
 import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
+
+import junit.framework.Assert;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,15 +34,18 @@ import java.util.ArrayList;
 public class TripActivity extends Activity {
 
     TriTrip mTrip;
-    TextView mInitBalanceTextView;
+    TextView mTripNameTextView;
     TextView mRemainTimesTextView;
+    TextView mTotalSpentTextView;
+    TextView mCurrBalanceTextView;
+
 
     ListView mMembersListView;
-    FriendsAdapter mMembersAdapter;
+    MembersAdapter mMembersAdapter;
     ListView mRecordsListView;
     RecordsAdapter mRecordsAdapter;
 
-    TextView mCurrBalanceTextView;
+
     ImageButton mCheckImageButton;
 
     @Override
@@ -53,26 +59,30 @@ public class TripActivity extends Activity {
         setContentView(R.layout.activity_trip);
 
         mTrip = getIntent().getParcelableExtra("trip");
-        mInitBalanceTextView = (TextView) this.findViewById(R.id.trip_init_balance);
-        mInitBalanceTextView.setText("Init Balance: " + mTrip.getBudget() );
+        Assert.assertTrue(mTrip != null);
+
+        mTripNameTextView = (TextView) this.findViewById(R.id.trip_name);
+        mTripNameTextView.setText(mTrip.getName());
+
+        mTotalSpentTextView = (TextView) this.findViewById(R.id.trip_total_spent);
+        mTotalSpentTextView.setText("Total Spent: $" + mTrip.getTotalCost((TriApplication)getApplication()));
 
         mRemainTimesTextView = (TextView) this.findViewById(R.id.trip_remain_times);
-        if (DateHelper.getCalendarDay(0).getTime().after(mTrip.getDateFrom()) && DateHelper.getCalendarDay(0).getTime().before(mTrip.getDateTo()) ) {
+        if (DateHelper.getCalendarDay(0).getTime().compareTo(mTrip.getDateFrom()) >= 0 && DateHelper.getCalendarDay(0).getTime().compareTo(mTrip.getDateTo()) <= 0 ) {
             mRemainTimesTextView.setText("remaining " +
-                    mTrip.getDateFrom().toString() + " " + mTrip.getDateTo().toString() + "\n" +
-                    DateHelper.getCalendarDay(0).getTime().toString());
+                    DateHelper.getDateString(mTrip.getDateFrom()) + "~" + DateHelper.getDateString(mTrip.getDateTo()) + ": Remaining days: " +
+                    Long.toString( (DateHelper.getCalendarDay(0).getTimeInMillis() - mTrip.getDateTo().getTime())/(24 * 60 * 60 * 1000) ));
         }
         else {
-            mRemainTimesTextView.setText("This trip is not ongoing! " +
-                    mTrip.getDateFrom().toString() + " "  + mTrip.getDateTo().toString());
+            mRemainTimesTextView.setText(DateHelper.getDateString(mTrip.getDateFrom()) + "~" + DateHelper.getDateString(mTrip.getDateTo()));
         }
 
         mMembersListView = (ListView) this.findViewById(R.id.trip_members);
         ArrayList<TriFriend> members = mTrip.getMembers((TriApplication)getApplication());
-        mMembersAdapter = new FriendsAdapter( this, R.layout.activity_friends_list_item, members );
+        mMembersAdapter = new MembersAdapter( this, R.layout.activity_members_list_item, members, mTrip);
         mMembersListView.setAdapter(mMembersAdapter);
         TextView textview = new TextView(this);
-        textview.setText("Members list view");
+        textview.setText("Members : Total " + mTrip.getMembers( (TriApplication)getApplication()).size() );
         textview.setTextColor(0xffa4a6a8);
         textview.setPadding(0, 0, 0, 14);
         textview.setGravity(Gravity.LEFT);
@@ -160,7 +170,7 @@ public class TripActivity extends Activity {
         });
 
         mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
-        mCurrBalanceTextView.setText("curr balance: " + mTrip.getCurrBalance((TriApplication)getApplication()) );
+        mCurrBalanceTextView.setText("curr balance: $" + mTrip.getCurrBalance((TriApplication)getApplication()) );
 
         mCheckImageButton = (ImageButton) this.findViewById(R.id.trip_check);
         mCheckImageButton.setOnClickListener(new View.OnClickListener() {

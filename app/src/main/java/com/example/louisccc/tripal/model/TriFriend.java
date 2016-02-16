@@ -1,11 +1,14 @@
 package com.example.louisccc.tripal.model;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.louisccc.tripal.utility.DateHelper;
+
+import junit.framework.Assert;
 
 /**
  * Created by louisccc on 2/10/16.
@@ -83,7 +86,7 @@ public class TriFriend implements Parcelable{
         this.mFB_token = cursor.getString( cursor.getColumnIndex(KEY_FB) );
         this.mEmail = cursor.getString( cursor.getColumnIndex(KEY_EMAIL) );
         this.mPhone = cursor.getString( cursor.getColumnIndex(KEY_PHONE) );
-        this.mTimestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mTimestamp = cursor.getLong(cursor.getColumnIndex(KEY_TIMESTAMP));
         this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
         this.mOrder = cursor.getInt( cursor.getColumnIndex(KEY_ORDER) );
     }
@@ -122,6 +125,17 @@ public class TriFriend implements Parcelable{
 
     public String getPhone() {
         return mPhone;
+    }
+
+    public double getCurrBalance(Context ctx, TriTrip mTrip) {
+        Assert.assertTrue(mTrip != null);
+        double curr_balance = 0;
+        for (TriItem item : ((TriApplication) ctx.getApplicationContext()).getgItems() ){
+            if ( item.getTripId() == mTrip.getLocalId() && this.mLocal_id == item.getOwner() ) {
+                curr_balance += item.getAmount();
+            }
+        }
+        return curr_balance;
     }
 
     @Override
@@ -165,4 +179,6 @@ public class TriFriend implements Parcelable{
             return new TriFriend[size];
         }
     };
+
+
 }

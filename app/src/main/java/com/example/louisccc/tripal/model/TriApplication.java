@@ -31,6 +31,7 @@ public class TriApplication extends Application {
         gDepts = new ArrayList<TriDept>();
         mDB = new DBManager(this);
         DBInit();
+//        testInit();
     }
 
     private void DBInit() {
@@ -164,8 +165,8 @@ public class TriApplication extends Application {
         ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
 
         for ( TriTrip t : getgTrips() ) {
-            if (DateHelper.getCalendarDay(0).getTime().after(t.getDateFrom()) &&
-                DateHelper.getCalendarDay(0).getTime().before(t.getDateTo()) ) {
+            if (DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateFrom()) >= 0 &&
+                DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateTo()) <= 0) {
                 trips.add(t);
             }
         }
@@ -175,8 +176,8 @@ public class TriApplication extends Application {
         ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
 
         for ( TriTrip t : getgTrips() ) {
-            if (DateHelper.getCalendarDay(0).getTime().after(t.getDateFrom()) &&
-                    DateHelper.getCalendarDay(0).getTime().before(t.getDateTo()) ) {}
+            if (DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateFrom()) >= 0 &&
+                    DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateTo()) <= 0) {}
             else {
                 trips.add(t);
             }

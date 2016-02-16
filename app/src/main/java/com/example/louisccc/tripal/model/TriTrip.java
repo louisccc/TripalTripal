@@ -98,7 +98,7 @@ public class TriTrip implements Parcelable {
         this.mCategory_id = cursor.getInt( cursor.getColumnIndex(KEY_CATEGORYID) );
         this.mTime_from = DateHelper.getDate( cursor.getString( cursor.getColumnIndex(KEY_TIMESTAMPFROM) ) );
         this.mTime_to = DateHelper.getDate( cursor.getString( cursor.getColumnIndex(KEY_TIMESTAMPTO) ) );
-        this.mTimestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
+        this.mTimestamp = cursor.getLong(cursor.getColumnIndex(KEY_TIMESTAMP));
         this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
         this.mOrder = cursor.getInt( cursor.getColumnIndex(KEY_ORDER) );
     }
@@ -154,6 +154,9 @@ public class TriTrip implements Parcelable {
         return curr_balance;
     }
 
+    public double getTotalCost (TriApplication app) {
+        return getBudget() - getCurrBalance(app);
+    }
     @Override
     public int describeContents() {
         return 0;
