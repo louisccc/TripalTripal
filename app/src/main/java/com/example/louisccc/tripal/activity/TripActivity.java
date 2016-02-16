@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -71,22 +74,27 @@ public class TripActivity extends Activity {
         if (DateHelper.getCalendarDay(0).getTime().compareTo(mTrip.getDateFrom()) >= 0 && DateHelper.getCalendarDay(0).getTime().compareTo(mTrip.getDateTo()) <= 0 ) {
             mRemainTimesTextView.setText("remaining " +
                     DateHelper.getDateString(mTrip.getDateFrom()) + "~" + DateHelper.getDateString(mTrip.getDateTo()) + ": Remaining days: " +
-                    Long.toString( (DateHelper.getCalendarDay(0).getTimeInMillis() - mTrip.getDateTo().getTime())/(24 * 60 * 60 * 1000) ));
+                    Long.toString( ( mTrip.getDateTo().getTime() - DateHelper.getCalendarDay(0).getTimeInMillis() )/(24 * 60 * 60 * 1000) ));
         }
         else {
             mRemainTimesTextView.setText(DateHelper.getDateString(mTrip.getDateFrom()) + "~" + DateHelper.getDateString(mTrip.getDateTo()));
         }
+        mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
+        mCurrBalanceTextView.setText("curr balance: $" + mTrip.getCurrBalance((TriApplication)getApplication()) );
 
+        setupMembersListView();
+        setupRecordsListView();
+        setupCheckButton();
+
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setupMembersListView() {
         mMembersListView = (ListView) this.findViewById(R.id.trip_members);
         ArrayList<TriFriend> members = mTrip.getMembers((TriApplication)getApplication());
         mMembersAdapter = new MembersAdapter( this, R.layout.activity_members_list_item, members, mTrip);
         mMembersListView.setAdapter(mMembersAdapter);
-        TextView textview = new TextView(this);
-        textview.setText("Members : Total " + mTrip.getMembers( (TriApplication)getApplication()).size() );
-        textview.setTextColor(0xffa4a6a8);
-        textview.setPadding(0, 0, 0, 14);
-        textview.setGravity(Gravity.LEFT);
-        mMembersListView.addHeaderView(textview, null, false);
+        mMembersListView.addHeaderView(DateHelper.getTextViewWithText(this, "Members : Total " + mTrip.getMembers( (TriApplication)getApplication()).size()), null, false);
         mMembersAdapter.notifyDataSetChanged();
         mMembersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,7 +105,9 @@ public class TripActivity extends Activity {
                 startActivity(i);
             }
         });
+    }
 
+    public void setupRecordsListView() {
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
         DBManager db = new DBManager(this);
         try {
@@ -111,14 +121,9 @@ public class TripActivity extends Activity {
         ArrayList<TriItem> items = mTrip.getRecords((TriApplication)getApplication());
         mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_friends_list_item, items );
         mRecordsListView.setAdapter(mRecordsAdapter);
-        TextView textview2 = new TextView(this);
-        textview2.setText("Trip items list view");
-        textview2.setTextColor(0xffa4a6a8);
-        textview2.setPadding(0, 0, 0, 14);
-        textview2.setGravity(Gravity.LEFT);
-        mRecordsListView.addHeaderView(textview2, null, false);
+        mRecordsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Items : Total " + mTrip.getRecords( (TriApplication)getApplication() ).size()), null, false);
+        mRecordsListView.setEmptyView( this.findViewById(R.id.trip_records_empty) );
         mRecordsAdapter.notifyDataSetChanged();;
-
         mRecordsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -128,7 +133,6 @@ public class TripActivity extends Activity {
                 startActivity(i);
             }
         });
-
         mRecordsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
@@ -168,10 +172,9 @@ public class TripActivity extends Activity {
                 return true;
             }
         });
+    }
 
-        mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
-        mCurrBalanceTextView.setText("curr balance: $" + mTrip.getCurrBalance((TriApplication)getApplication()) );
-
+    public void setupCheckButton(){
         mCheckImageButton = (ImageButton) this.findViewById(R.id.trip_check);
         mCheckImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,5 +182,46 @@ public class TripActivity extends Activity {
                 return;
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = this.getMenuInflater();
+        inflater.inflate(R.menu.menu_trip_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case android.R.id.home:
+                super.onBackPressed();
+                break;
+            case R.id.action_add_item:
+                Intent i = new Intent(this, EditItemActivity.class);
+                startActivity(i);
+                break;
+            case R.id.action_add_friend:
+                AlertDialog.Builder d_friend = new AlertDialog.Builder(TripActivity.this)
+                        .setMessage("小元 alert").setMessage("回來再做給你用")
+                        .setPositiveButton("爽", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        })
+                        .setNegativeButton("不爽", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        });
+                AlertDialog dialog_friend = d_friend.create();
+                dialog_friend.show();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

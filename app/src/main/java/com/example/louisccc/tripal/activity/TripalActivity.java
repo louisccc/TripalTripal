@@ -117,6 +117,7 @@ public class TripalActivity extends FragmentActivity {
         tabHost.addTab(tabHost.newTabSpec("Settings").setIndicator("Settings"), SettingsFragment.class, null);
         tabHost.addTab(tabHost.newTabSpec("Help").setIndicator("Help"), HelpFragment.class, null);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = this.getMenuInflater();

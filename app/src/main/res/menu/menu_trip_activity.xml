@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.TripalActivity">
+    <item
+        android:id="@+id/action_add_item"
+        android:orderInCategory="100"
+        android:title="add item"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_add_friend"
+        android:orderInCategory="100"
+        android:title="add member"
+        app:showAsAction="never" />
+</menu>

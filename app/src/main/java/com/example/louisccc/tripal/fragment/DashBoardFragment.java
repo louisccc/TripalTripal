@@ -56,7 +56,7 @@ public class DashBoardFragment extends Fragment {
                 startActivity(i);
             }
         });
-        mListview.addHeaderView( DateHelper.getTextViewWithText( getActivity(), "Your ongoing trips" ) );
+        mListview.addHeaderView( DateHelper.getTextViewWithText( getActivity(), "Your ongoing trips" ), null, false );
         mListview.setEmptyView( getActivity().findViewById(R.id.trips_ongoing_empty) );
 
         mListViewAdapter.notifyDataSetChanged();
@@ -68,17 +68,17 @@ public class DashBoardFragment extends Fragment {
                                             R.layout.activity_dashboard_trips_list_item,
                                             ((TriApplication)getActivity().getApplication()).getgHistoryTrips() );
         mListview2.setAdapter(mListViewAdapter2);
+        mListview2.addHeaderView( DateHelper.getTextViewWithText( getActivity(), "History trips" ), null, false );
+        mListview2.setEmptyView( getActivity().findViewById(R.id.trips_history_empty) );
         mListview2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TriTrip trip = (TriTrip) parent.getAdapter().getItem(position);
+                TriTrip trip = (TriTrip) parent.getItemAtPosition(position);
                 Intent i = new Intent(getActivity(), TripActivity.class);
                 i.putExtra("trip", trip);
                 startActivity(i);
             }
         });
-        mListview2.addHeaderView( DateHelper.getTextViewWithText( getActivity(), "History trips" ) );
-        mListview2.setEmptyView( getActivity().findViewById(R.id.trips_history_empty) );
         mListViewAdapter2.notifyDataSetChanged();
     }
 
