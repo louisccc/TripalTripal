@@ -6,10 +6,10 @@
         android:id="@+id/action_add_item"
         android:orderInCategory="100"
         android:title="add item"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
     <item
         android:id="@+id/action_add_friend"
         android:orderInCategory="100"
         android:title="add member"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
 </menu>

@@ -7,11 +7,11 @@
         android:icon="@drawable/tripal_button_action_save"
         android:orderInCategory="100"
         android:title="save"
-        app:showAsAction="always" />
+        android:showAsAction="always" />
     <item
         android:id="@+id/add_record_cancel"
         android:icon="@drawable/tripal_button_action_cancel"
         android:orderInCategory="101"
         android:title="cancel"
-        app:showAsAction="always" />
+        android:showAsAction="always" />
 </menu>
