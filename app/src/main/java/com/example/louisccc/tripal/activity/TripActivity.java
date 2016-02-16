@@ -193,6 +193,7 @@ public class TripActivity extends Activity {
                 break;
             case R.id.action_add_item:
                 Intent i = new Intent(this, EditItemActivity.class);
+                i.putExtra("trip", mTrip);
                 startActivity(i);
                 break;
             case R.id.action_add_friend:

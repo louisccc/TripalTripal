@@ -21,12 +21,15 @@ import android.widget.TextView;
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriApplication;
+import com.example.louisccc.tripal.model.TriFriend;
 import com.example.louisccc.tripal.model.TriItem;
+import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
 
 import junit.framework.Assert;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -35,18 +38,26 @@ import java.util.Calendar;
 public class EditItemActivity extends Activity {
 
     TriItem mItem;
+    TriFriend mOwner = null;
     ImageView mItemThumbnailImageView;
     ImageView mItemThumbnailCoverImageView;
     TextView mItemTimeStampTextView;
     Button mItemTimeStampButton;
-    TextView mItemLocationTextView;
-    EditText mItemTripTextView;
-    EditText mItemNoteTextView;
 
+    TextView mItemLocationTextView;
+    TextView mItemTripTextView;
+    Button mItemTripButton;
+
+    EditText mItemNameEditText;
+    EditText mItemNoteTextView;
     EditText mItemAmountTextView;
+
     TextView mItemOwnerTextView;
+    Button mItemOwnerButton;
 
     ListView mParticipantsListView;
+
+    TriTrip mTrip = null;
 //TODO    ParticipantsAdapter mParticipantsAdapter;
 
     @Override
@@ -65,23 +76,46 @@ public class EditItemActivity extends Activity {
         mItemTimeStampTextView = (TextView) this.findViewById(R.id.item_edit_timestamp);
         mItemTimeStampButton = (Button) this.findViewById(R.id.item_edit_timestamp_change);
 
-        mItemTripTextView = (EditText) this.findViewById(R.id.item_edit_trip);
+        mItemTripTextView = (TextView) this.findViewById(R.id.item_edit_trip);
+        mItemTripButton = (Button) this.findViewById(R.id.item_edit_trip_change);
+
+        mItemNameEditText = (EditText) this.findViewById(R.id.item_edit_item_name);
         mItemNoteTextView = (EditText) this.findViewById(R.id.item_edit_note);
         mItemAmountTextView = (EditText) this.findViewById(R.id.item_edit_amount);
+
+        mItemOwnerButton = (Button) this.findViewById(R.id.item_edit_owner_change);
         mItemOwnerTextView = (TextView) this.findViewById(R.id.item_edit_owner);
 
         mItem = getIntent().getParcelableExtra("item");
+
         if (mItem != null) {
             setTitle("Edit Item");
+            mItemNameEditText.setText(mItem.getName());
             mItemNoteTextView.setText(mItem.getNote());
             mItemAmountTextView.setText( Double.toString( mItem.getAmount() ) );
-            mItemOwnerTextView.setText( "Owner_id: " + mItem.getOwner() );
+
+            for (TriTrip t : ((TriApplication)getApplication()).getgTrips()){
+                if ( mItem.getTripId() == t.getLocalId() ) {
+                    mTrip = t; break;
+                }
+            }
+
+            for (TriFriend f : mTrip.getMembers((TriApplication) getApplication()) ){
+                if (f.getLocalId() == mItem.getOwner() ) {
+                    mOwner = f;
+                    break;
+                }
+            }
+            mItemOwnerTextView.setText( "Owner: " + mOwner.getName() );
             // TODO location
         }
         else {
             setTitle("New Item");
+            mTrip = getIntent().getParcelableExtra("trip");
+//            Assert.assertTrue(mTrip != null);
             mItemOwnerTextView.setText("Owners-> amy: " + ((TriApplication)getApplication()).getgFriends().get(0).getLocalId() + " astrid: " +((TriApplication)getApplication()).getgFriends().get(1).getLocalId() );
         }
+
         mItemTimeStampTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,29 +135,51 @@ public class EditItemActivity extends Activity {
                 showDatePickerDialog(c);
             }
         });
-        mItemOwnerTextView.setOnClickListener(new View.OnClickListener() {
+        if (mTrip != null){
+            mItemTripTextView.setText("Trip: " + mTrip.getName());
+        }
+        else {
+            mItemTripTextView.setText("Trip: please select~");
+        }
+
+        mItemTripButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditItemActivity.this);
+                builder.setTitle("select the trip");
+                ArrayList<String> listitems = new ArrayList<String>();
+                for ( TriTrip trip : ((TriApplication)getApplication()).getgTrips() ) {
+                    listitems.add(trip.getName());
+                }
+                final CharSequence[] charSequence = listitems.toArray(new CharSequence[listitems.size()]);
+                builder.setItems(charSequence, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mTrip = ((TriApplication)getApplication()).getgTrips().get(which);
+                        mItemTripTextView.setText( "Trip: " + mTrip.getName() );
+                    }
+                });
+                builder.show();
+            }
+        });
+        mItemOwnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder d = new AlertDialog.Builder(EditItemActivity.this);
-                LayoutInflater inflater = EditItemActivity.this.getLayoutInflater();
-                final View dialogView = inflater.inflate(R.layout.dialog_friend_picker, null);
-                d.setView(dialogView);
-                d.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                d.setTitle("select the owner");
+                ArrayList<String> listitems = new ArrayList<String>();
+                for (TriFriend f : mTrip.getMembers((TriApplication)getApplication()) ) {
+                    listitems.add(f.getName());
+                }
+                final CharSequence[] charSequence = listitems.toArray(new CharSequence[listitems.size()]);
+                d.setItems(charSequence, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText text = (EditText) dialogView.findViewById(R.id.edittext);
-                        mItemOwnerTextView.setText(text.getText().toString());
+                        mOwner = mTrip.getMembers((TriApplication) getApplication()).get(which);
+                        mItemOwnerTextView.setText( "Owner: " + mOwner.getName() );
                     }
                 });
-                d.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-                AlertDialog dialog = d.create();
-                dialog.show();
-
+                d.show();
             }
         });
     }
@@ -140,12 +196,13 @@ public class EditItemActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.add_record_confirm:
                 if (mItem == null) {
+                    Assert.assertTrue( mOwner != null );
                     TriItem i = new TriItem(
-                            mItemTripTextView.getText().toString(),
+                            mItemNameEditText.getText().toString(),
                             Double.parseDouble(mItemAmountTextView.getText().toString()),
-                            Integer.parseInt(mItemOwnerTextView.getText().toString()),
-                            ((TriApplication)getApplication()).getgTrips().get(0).getLocalId(),
-                            0,
+                            mOwner.getLocalId(),
+                            mTrip.getLocalId(),
+                            0, // category id
                             mItemNoteTextView.getText().toString(),
                             DateHelper.getDate(mItemTimeStampTextView.getText().toString())
                     );

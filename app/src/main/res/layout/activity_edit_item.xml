@@ -24,32 +24,49 @@
         android:id="@+id/item_edit_timestamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/item_edit_timestamp_change"
+        android:layout_alignParentTop="true"
         android:layout_margin="5dp"
-        android:layout_toRightOf="@+id/item_edit_thumbnail"
         android:layout_toLeftOf="@+id/item_edit_timestamp_change"
+        android:layout_toRightOf="@+id/item_edit_thumbnail"
         android:text="Edit Date click here" />
+
     <Button
         android:id="@+id/item_edit_timestamp_change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="Change"/>
-    <EditText
+        android:text="Change" />
+
+    <TextView
         android:id="@+id/item_edit_trip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_edit_timestamp"
         android:layout_margin="5dp"
         android:layout_toRightOf="@+id/item_edit_thumbnail"
-        android:hint="item name" />
+        android:text="trip id" />
+
+    <Button
+        android:id="@+id/item_edit_trip_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/item_edit_trip"
+        android:text="Change" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/item_edit_thumbnail"
         android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/item_edit_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="item name" />
 
         <EditText
             android:id="@+id/item_edit_note"
@@ -72,6 +89,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Enter id of users" />
+        <Button
+            android:id="@+id/item_edit_owner_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change"/>
     </LinearLayout>
 
 </RelativeLayout>
