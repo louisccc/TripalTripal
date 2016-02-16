@@ -29,11 +29,13 @@ public class RecordsAdapter extends ArrayAdapter<TriItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mVi.inflate(mResrc_id, null);
-        TextView text = (TextView) convertView.findViewById(R.id.ItemName);
-        TextView name = (TextView) convertView.findViewById(R.id.ItemContact);
+        TextView name = (TextView) convertView.findViewById(R.id.ItemName);
+        TextView note = (TextView) convertView.findViewById(R.id.ItemNote);
+        TextView amount = (TextView) convertView.findViewById(R.id.ItemAmount);
 
-        text.setText(mItems.get(position).getName() + ", " + mItems.get(position).getAmount() );
-        name.setText(mItems.get(position).getNote());
+        name.setText( mItems.get(position).getName() );
+        note.setText( mItems.get(position).getNote() );
+        amount.setText( "$" + mItems.get(position).getAmount());
         return convertView;
     }
 }

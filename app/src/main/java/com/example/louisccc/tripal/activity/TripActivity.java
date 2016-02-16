@@ -111,7 +111,7 @@ public class TripActivity extends Activity {
     public void setupRecordsListView() {
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
         ArrayList<TriItem> items = mTrip.getRecords((TriApplication)getApplication());
-        mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_friends_list_item, items );
+        mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_items_list_item, items );
         mRecordsListView.setAdapter(mRecordsAdapter);
         mRecordsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Items : Total " + mTrip.getRecords( (TriApplication)getApplication() ).size()), null, false);
         mRecordsListView.setEmptyView( this.findViewById(R.id.trip_records_empty) );
