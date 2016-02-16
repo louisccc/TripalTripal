@@ -42,6 +42,7 @@ public class DashBoardFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         /* ongoing trips */
+        ((TriApplication)getActivity().getApplication()).refreshGlobals();
         mListview = (ListView)getActivity().findViewById(R.id.trips_ongoing);
         mListViewAdapter = new TripsAdapter(getActivity(),
                 R.layout.activity_dashboard_trips_list_item,

@@ -40,26 +40,6 @@ public class TriApplication extends Application {
 
             if ( mDB.getTrips().size() >= 1 ){
                 // second time will enter here
-                ArrayList<TriTrip> trips = mDB.getTrips();
-                gTrips.clear();
-                gTrips.addAll(trips);
-
-                ArrayList<TriFriend> friends = mDB.getFriends();
-                gFriends.clear();
-                gFriends.addAll(friends);
-
-                ArrayList<TriParticipation> parts = mDB.getParticipations();
-                gParticipations.clear();
-                gParticipations.addAll(parts);
-
-                ArrayList<TriItem> items = mDB.getItems();
-                gItems.clear();
-                gItems.addAll(items);
-
-                ArrayList<TriDept> depts = mDB.getDepts();
-                gDepts.clear();
-                gDepts.addAll(depts);
-                mDB.close();
                 return;
             }
 
@@ -158,6 +138,35 @@ public class TriApplication extends Application {
         gDepts.get(5).setlocalId(5);
     }
 
+    public void refreshGlobals () {
+        try {
+            mDB.open();
+
+            ArrayList<TriTrip> trips = mDB.getTrips();
+            gTrips.clear();
+            gTrips.addAll(trips);
+
+            ArrayList<TriFriend> friends = mDB.getFriends();
+            gFriends.clear();
+            gFriends.addAll(friends);
+
+            ArrayList<TriParticipation> parts = mDB.getParticipations();
+            gParticipations.clear();
+            gParticipations.addAll(parts);
+
+            ArrayList<TriItem> items = mDB.getItems();
+            gItems.clear();
+            gItems.addAll(items);
+
+            ArrayList<TriDept> depts = mDB.getDepts();
+            gDepts.clear();
+            gDepts.addAll(depts);
+
+            mDB.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public ArrayList<TriTrip> getgTrips() {
         return gTrips;
     }

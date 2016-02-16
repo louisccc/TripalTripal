@@ -63,6 +63,7 @@ public class TripActivity extends Activity {
 
         mTrip = getIntent().getParcelableExtra("trip");
         Assert.assertTrue(mTrip != null);
+        ((TriApplication)getApplication()).refreshGlobals();
 
         mTripNameTextView = (TextView) this.findViewById(R.id.trip_name);
         mTripNameTextView.setText(mTrip.getName());
@@ -109,15 +110,6 @@ public class TripActivity extends Activity {
 
     public void setupRecordsListView() {
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
-        DBManager db = new DBManager(this);
-        try {
-            db.open();
-            ((TriApplication)getApplication()).getgItems().clear();
-            ((TriApplication)getApplication()).getgItems().addAll(db.getItems());
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         ArrayList<TriItem> items = mTrip.getRecords((TriApplication)getApplication());
         mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_friends_list_item, items );
         mRecordsListView.setAdapter(mRecordsAdapter);
@@ -159,8 +151,10 @@ public class TripActivity extends Activity {
                                 break;
                             case 2: // delete
                                 item = (TriItem) parent.getAdapter().getItem(position);
-                                ((TriApplication)getApplication()).getgItems().remove(item); // delete
-                                mRecordsAdapter.remove(item);
+// TODO                                ((TriApplication)getApplication()).getgItems().remove(item); // delete
+                                ((TriApplication)getApplication()).refreshGlobals();
+                                mRecordsAdapter.clear();
+                                mRecordsAdapter.addAll(((TriApplication)getApplication()).getgItems());
                                 mRecordsAdapter.notifyDataSetChanged();
                                 break;
                             default:
