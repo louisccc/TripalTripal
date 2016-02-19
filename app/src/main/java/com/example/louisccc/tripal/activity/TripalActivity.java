@@ -132,8 +132,8 @@ public class TripalActivity extends FragmentActivity {
                 menu.toggle();
                 break;
             case R.id.action_add_item:
-                Intent i = new Intent(this, EditItemActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(this, EditItemActivity.class);
+//                startActivity(i);
                 break;
             case R.id.action_add_trip:
                 AlertDialog.Builder d = new AlertDialog.Builder(TripalActivity.this)
