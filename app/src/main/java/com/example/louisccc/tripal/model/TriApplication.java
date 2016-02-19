@@ -14,21 +14,21 @@ import java.util.ArrayList;
  * Created by louisccc on 2/11/16.
  */
 public class TriApplication extends Application {
-    private static ArrayList<TriTrip> gTrips;
-    private static ArrayList<TriFriend> gFriends;
-    private static ArrayList<TriParticipation> gParticipations;
-    private static ArrayList<TriItem> gItems;
-    private static ArrayList<TriDept> gDepts;
+    private ArrayList<TriTrip> gTrips;
+    private ArrayList<TriFriend> gFriends;
+    private ArrayList<TriParticipation> gParticipations;
+    private ArrayList<TriItem> gItems;
+    private ArrayList<TriDept> gDepts;
 
     private DBManager mDB;
     @Override
     public void onCreate() {
         super.onCreate();
-        gTrips = new ArrayList<TriTrip>();
-        gFriends = new ArrayList<TriFriend>();
-        gParticipations = new ArrayList<TriParticipation>();
-        gItems = new ArrayList<TriItem>();
-        gDepts = new ArrayList<TriDept>();
+        gTrips = new ArrayList<>();
+        gFriends = new ArrayList<>();
+        gParticipations = new ArrayList<>();
+        gItems = new ArrayList<>();
+        gDepts = new ArrayList<>();
         mDB = new DBManager(this);
         DBInit();
 //        testInit();
@@ -139,43 +139,43 @@ public class TriApplication extends Application {
     }
 
     public void refreshGlobals () {
+
+        Assert.assertTrue(mDB != null);
+
         try {
             mDB.open();
 
             ArrayList<TriTrip> trips = mDB.getTrips();
-            gTrips.clear();
-            gTrips.addAll(trips);
-
             ArrayList<TriFriend> friends = mDB.getFriends();
-            gFriends.clear();
-            gFriends.addAll(friends);
-
             ArrayList<TriParticipation> parts = mDB.getParticipations();
-            gParticipations.clear();
-            gParticipations.addAll(parts);
-
             ArrayList<TriItem> items = mDB.getItems();
-            gItems.clear();
-            gItems.addAll(items);
-
             ArrayList<TriDept> depts = mDB.getDepts();
-            gDepts.clear();
-            gDepts.addAll(depts);
+
+            // update global variables after db query as expected
+            setgTrips(trips);
+            setgFriends(friends);
+            setgParticipations(parts);
+            setgItems(items);
+            setgDepts(depts);
 
             mDB.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
     public ArrayList<TriTrip> getgTrips() {
         return gTrips;
+    }
+    public void setgTrips(ArrayList<TriTrip> gTrips) {
+        this.gTrips.clear();
+        this.gTrips.addAll(gTrips);
     }
     public ArrayList<TriTrip> getgOngoingTrips() {
         ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
 
         for ( TriTrip t : getgTrips() ) {
-            if (DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateFrom()) >= 0 &&
-                DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateTo()) <= 0) {
+            if ( DateHelper.isDateOverlapToday(t.getDateFrom(), t.getDateTo()) ) {
                 trips.add(t);
             }
         }
@@ -185,48 +185,44 @@ public class TriApplication extends Application {
         ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
 
         for ( TriTrip t : getgTrips() ) {
-            if (DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateFrom()) >= 0 &&
-                    DateHelper.getCalendarDay(0).getTime().compareTo(t.getDateTo()) <= 0) {}
-            else {
+            if ( ! DateHelper.isDateOverlapToday(t.getDateFrom(), t.getDateTo()) ) {
                 trips.add(t);
             }
         }
 
         return trips;
     }
-    public void setgTrips(ArrayList<TriTrip> gTrips) {
-        this.gTrips = gTrips;
-    }
+
 
     public ArrayList<TriFriend> getgFriends() {
         return gFriends;
     }
-
     public void setgFriends(ArrayList<TriFriend> gFriends) {
-        this.gFriends = gFriends;
+        this.gFriends.clear();
+        this.gFriends.addAll(gFriends);
     }
 
     public ArrayList<TriParticipation> getgParticipations() {
         return gParticipations;
     }
-
     public void setgParticipations(ArrayList<TriParticipation> gParticipations) {
-        this.gParticipations = gParticipations;
+        this.gParticipations.clear();
+        this.gParticipations.addAll(gParticipations);
     }
 
     public ArrayList<TriItem> getgItems() {
         return gItems;
     }
-
     public void setgItems(ArrayList<TriItem> gItems) {
-        this.gItems = gItems;
+        this.gItems.clear();
+        this.gItems.addAll(gItems);
     }
 
     public ArrayList<TriDept> getgDepts() {
         return gDepts;
     }
-
     public void setgDepts(ArrayList<TriDept> gDepts) {
-        this.gDepts = gDepts;
+        this.gDepts.clear();
+        this.gDepts.addAll(gDepts);
     }
 }
