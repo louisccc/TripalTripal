@@ -92,6 +92,14 @@ public class DateHelper {
 		return sdf.format(date);
 	}
 
+	public static String getTodayDateString() {
+		Calendar c = getCalendarDay(0);
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH) + 1;
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		return getDateString(year, month, day);
+	}
+
 	public static TextView getTextViewWithText (Context ctx, String text ) {
 		TextView textview = new TextView( ctx );
 		textview.setText( text );
@@ -114,6 +122,11 @@ public class DateHelper {
 		textview.setPadding(0, 0, 0, 14);
 		textview.setGravity(Gravity.CENTER);
 		return textview;
+	}
+
+	public static boolean isDateOverlapToday(Date from, Date to) {
+		Date today = getCalendarDay(0).getTime();
+		return (today.compareTo(from) >= 0 && today.compareTo(to) <= 0);
 	}
 
 }
