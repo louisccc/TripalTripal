@@ -30,7 +30,9 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import java.sql.SQLException;
 
 public class TripalActivity extends FragmentActivity {
-
+    private static int mTripalActivityResSrcId = R.layout.main;
+    private static int mTripalActivityMenuItemResSrcId = R.layout.slidingmenu_list_item;
+    
     private SlidingMenu mMenu;
     private ListView mMenuListView;
     private MenuItemsAdapter mMenuListViewAdapter;
@@ -45,7 +47,7 @@ public class TripalActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(mTripalActivityResSrcId);
 
         tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
@@ -62,7 +64,7 @@ public class TripalActivity extends FragmentActivity {
         mMenu.setFadeDegree(0.35f);
         mMenu.setMenu(R.layout.menu_frame);
         mMenuListView = (ListView) (mMenu.getMenu().findViewById(R.id.menu_list));
-        mMenuListViewAdapter = new MenuItemsAdapter(this, R.layout.slidingmenu_list_item, slidingMenuItems);
+        mMenuListViewAdapter = new MenuItemsAdapter(this, mTripalActivityMenuItemResSrcId, slidingMenuItems);
         mMenuListView.setAdapter(mMenuListViewAdapter);
         mMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
