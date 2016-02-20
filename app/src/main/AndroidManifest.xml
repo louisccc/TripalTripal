@@ -46,7 +46,8 @@
             android:name=".activity.EditItemActivity"
             android:configChanges="orientation"
             android:label="Edit Item"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
