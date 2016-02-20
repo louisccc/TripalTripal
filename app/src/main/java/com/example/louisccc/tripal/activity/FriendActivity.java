@@ -2,6 +2,7 @@ package com.example.louisccc.tripal.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,5 +45,20 @@ public class FriendActivity extends Activity {
 
         mPhoneTextView = (TextView) this.findViewById(R.id.friend_phone);
         mPhoneTextView.setText(mFriend.getPhone());
+
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+            
 }

@@ -32,7 +32,7 @@ import java.sql.SQLException;
 public class TripalActivity extends FragmentActivity {
     private static int mTripalActivityResSrcId = R.layout.main;
     private static int mTripalActivityMenuItemResSrcId = R.layout.slidingmenu_list_item;
-    
+
     private SlidingMenu mMenu;
     private ListView mMenuListView;
     private MenuItemsAdapter mMenuListViewAdapter;
