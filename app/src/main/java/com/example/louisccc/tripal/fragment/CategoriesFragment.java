@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriFriend;
+import com.example.louisccc.tripal.utility.DateHelper;
 import com.example.louisccc.tripal.utility.FriendsAdapter;
 
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ import java.util.ArrayList;
  */
 public class CategoriesFragment extends Fragment {
 
-    ListView mListview;
-    FriendsAdapter mListViewAdapter;
+    private static int mListViewResSrcId = R.layout.activity_friends_list_item;
+    private ListView mListview;
+    private FriendsAdapter mListViewAdapter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -40,19 +42,10 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mListview = (ListView)getActivity().findViewById(R.id.friends);
-        mListViewAdapter = new FriendsAdapter(getActivity(),
-                R.layout.activity_friends_list_item,
-                ((TriApplication)getActivity().getApplication()).getgFriends());
+        mListview = (ListView) getActivity().findViewById(R.id.friends);
+        mListViewAdapter = new FriendsAdapter(getActivity(), mListViewResSrcId, ((TriApplication) getActivity().getApplication()).getgFriends());
         mListview.setAdapter(mListViewAdapter);
-        TextView textview = new TextView(getActivity());
-        textview.setText(getActivity().getPackageName());
-        textview.setTextColor(0xffa4a6a8);
-        textview.setPadding(0, 0, 0, 14);
-        textview.setGravity(Gravity.CENTER);
-        mListview.addHeaderView(textview, null, false);
-
+        mListview.addFooterView(DateHelper.getTextViewWithText(getActivity(), getActivity().getPackageName()), null, false);
         mListViewAdapter.notifyDataSetChanged();
     }
 }

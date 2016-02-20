@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.louisccc.tripal.activity.FriendActivity;
+import com.example.louisccc.tripal.utility.DateHelper;
 import com.example.louisccc.tripal.utility.FriendsAdapter;
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.model.TriApplication;
@@ -23,8 +24,10 @@ import com.example.louisccc.tripal.model.TriFriend;
  */
 public class FriendsFragment extends Fragment {
 
-    ListView mListview;
-    FriendsAdapter mListViewAdapter;
+    private static int mFriendsFragmentViewResSrcId = R.layout.activity_friends;
+    private static int mFriendsListViewResSrcId = R.layout.activity_friends_list_item;
+    private ListView mFriendsListview = null;
+    private FriendsAdapter mFriendsListViewAdapter = null;
 
     @Override
     public void onAttach(Activity activity) {
@@ -33,25 +36,18 @@ public class FriendsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_friends, container, false);
+        return inflater.inflate(mFriendsFragmentViewResSrcId, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mListview = (ListView)getActivity().findViewById(R.id.friends);
-        mListViewAdapter = new FriendsAdapter(getActivity(),
-                R.layout.activity_friends_list_item,
-                ((TriApplication)getActivity().getApplication()).getgFriends());
-        mListview.setAdapter(mListViewAdapter);
-        TextView textview = new TextView(getActivity());
-        textview.setText(getActivity().getPackageName());
-        textview.setTextColor(0xffa4a6a8);
-        textview.setPadding(0, 0, 0, 14);
-        textview.setGravity(Gravity.CENTER);
-        mListview.addHeaderView(textview, null, false);
-        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mFriendsListview = (ListView) getActivity().findViewById(R.id.friends);
+        mFriendsListViewAdapter = new FriendsAdapter(getActivity(), mFriendsListViewResSrcId, ((TriApplication) getActivity().getApplication()).getgFriends());
+        mFriendsListview.setAdapter(mFriendsListViewAdapter);
+        String textShown = getActivity().getPackageName();
+        mFriendsListview.addHeaderView(DateHelper.getTextViewWithText(getActivity(), textShown), null, false);
+        mFriendsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TriFriend f = (TriFriend) parent.getAdapter().getItem(position);
@@ -60,7 +56,7 @@ public class FriendsFragment extends Fragment {
                 startActivity(i);
             }
         });
-        mListViewAdapter.notifyDataSetChanged();
+        mFriendsListViewAdapter.notifyDataSetChanged();
     }
 
 

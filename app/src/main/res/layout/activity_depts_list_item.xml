@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/ItemThumbnail"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
         android:textColor="#a4a6a8"
         android:textSize="10dp" />
 
-    <TextView
+    <EditText
         android:id="@+id/ItemAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,11 +34,11 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/ItemName"
         android:layout_toRightOf="@+id/ItemThumbnail"
-        android:text="吃大便"
+        android:hint="How much paid"
         android:textColor="#a4a6a8"
         android:textSize="14dp" />
 
-    <TextView
+    <EditText
         android:id="@+id/ItemProportion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:gravity="right|center_horizontal"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/ItemAmount"
-        android:text="40%"
+        android:hint="Should paid %"
         android:textColor="#a4a6a8"
         android:textSize="14dp" />
 </RelativeLayout>

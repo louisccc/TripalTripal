@@ -21,44 +21,45 @@ import android.widget.TextView;
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriApplication;
+import com.example.louisccc.tripal.model.TriDept;
 import com.example.louisccc.tripal.model.TriFriend;
 import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
+import com.example.louisccc.tripal.utility.DeptsAdapter;
 
 import junit.framework.Assert;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by louisccc on 2/12/16.
  */
 public class EditItemActivity extends Activity {
 
-    TriItem mItem;
-    TriFriend mOwner = null;
-    ImageView mItemThumbnailImageView;
-    ImageView mItemThumbnailCoverImageView;
-    TextView mItemTimeStampTextView;
-    Button mItemTimeStampButton;
+    private TriItem mItem;
+    private TriFriend mOwner = null; // decided in this edit item page
+    private Date mDate = null;
+    private TriTrip mTrip = null; // should be given if item can only be added in the trip
 
-    TextView mItemLocationTextView;
-    TextView mItemTripTextView;
-    Button mItemTripButton;
-
-    EditText mItemNameEditText;
-    EditText mItemNoteTextView;
-    EditText mItemAmountTextView;
-
-    TextView mItemOwnerTextView;
-    Button mItemOwnerButton;
-
-    ListView mParticipantsListView;
-
-    TriTrip mTrip = null;
-//TODO    ParticipantsAdapter mParticipantsAdapter;
+    /* Views members */
+    private ImageView mItemThumbnailImageView;
+    private ImageView mItemThumbnailCoverImageView;
+    private TextView mItemTimeStampTextView;
+    private Button mItemTimeStampButton;
+    private TextView mItemLocationTextView;
+    private TextView mItemTripTextView;
+    private Button mItemTripButton;
+    private EditText mItemNameEditText;
+    private EditText mItemNoteTextView;
+    private EditText mItemAmountTextView;
+    private TextView mItemOwnerTextView;
+    private Button mItemOwnerButton;
+    private ListView mDeptsListView;
+    private DeptsAdapter mDeptsAdapter;
 
     @Override
     protected void onResume() {
@@ -72,75 +73,49 @@ public class EditItemActivity extends Activity {
 
         mItemThumbnailImageView = (ImageView) this.findViewById(R.id.item_edit_thumbnail);
         mItemThumbnailCoverImageView = (ImageView) this.findViewById(R.id.item_edit_cover);
-
         mItemTimeStampTextView = (TextView) this.findViewById(R.id.item_edit_timestamp);
         mItemTimeStampButton = (Button) this.findViewById(R.id.item_edit_timestamp_change);
-
         mItemTripTextView = (TextView) this.findViewById(R.id.item_edit_trip);
         mItemTripButton = (Button) this.findViewById(R.id.item_edit_trip_change);
-
         mItemNameEditText = (EditText) this.findViewById(R.id.item_edit_item_name);
         mItemNoteTextView = (EditText) this.findViewById(R.id.item_edit_note);
         mItemAmountTextView = (EditText) this.findViewById(R.id.item_edit_amount);
-
         mItemOwnerButton = (Button) this.findViewById(R.id.item_edit_owner_change);
         mItemOwnerTextView = (TextView) this.findViewById(R.id.item_edit_owner);
 
         mItem = getIntent().getParcelableExtra("item");
-
-        if (mItem != null) {
-            setTitle("Edit Item");
-            mItemNameEditText.setText(mItem.getName());
-            mItemNoteTextView.setText(mItem.getNote());
-            mItemAmountTextView.setText( Double.toString( mItem.getAmount() ) );
-
-            for (TriTrip t : ((TriApplication)getApplication()).getgTrips()){
-                if ( mItem.getTripId() == t.getLocalId() ) {
-                    mTrip = t; break;
-                }
-            }
-
+        mTrip = getIntent().getParcelableExtra("trip");
+        Assert.assertTrue(mTrip != null);
+        mItemTripTextView.setText("Trip: " + mTrip.getName());
+        if (mItem != null) { // this is to edit an item
             for (TriFriend f : mTrip.getMembers((TriApplication) getApplication()) ){
                 if (f.getLocalId() == mItem.getOwner() ) {
                     mOwner = f;
                     break;
                 }
-            }
+            } // TODO optimize
+
+            setTitle("Edit Item");
+            mItemNameEditText.setText(mItem.getName());
+            mItemNoteTextView.setText(mItem.getNote());
+            mItemAmountTextView.setText( Double.toString( mItem.getAmount() ) );
             mItemOwnerTextView.setText( "Owner: " + mOwner.getName() );
-            // TODO location
         }
         else {
             setTitle("New Item");
-            mTrip = getIntent().getParcelableExtra("trip");
-//            Assert.assertTrue(mTrip != null);
             mItemOwnerTextView.setText("Owners-> amy: " + ((TriApplication)getApplication()).getgFriends().get(0).getLocalId() + " astrid: " +((TriApplication)getApplication()).getgFriends().get(1).getLocalId() );
         }
 
-        mItemTimeStampTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        mItemTimeStampTextView.setText(DateHelper.getCalendarDay(0).get(Calendar.YEAR) + "-" +
-                                        (DateHelper.getCalendarDay(0).get(Calendar.MONTH) + 1) + "-" +
-                                        DateHelper.getCalendarDay(0).get(Calendar.DAY_OF_MONTH)
-        );
+        mDate = DateHelper.getCalendarDay(0).getTime(); // today
+        mItemTimeStampTextView.setText(DateHelper.getTodayDateString());
         mItemTimeStampButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
-                c.setTime( DateHelper.getDate(mItemTimeStampTextView.getText().toString()) );
+                c.setTime( mDate );
                 showDatePickerDialog(c);
             }
         });
-        if (mTrip != null){
-            mItemTripTextView.setText("Trip: " + mTrip.getName());
-        }
-        else {
-            mItemTripTextView.setText("Trip: please select~");
-        }
 
         mItemTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +157,12 @@ public class EditItemActivity extends Activity {
                 d.show();
             }
         });
+
+        mDeptsListView = (ListView) this.findViewById(R.id.item_edit_depts);
+        mDeptsAdapter = new DeptsAdapter(this, R.layout.activity_depts_list_item, mTrip.getMembers((TriApplication)getApplication()), mItem );
+        mDeptsListView.setAdapter(mDeptsAdapter);
+        mDeptsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Depts : Total " + ((TriApplication)getApplication()).getgDepts().size()) , null, false);
+        mDeptsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -195,9 +176,34 @@ public class EditItemActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_record_confirm:
+
+                if ( mOwner == null ||
+                        mItemNameEditText.getText().toString().equals("") ||
+                        mItemAmountTextView.getText().toString().equals("") ||
+                        mTrip == null ||
+                        mItemNoteTextView.getText().toString().equals("")
+                    ) {
+                    AlertDialog.Builder d_friend = new AlertDialog.Builder(EditItemActivity.this)
+                            .setMessage("小元 alert, 有東西沒輸入唷")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            })
+                            .setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            });
+                    AlertDialog dialog_friend = d_friend.create();
+                    dialog_friend.show();
+                    return false;
+                }
                 if (mItem == null) {
                     Assert.assertTrue( mOwner != null );
-                    TriItem i = new TriItem(
+                    TriItem it = new TriItem(
                             mItemNameEditText.getText().toString(),
                             Double.parseDouble(mItemAmountTextView.getText().toString()),
                             mOwner.getLocalId(),
@@ -207,11 +213,29 @@ public class EditItemActivity extends Activity {
                             DateHelper.getDate(mItemTimeStampTextView.getText().toString())
                     );
 
+                    ArrayList<TriDept> depts = new ArrayList<TriDept>();
+                    for (int i = 0; i < mDeptsAdapter.getCount(); i++ ){
+                        View v = mDeptsListView.getChildAt(i+1);
+                        EditText curr_balance = (EditText) v.findViewById(R.id.ItemAmount);
+                        EditText proportion = (EditText) v.findViewById(R.id.ItemProportion);
+
+                        TriDept dept = new TriDept(it, mDeptsAdapter.getItem(i),
+                                Double.parseDouble(proportion.getText().toString()),
+                                Double.parseDouble(curr_balance.getText().toString())
+                        );
+                        depts.add(dept);
+                    }
+
                     DBManager db = new DBManager(this);
                     try {
                         db.open();
-                        Assert.assertTrue( db.createItem(i) != -1 );
+                        long ret = db.createItem(it);
+                        it.setlocalId(ret);
                         ((TriApplication)getApplication()).setgItems(db.getItems());
+                        for(TriDept dept : depts ) {
+                            ret = db.createDept(dept);
+                            Assert.assertTrue( ret != -1 );
+                        }
                         db.close();
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -230,19 +254,16 @@ public class EditItemActivity extends Activity {
         }
         return false;
     }
-    private int mYear, mMonth, mDay;
     public void showDatePickerDialog(Calendar c) {
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dpd = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        mItemTimeStampTextView.setText(year + "-" + (monthOfYear + 1) + "-"
-                                + dayOfMonth);
-
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        mItemTimeStampTextView.setText( DateHelper.getDateString(year, monthOfYear + 1, dayOfMonth) );
+                        mDate = DateHelper.getDate(year, monthOfYear + 1, dayOfMonth);
                     }
                 }, mYear, mMonth, mDay);
         dpd.show();

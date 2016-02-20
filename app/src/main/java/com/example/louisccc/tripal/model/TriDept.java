@@ -100,4 +100,20 @@ public class TriDept extends TriItem {
     public void setlocalId(long localId) {
         this.mLocal_id = (int)localId;
     }
+
+    public int getUserId() {
+        return mUser_id;
+    }
+
+    public int getItemId() {
+        return mItem_id;
+    }
+
+    public double getPaid() {
+        return mPaid;
+    }
+
+    public double getProportion() {
+        return mPropotion;
+    }
 }

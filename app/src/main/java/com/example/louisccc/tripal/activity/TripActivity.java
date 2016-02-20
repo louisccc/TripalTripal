@@ -115,7 +115,7 @@ public class TripActivity extends Activity {
         mRecordsListView.setAdapter(mRecordsAdapter);
         mRecordsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Items : Total " + mTrip.getRecords( (TriApplication)getApplication() ).size()), null, false);
         mRecordsListView.setEmptyView( this.findViewById(R.id.trip_records_empty) );
-        mRecordsAdapter.notifyDataSetChanged();;
+        mRecordsAdapter.notifyDataSetChanged();
         mRecordsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
