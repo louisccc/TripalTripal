@@ -15,16 +15,16 @@ import com.example.louisccc.tripal.model.TriFriend;
  * Created by louisccc on 2/12/16.
  */
 public class FriendActivity extends Activity {
+    private static int mFriendActivityResSrcId = R.layout.activity_friend;
+    private TriFriend mFriend;
+    private ImageView mThumbnail; // TODO
 
-    TriFriend mFriend;
-    ImageView mThumbnail; // TODO
+    private TextView mNameTextView;
+    private TextView mEmailTextView;
+    private TextView mPhoneTextView;
 
-    TextView mNameTextView;
-    TextView mEmailTextView;
-    TextView mPhoneTextView;
-
-    ListView mDeptRecordsListView;
-    RecordsAdapter mDeptRecordsAdapter;
+//    private ListView mDeptRecordsListView;
+//    private RecordsAdapter mDeptRecordsAdapter;
 
     @Override
     protected void onResume() {
@@ -34,16 +34,15 @@ public class FriendActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend);
+        setContentView(mFriendActivityResSrcId);
 
         mFriend = getIntent().getParcelableExtra("friend");
         mNameTextView = (TextView) this.findViewById(R.id.friend_name);
-        mNameTextView.setText(mFriend.getName());
-
         mEmailTextView = (TextView) this.findViewById(R.id.friend_email);
-        mEmailTextView.setText(mFriend.getEmail());
-
         mPhoneTextView = (TextView) this.findViewById(R.id.friend_phone);
+
+        mNameTextView.setText(mFriend.getName());
+        mEmailTextView.setText(mFriend.getEmail());
         mPhoneTextView.setText(mFriend.getPhone());
 
         this.getActionBar().setDisplayHomeAsUpEnabled(true);
