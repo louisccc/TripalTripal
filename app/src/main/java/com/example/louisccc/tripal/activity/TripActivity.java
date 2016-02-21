@@ -2,6 +2,7 @@ package com.example.louisccc.tripal.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -201,26 +202,31 @@ public class TripActivity extends Activity {
                 startActivity(i);
                 break;
             case R.id.action_add_friend:
-                AlertDialog.Builder d_friend = new AlertDialog.Builder(TripActivity.this)
-                        .setMessage("小元 alert").setMessage("回來再做給你用")
-                        .setPositiveButton("爽", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
-                            }
-                        })
-                        .setNegativeButton("不爽", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
-                            }
-                        });
-                AlertDialog dialog_friend = d_friend.create();
-                dialog_friend.show();
+                getTempAlert( TripActivity.this ).show();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private AlertDialog.Builder getTempAlert(Context ctx) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx)
+                .setMessage("小元 alert").setMessage("回來再做給你用")
+                .setPositiveButton("爽", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .setNegativeButton("不爽", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+        return builder;
+    }
+
+
 }

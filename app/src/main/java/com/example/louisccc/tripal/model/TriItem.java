@@ -232,7 +232,6 @@ public class TriItem implements Parcelable {
         this.mName = name;
     }
 
-
     public void setAmount(Double amount) {
         this.mAmount = amount;
     }
