@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.louisccc.tripal.R;
@@ -51,9 +52,10 @@ public class DeptsAdapter extends ArrayAdapter<TriFriend> {
         TextView name = (TextView) convertView.findViewById(R.id.ItemName);
         EditText curr_balance = (EditText) convertView.findViewById(R.id.ItemAmount);
         EditText proportion = (EditText) convertView.findViewById(R.id.ItemProportion);
-//        ImageView thumb = (ImageView) convertView.findViewById(R.id.ItemThumbnail);
+        ImageView thumb = (ImageView) convertView.findViewById(R.id.ItemThumbnail);
         name.setText(mFriends.get(position).getName());
         if ( mItem != null ) {
+
             for (TriDept dept : ((TriApplication) getContext().getApplicationContext()).getgDepts()) {
                 if (dept.getUserId() == mFriends.get(position).getLocalId() && mItem.getLocalId() == dept.getItemId() ){
                     curr_balance.setText("" + dept.getPaid() );
@@ -62,17 +64,6 @@ public class DeptsAdapter extends ArrayAdapter<TriFriend> {
                 }
             }
         }
-//        double value_curr_balance = mFriends.get(position).getCurrBalance(getContext(), mTrip);
-//        curr_balance.setText( "have spend:" + Double.toString(value_curr_balance) );
-
-//        if ( mTrip.getTotalCost( (TriApplication)getContext().getApplicationContext() ) <= 0) {
-//            proportion.setText( "-"  + "%") ;
-//        }
-//        else {
-//            double value_proportion = 100 * value_curr_balance / mTrip.getTotalCost((TriApplication) getContext().getApplicationContext());
-//            proportion.setText(Double.toString((double) (Math.round(value_proportion * 100) / 100.0)) + "%");
-//        }
-//        thumb.setImageDrawable(getContext().getResources);
         return convertView;
     }
 }

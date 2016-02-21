@@ -176,15 +176,13 @@ public class EditItemActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_record_confirm:
-
-                if ( mOwner == null ||
-                        mItemNameEditText.getText().toString().equals("") ||
-                        mItemAmountTextView.getText().toString().equals("") ||
-                        mTrip == null ||
-                        mItemNoteTextView.getText().toString().equals("")
-                    ) {
+                String name = mItemNameEditText.getText().toString();
+                String note = mItemNoteTextView.getText().toString();
+                Double amount = Double.parseDouble( mItemAmountTextView.getText().toString() );
+                Date date = DateHelper.getDate( mItemTimeStampTextView.getText().toString() );
+                if ( mOwner == null || name.equals("") || amount < 0 || mTrip == null || note.equals("") ) {
                     AlertDialog.Builder d_friend = new AlertDialog.Builder(EditItemActivity.this)
-                            .setMessage("小元 alert, 有東西沒輸入唷")
+                            .setMessage("小元 alert, 有東西沒輸入唷: " + mOwner + ", " + name + ", " + amount + ", " + mTrip + ", " + note)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -199,19 +197,21 @@ public class EditItemActivity extends Activity {
                             });
                     AlertDialog dialog_friend = d_friend.create();
                     dialog_friend.show();
-                    return false;
+                    return true;
                 }
                 if (mItem == null) {
-                    Assert.assertTrue( mOwner != null );
-                    TriItem it = new TriItem(
-                            mItemNameEditText.getText().toString(),
-                            Double.parseDouble(mItemAmountTextView.getText().toString()),
-                            mOwner.getLocalId(),
-                            mTrip.getLocalId(),
-                            0, // category id
-                            mItemNoteTextView.getText().toString(),
-                            DateHelper.getDate(mItemTimeStampTextView.getText().toString())
-                    );
+                    TriItem it = new TriItem( name, amount, mOwner.getLocalId(), mTrip.getLocalId(), 0/* cat id*/, note, date );
+                    DBManager db = new DBManager(this);
+
+                    try {
+                        db.open();
+                        long ret = db.createItem(it);
+                        it.setlocalId(ret);
+                        ((TriApplication)getApplication()).refreshGlobals();
+                        db.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
                     ArrayList<TriDept> depts = new ArrayList<TriDept>();
                     for (int i = 0; i < mDeptsAdapter.getCount(); i++ ){
@@ -226,20 +226,20 @@ public class EditItemActivity extends Activity {
                         depts.add(dept);
                     }
 
-                    DBManager db = new DBManager(this);
+
                     try {
                         db.open();
-                        long ret = db.createItem(it);
-                        it.setlocalId(ret);
-                        ((TriApplication)getApplication()).setgItems(db.getItems());
                         for(TriDept dept : depts ) {
-                            ret = db.createDept(dept);
+                            long ret = db.createDept(dept);
                             Assert.assertTrue( ret != -1 );
+                            dept.setlocalId(ret);
                         }
+                        ((TriApplication)getApplication()).refreshGlobals();
                         db.close();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+
                 }
                 else {
                     // set mItem's inner variables
@@ -252,7 +252,7 @@ public class EditItemActivity extends Activity {
             default:
                 break;
         }
-        return false;
+        return true;
     }
     public void showDatePickerDialog(Calendar c) {
         int mYear = c.get(Calendar.YEAR);

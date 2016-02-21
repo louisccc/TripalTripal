@@ -72,7 +72,7 @@ public class TriDept extends TriItem {
         this.mCloud_id = cursor.getInt( cursor.getColumnIndex(KEY_CLOUDID) );
         this.mItem_id = cursor.getInt( cursor.getColumnIndex(KEY_ITEMID) );
         this.mUser_id = cursor.getInt( cursor.getColumnIndex(KEY_USERID) );
-        this.mPropotion = cursor.getDouble( cursor.getColumnIndex(KEY_USERID) );
+        this.mPropotion = cursor.getDouble( cursor.getColumnIndex(KEY_PROPOTION) );
         this.mPaid = cursor.getDouble( cursor.getColumnIndex(KEY_PAID) );
         this.mLast_modified_timestamp = cursor.getLong( cursor.getColumnIndex(KEY_TIMESTAMP) );
         this.mNeedSync = ( cursor.getInt( cursor.getColumnIndex(KEY_NEEDSYNC) ) == 1 );
