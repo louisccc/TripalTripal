@@ -174,6 +174,9 @@ public class TripActivity extends Activity {
         mCheckImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), ResultActivity.class);
+                i.putExtra("trip", mTrip);
+                startActivity(i);
                 return;
             }
         });
