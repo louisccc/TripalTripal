@@ -242,7 +242,56 @@ public class EditItemActivity extends Activity {
 
                 }
                 else {
-                    // set mItem's inner variables
+                    mItem.setName( name );
+                    mItem.setAmount( amount );
+                    mItem.setOwnerId( mOwner.getLocalId() );
+                    mItem.setTripId( mTrip.getLocalId() );
+//                    mItem.setCategoryId( 0 );
+                    mItem.setNote( note );
+                    mItem.setDate( date );
+
+                    DBManager db = new DBManager(this);
+                    try {
+                        db.open();
+                        long ret = db.updateItem(mItem);
+                        Assert.assertTrue( ret == 1 );
+                        ((TriApplication)getApplication()).refreshGlobals();
+                        db.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    ArrayList<TriDept> depts = new ArrayList<TriDept>();
+                    for (int i = 0; i < mDeptsAdapter.getCount(); i++ ){
+                        View v = mDeptsListView.getChildAt(i+1);
+                        EditText curr_balance = (EditText) v.findViewById(R.id.ItemAmount);
+                        EditText proportion = (EditText) v.findViewById(R.id.ItemProportion);
+
+                        TriDept dept = new TriDept(mItem, mDeptsAdapter.getItem(i),
+                                Double.parseDouble(proportion.getText().toString()),
+                                Double.parseDouble(curr_balance.getText().toString())
+                        );
+                        depts.add(dept);
+                    }
+
+                    try {
+                        db.open();
+                        for(TriDept dept : depts ) {
+                            if (db.isDeptExist(dept)) {
+                                long ret = db.updateDept(dept);
+                                Assert.assertTrue( ret == 1 );
+                            }
+                            else {
+                                long ret = db.createDept(dept);
+                                Assert.assertTrue(ret != -1);
+                                dept.setlocalId(ret);
+                            }
+                        }
+                        ((TriApplication)getApplication()).refreshGlobals();
+                        db.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
                 this.finish();
                 break;

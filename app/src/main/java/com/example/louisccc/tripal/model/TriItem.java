@@ -227,4 +227,29 @@ public class TriItem implements Parcelable {
             return new TriItem[size];
         }
     };
+
+    public void setName(String name) {
+        this.mName = name;
+    }
+
+
+    public void setAmount(Double amount) {
+        this.mAmount = amount;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.mOwner_id = ownerId;
+    }
+
+    public void setTripId(int tripId) {
+        this.mTrip_id = tripId;
+    }
+
+    public void setNote(String note) {
+        this.mNote = note;
+    }
+
+    public void setDate(Date date) {
+        this.mDate = date;
+    }
 }

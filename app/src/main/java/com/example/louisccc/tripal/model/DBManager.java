@@ -269,6 +269,27 @@ public class DBManager {
 		);
 	}
 
+	public boolean isDeptExist( final TriDept dept ) {
+		ArrayList<TriDept> depts = new ArrayList<TriDept>();
+		String[] columns = new String[] {
+				TriDept.KEY_LOCALID,
+				TriDept.KEY_CLOUDID,
+				TriDept.KEY_ITEMID,
+				TriDept.KEY_USERID,
+				TriDept.KEY_PROPOTION,
+				TriDept.KEY_PAID,
+				TriDept.KEY_TIMESTAMP,
+				TriDept.KEY_NEEDSYNC,
+		};
+		String whereClause = TriDept.KEY_ITEMID + "=? AND " +  TriDept.KEY_USERID + "=?";
+		String[] whereArgs = new String[]{ Integer.toString(dept.getItemId()), Integer.toString(dept.getUserId()) };
+		Cursor cursor = mDB.query(TriDept.DATABASE_TABLE_NAME, columns, whereClause, whereArgs, null, null, null);
+		if ( cursor != null && cursor.moveToFirst() ) {
+			int count = cursor.getCount();
+			if ( count >= 1 ) return true;
+		}
+		return false;
+	}
 	public ArrayList<TriDept> getDepts() {
 		ArrayList<TriDept> depts = new ArrayList<TriDept>();
 		String[] columns = new String[] {
