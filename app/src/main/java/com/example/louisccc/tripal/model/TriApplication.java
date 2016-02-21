@@ -6,7 +6,6 @@ import com.example.louisccc.tripal.utility.DateHelper;
 
 import junit.framework.Assert;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -112,30 +111,30 @@ public class TriApplication extends Application {
         gParticipations.get(4).setlocalId(4);
 
         gItems.add( new TriItem(" for eat", 500, gFriends.get(1).getLocalId(), gTrips.get(0).getLocalId(), 0, "bento", DateHelper.getDate(2015, 12, 29) ));
-        gItems.get(0).setlocalId(0);
+        gItems.get(0).setLocalId(0);
         gItems.add( new TriItem(" refill oil", 300, gFriends.get(0).getLocalId(), gTrips.get(0).getLocalId(), 0, "oil", DateHelper.getDate(2015, 12, 29) ) );
-        gItems.get(1).setlocalId(1);
+        gItems.get(1).setLocalId(1);
         gItems.add( new TriItem(" for drinks", 200, gFriends.get(1).getLocalId(), gTrips.get(0).getLocalId(), 0, "drinks", DateHelper.getDate(2015, 12, 29) ) );
-        gItems.get(2).setlocalId(2);
+        gItems.get(2).setLocalId(2);
         gItems.add( new TriItem(" for eat", 1000, gFriends.get(0).getLocalId(), gTrips.get(1).getLocalId(), 0, "123", DateHelper.getDate(2016, 2, 10) ));
-        gItems.get(3).setlocalId(3);
+        gItems.get(3).setLocalId(3);
         gItems.add( new TriItem(" for play", 700, gFriends.get(0).getLocalId(), gTrips.get(1).getLocalId(), 0, "123", DateHelper.getDate(2016, 2, 10) ));
-        gItems.get(4).setlocalId(4);
+        gItems.get(4).setLocalId(4);
         gItems.add( new TriItem(" for run", 300, gFriends.get(0).getLocalId(), gTrips.get(1).getLocalId(), 0, "321", DateHelper.getDate(2016, 2, 10) ));
-        gItems.get(5).setlocalId(5);
+        gItems.get(5).setLocalId(5);
 
         gDepts.add( new TriDept( gItems.get(0), gFriends.get(1), 30, 500 ) );
-        gDepts.get(0).setlocalId(0);
+        gDepts.get(0).setLocalId(0);
         gDepts.add( new TriDept( gItems.get(0), gFriends.get(0), 70, 0 ) );
-        gDepts.get(1).setlocalId(1);
+        gDepts.get(1).setLocalId(1);
         gDepts.add( new TriDept( gItems.get(1), gFriends.get(1), 50, 200 ) );
-        gDepts.get(2).setlocalId(2);
+        gDepts.get(2).setLocalId(2);
         gDepts.add( new TriDept( gItems.get(1), gFriends.get(0), 50, 100 ) );
-        gDepts.get(3).setlocalId(3);
+        gDepts.get(3).setLocalId(3);
         gDepts.add( new TriDept( gItems.get(2), gFriends.get(1), 50, 0 ) );
-        gDepts.get(4).setlocalId(4);
+        gDepts.get(4).setLocalId(4);
         gDepts.add( new TriDept( gItems.get(2), gFriends.get(0), 50, 200 ) );
-        gDepts.get(5).setlocalId(5);
+        gDepts.get(5).setLocalId(5);
     }
 
     public void refreshGlobals () {

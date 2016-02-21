@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.louisccc.tripal.utility.DateHelper;
-
 import junit.framework.Assert;
 
 /**
@@ -131,7 +129,7 @@ public class TriFriend implements Parcelable{
         Assert.assertTrue(mTrip != null);
         double curr_balance = 0;
         for (TriItem item : ((TriApplication) ctx.getApplicationContext()).getgItems() ){
-            if ( item.getTripId() == mTrip.getLocalId() && this.mLocal_id == item.getOwner() ) {
+            if ( item.getTripId() == mTrip.getLocalId() && this.mLocal_id == item.getOwnerId() ) {
                 curr_balance += item.getAmount();
             }
         }

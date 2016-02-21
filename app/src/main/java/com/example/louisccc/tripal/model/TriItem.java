@@ -144,38 +144,6 @@ public class TriItem implements Parcelable {
 
     }
 
-    public int getLocalId() {
-        return mLocal_id;
-    }
-
-    public void setlocalId(long localId) {
-        this.mLocal_id = (int) localId;
-    }
-
-    public int getTripId() {
-        return mTrip_id;
-    }
-
-    public double getAmount() {
-        return mAmount;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public String getTimeStamp() {
-        return DateHelper.getDateString(mDate);
-    }
-
-    public String getNote() {
-        return mNote;
-    }
-
-    public int getOwner() {
-        return mOwner_id;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -227,6 +195,38 @@ public class TriItem implements Parcelable {
             return new TriItem[size];
         }
     };
+
+    public int getLocalId() {
+        return mLocal_id;
+    }
+
+    public int getTripId() {
+        return mTrip_id;
+    }
+
+    public Double getAmount() {
+        return mAmount;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public String getTimeStamp() {
+        return DateHelper.getDateString(mDate);
+    }
+
+    public String getNote() {
+        return mNote;
+    }
+
+    public int getOwnerId() {
+        return mOwner_id;
+    }
+
+    public void setLocalId(long localId) {
+        this.mLocal_id = (int) localId;
+    }
 
     public void setName(String name) {
         this.mName = name;

@@ -3,10 +3,8 @@ package com.example.louisccc.tripal.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -89,7 +87,7 @@ public class EditItemActivity extends Activity {
         mItemTripTextView.setText("Trip: " + mTrip.getName());
         if (mItem != null) { // this is to edit an item
             for (TriFriend f : mTrip.getMembers((TriApplication) getApplication()) ){
-                if (f.getLocalId() == mItem.getOwner() ) {
+                if (f.getLocalId() == mItem.getOwnerId() ) {
                     mOwner = f;
                     break;
                 }
@@ -206,7 +204,7 @@ public class EditItemActivity extends Activity {
                     try {
                         db.open();
                         long ret = db.createItem(it);
-                        it.setlocalId(ret);
+                        it.setLocalId(ret);
                         ((TriApplication)getApplication()).refreshGlobals();
                         db.close();
                     } catch (SQLException e) {
@@ -232,7 +230,7 @@ public class EditItemActivity extends Activity {
                         for(TriDept dept : depts ) {
                             long ret = db.createDept(dept);
                             Assert.assertTrue( ret != -1 );
-                            dept.setlocalId(ret);
+                            dept.setLocalId(ret);
                         }
                         ((TriApplication)getApplication()).refreshGlobals();
                         db.close();
@@ -284,7 +282,7 @@ public class EditItemActivity extends Activity {
                             else {
                                 long ret = db.createDept(dept);
                                 Assert.assertTrue(ret != -1);
-                                dept.setlocalId(ret);
+                                dept.setLocalId(ret);
                             }
                         }
                         ((TriApplication)getApplication()).refreshGlobals();

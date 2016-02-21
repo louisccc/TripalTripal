@@ -12,8 +12,6 @@ import com.example.louisccc.tripal.model.TriTrip;
 
 import junit.framework.Assert;
 
-import java.util.Date;
-
 /**
  * Created by louisccc on 1/24/16.
  */
@@ -112,37 +110,37 @@ public class DatabaseTest extends AndroidTestCase {
 
         item1 = new TriItem();
         ret_id = db.createItem(item1);
-        item1.setlocalId(ret_id);
+        item1.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         item2 = new TriItem(" for eat", 500, friend3.getLocalId(), trip2.getLocalId(), 0, "bento", DateHelper.getDate(2015, 12, 29) );
         ret_id = db.createItem(item2);
-        item2.setlocalId(ret_id);
+        item2.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         item3 = new TriItem(" refill oil", 300, friend2.getLocalId(), trip2.getLocalId(), 0, "oil", DateHelper.getDate(2015, 12, 29) );
         ret_id = db.createItem(item3);
-        item3.setlocalId(ret_id);
+        item3.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         item4 = new TriItem(" for drinks", 200, friend3.getLocalId(), trip2.getLocalId(), 0, "drinks", DateHelper.getDate(2015, 12, 29) );
         ret_id = db.createItem(item4);
-        item4.setlocalId(ret_id);
+        item4.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         item5 = new TriItem(" for eat", 1000, friend2.getLocalId(), trip3.getLocalId(), 0, "123", DateHelper.getDate(2016, 2, 10) );
         ret_id = db.createItem(item5);
-        item5.setlocalId(ret_id);
+        item5.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         item6 = new TriItem(" for play", 700, friend2.getLocalId(), trip3.getLocalId(), 0, "123", DateHelper.getDate(2016, 2, 10) );
         ret_id = db.createItem(item6);
-        item6.setlocalId(ret_id);
+        item6.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         item7 = new TriItem(" for run", 300, friend2.getLocalId(), trip3.getLocalId(), 0, "321", DateHelper.getDate(2016, 2, 10) );
         ret_id = db.createItem(item7);
-        item7.setlocalId(ret_id);
+        item7.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         /*
@@ -152,37 +150,37 @@ public class DatabaseTest extends AndroidTestCase {
 
         dept1 = new TriDept();
         ret_id = db.createDept(dept1);
-        dept1.setlocalId(ret_id);
+        dept1.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         dept2 = new TriDept( item2, friend3, 30, 500 );
         ret_id = db.createDept(dept2);
-        dept2.setlocalId(ret_id);
+        dept2.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         dept3 = new TriDept( item2, friend2, 70, 0 );
         ret_id = db.createDept(dept3);
-        dept3.setlocalId(ret_id);
+        dept3.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         dept4 = new TriDept( item3, friend3, 50, 200 );
         ret_id = db.createDept(dept4);
-        dept4.setlocalId(ret_id);
+        dept4.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         dept5 = new TriDept( item3, friend2, 50, 100 );
         ret_id = db.createDept(dept5);
-        dept5.setlocalId(ret_id);
+        dept5.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         dept6 = new TriDept( item4, friend3, 50, 0 );
         ret_id = db.createDept(dept6);
-        dept6.setlocalId(ret_id);
+        dept6.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         dept7 = new TriDept( item4, friend2, 50, 200 );
         ret_id = db.createDept(dept7);
-        dept7.setlocalId(ret_id);
+        dept7.setLocalId(ret_id);
         Assert.assertTrue( ret_id != -1 );
 
         db.exportDB();

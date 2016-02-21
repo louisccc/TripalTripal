@@ -97,7 +97,7 @@ public class TriDept extends TriItem {
         return mLocal_id;
     }
 
-    public void setlocalId(long localId) {
+    public void setLocalId(long localId) {
         this.mLocal_id = (int)localId;
     }
 
