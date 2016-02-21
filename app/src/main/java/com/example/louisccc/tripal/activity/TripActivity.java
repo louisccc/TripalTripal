@@ -147,6 +147,7 @@ public class TripActivity extends Activity {
                                 item = (TriItem) parent.getAdapter().getItem(position);
                                 i = new Intent( getBaseContext(), EditItemActivity.class );
                                 i.putExtra("item", item);
+                                i.putExtra("trip", mTrip);
                                 startActivity(i);
                                 break;
                             case 2: // delete
