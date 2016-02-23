@@ -167,7 +167,7 @@ public class EditItemActivity extends Activity {
         mDeptsListView = (ListView) this.findViewById(R.id.item_edit_depts);
         mDeptsAdapter = new DeptsAdapter(this, R.layout.activity_depts_list_item, mTrip.getMembers((TriApplication)getApplication()), mItem );
         mDeptsListView.setAdapter(mDeptsAdapter);
-        mDeptsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Depts : Total " + ((TriApplication)getApplication()).getgDepts().size()) , null, false);
+//        mDeptsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Depts : Total " + ((TriApplication)getApplication()).getgDepts().size()) , null, false);
         mDeptsAdapter.notifyDataSetChanged();
     }
 
@@ -177,32 +177,6 @@ public class EditItemActivity extends Activity {
         inflater.inflate(R.menu.menu_edit_item, menu);
         return true;
     }
-
-    public void btn_thumbnail_click(View view) {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_edit_item_dialog);
-        dialog.setTitle("Alert Dialog View");
-        Button btnExit = (Button) dialog.findViewById(R.id.btnExit);
-        btnExit.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.findViewById(R.id.btnChoosePath)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        activeGallery();
-                    }
-                });
-        dialog.findViewById(R.id.btnTakePhoto)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        activeTakePhoto();
-                    }
-                });
-        dialog.show();
-    }
-
 
 
     @Override
@@ -376,6 +350,31 @@ public class EditItemActivity extends Activity {
                     }
                 }
         }
+    }
+
+    public void btn_thumbnail_click(View view) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_edit_item_dialog);
+        dialog.setTitle("Alert Dialog View");
+        Button btnExit = (Button) dialog.findViewById(R.id.btnExit);
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.btnChoosePath)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                        activeGallery();
+                    }
+                });
+        dialog.findViewById(R.id.btnTakePhoto)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                        activeTakePhoto();
+                    }
+                });
+        dialog.show();
     }
 
     public void showDatePickerDialog(Calendar c) {

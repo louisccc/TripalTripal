@@ -12,8 +12,8 @@
         android:id="@+id/item_edit_thumbnail"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/tripal_menu_sync"
-        android:onClick="btn_thumbnail_click"/>
+        android:onClick="btn_thumbnail_click"
+        android:src="@drawable/tripal_menu_sync" />
 
     <TextView
         android:id="@+id/item_edit_timestamp"
@@ -40,7 +40,8 @@
         android:layout_below="@+id/item_edit_timestamp"
         android:layout_margin="5dp"
         android:layout_toRightOf="@+id/item_edit_thumbnail"
-        android:text="trip id" />
+        android:text="trip id"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/item_edit_trip_change"
@@ -48,7 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/item_edit_trip"
-        android:text="Change" />
+        android:text="Change"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,18 +85,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Enter id of users" />
+            android:text="Enter id of users"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/item_edit_owner_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change" />
+            android:text="Change"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/item_edit_depts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:dividerHeight="1dp"
             android:descendantFocusability="beforeDescendants" />
     </LinearLayout>
 
