@@ -5,7 +5,10 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="21" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
     <application
         android:name=".model.TriApplication"
         android:allowBackup="true"

@@ -3,8 +3,16 @@ package com.example.louisccc.tripal.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +36,7 @@ import com.example.louisccc.tripal.utility.DeptsAdapter;
 
 import junit.framework.Assert;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +54,6 @@ public class EditItemActivity extends Activity {
 
     /* Views members */
     private ImageView mItemThumbnailImageView;
-    private ImageView mItemThumbnailCoverImageView;
     private TextView mItemTimeStampTextView;
     private Button mItemTimeStampButton;
     private TextView mItemLocationTextView;
@@ -70,7 +78,6 @@ public class EditItemActivity extends Activity {
         setContentView(R.layout.activity_edit_item);
 
         mItemThumbnailImageView = (ImageView) this.findViewById(R.id.item_edit_thumbnail);
-        mItemThumbnailCoverImageView = (ImageView) this.findViewById(R.id.item_edit_cover);
         mItemTimeStampTextView = (TextView) this.findViewById(R.id.item_edit_timestamp);
         mItemTimeStampButton = (Button) this.findViewById(R.id.item_edit_timestamp_change);
         mItemTripTextView = (TextView) this.findViewById(R.id.item_edit_trip);
@@ -84,6 +91,7 @@ public class EditItemActivity extends Activity {
         mItem = getIntent().getParcelableExtra("item");
         mTrip = getIntent().getParcelableExtra("trip");
         Assert.assertTrue(mTrip != null);
+
         mItemTripTextView.setText("Trip: " + mTrip.getName());
         if (mItem != null) { // this is to edit an item
             for (TriFriend f : mTrip.getMembers((TriApplication) getApplication()) ){
@@ -169,6 +177,33 @@ public class EditItemActivity extends Activity {
         inflater.inflate(R.menu.menu_edit_item, menu);
         return true;
     }
+
+    public void btn_thumbnail_click(View view) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_edit_item_dialog);
+        dialog.setTitle("Alert Dialog View");
+        Button btnExit = (Button) dialog.findViewById(R.id.btnExit);
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.btnChoosePath)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                        activeGallery();
+                    }
+                });
+        dialog.findViewById(R.id.btnTakePhoto)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                        activeTakePhoto();
+                    }
+                });
+        dialog.show();
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -301,6 +336,48 @@ public class EditItemActivity extends Activity {
         }
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RESULT_LOAD_IMAGE:
+                if (requestCode == RESULT_LOAD_IMAGE &&
+                        resultCode == RESULT_OK && null != data) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+                        mItemThumbnailImageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            case REQUEST_IMAGE_CAPTURE:
+                if (requestCode == REQUEST_IMAGE_CAPTURE &&
+                        resultCode == RESULT_OK) {
+                    String[] projection = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(mCapturedImageURI, projection, null, null, null);
+                    int column_index_data = cursor.getColumnIndexOrThrow(
+                            MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+                    String picturePath = cursor.getString(column_index_data);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mCapturedImageURI);
+                        mItemThumbnailImageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, THUMBSIZE, THUMBSIZE));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
+    }
+
     public void showDatePickerDialog(Calendar c) {
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
@@ -315,4 +392,35 @@ public class EditItemActivity extends Activity {
                 }, mYear, mMonth, mDay);
         dpd.show();
     }
+
+
+    private static final int THUMBSIZE = 96;
+    private Uri mCapturedImageURI;
+    private static final int RESULT_LOAD_IMAGE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    /**
+     * take a photo
+     */
+    private void activeTakePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            String fileName = "temp.jpg";
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, fileName);
+            mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    /**
+     * to gallery
+     */
+    private void activeGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, RESULT_LOAD_IMAGE);
+    }
+
+
 }
