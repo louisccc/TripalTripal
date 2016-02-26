@@ -12,6 +12,8 @@ import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -33,16 +35,14 @@ public class TripsAdapter extends ArrayAdapter<TriTrip> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mVi.inflate(mResrc_id, null);
+        TriTrip trip = mTrips.get(position);
+        TriApplication app = (TriApplication) getContext().getApplicationContext();
         TextView text = (TextView) convertView.findViewById(R.id.ItemDesc);
-        TextView date_from = (TextView) convertView.findViewById(R.id.ItemDateFrom);
-        TextView date_to = (TextView) convertView.findViewById(R.id.ItemDateTo);
-        TextView budget = (TextView) convertView.findViewById(R.id.ItemBudget);
+        TextView date = (TextView) convertView.findViewById(R.id.ItemDate);
         TextView curr_balance = (TextView) convertView.findViewById(R.id.ItemCurrBalance);
-        text.setText(mTrips.get(position).getName());
-        date_from.setText("From: " + DateHelper.getDateString(mTrips.get(position).getDateFrom()));
-        date_to.setText("To " + DateHelper.getDateString(mTrips.get(position).getDateTo()));
-        budget.setText("Bud: " + Double.toString(mTrips.get(position).getBudget()));
-        curr_balance.setText("Bal: " + Double.toString(mTrips.get(position).getCurrBalance((TriApplication)getContext().getApplicationContext())));
+        text.setText(trip.getName());
+        date.setText(DateHelper.getDateString(trip.getDateFrom())+"~"+DateHelper.getDateString(trip.getDateTo()));
+        curr_balance.setText("NT$" + Double.toString(trip.getCurrBalance(app)));
         return convertView;
     }
 }
