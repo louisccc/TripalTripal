@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.louisccc.tripal.R;
 import com.example.louisccc.tripal.model.TriApplication;
@@ -16,6 +17,9 @@ import com.example.louisccc.tripal.activity.TripActivity;
 import com.example.louisccc.tripal.utility.TripsAdapter;
 import com.example.louisccc.tripal.model.TriTrip;
 import com.example.louisccc.tripal.utility.DateHelper;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by louisccc on 1/3/16.
@@ -26,11 +30,14 @@ public class DashBoardFragment extends Fragment {
     private static int mOngoingTripsListViewItemResSrcId = R.layout.activity_dashboard_trips_list_item;
     private static int mHistoryTripsListViewItemResSrcId = R.layout.activity_dashboard_trips_list_item;
 
-    ListView mOngoingTripsListView;
-    TripsAdapter mOngoingTripsListViewAdapter;
+    private TextView mRangeTextView;
+    private TextView mYearSpentTextView;
 
-    ListView mHistoryTripsListView;
-    TripsAdapter mHistoryTripsListViewAdapter;
+    private ListView mOngoingTripsListView;
+    private TripsAdapter mOngoingTripsListViewAdapter;
+
+    private ListView mHistoryTripsListView;
+    private TripsAdapter mHistoryTripsListViewAdapter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -45,13 +52,33 @@ public class DashBoardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        /* ongoing trips */
         ((TriApplication) getActivity().getApplication()).refreshGlobals();
+
+        mRangeTextView = (TextView) getActivity().findViewById(R.id.trips_range);
+        mYearSpentTextView = (TextView) getActivity().findViewById(R.id.trips_total_year_spend);
+        ArrayList<TriTrip> trips = ((TriApplication) getActivity().getApplication()).getgTrips();
+        double totalYearSpent = 0;
+        Date from = null;
+        Date to = null;
+        for (TriTrip trip : trips) {
+            totalYearSpent += trip.getTotalCost((TriApplication) getActivity().getApplication());
+            if (from != null && to != null) {
+                if(trip.getDateFrom().compareTo(from) <= 0) {
+                    from = trip.getDateFrom();
+                }
+                if(trip.getDateTo().compareTo(to) >= 0) {
+                    to = trip.getDateTo();
+                }
+            }
+            else { from = trip.getDateFrom(); to = trip.getDateTo(); }
+        }
+        mRangeTextView.setText(DateHelper.getDateString(from) + "~" + DateHelper.getDateString(to));
+        mYearSpentTextView.setText("Total year spend: NT$" + totalYearSpent);
+        /* ongoing trips */
         mOngoingTripsListView = (ListView) getActivity().findViewById(R.id.trips_ongoing);
         mOngoingTripsListViewAdapter = new TripsAdapter(getActivity(), mOngoingTripsListViewItemResSrcId, ((TriApplication) getActivity().getApplication()).getgOngoingTrips());
         mOngoingTripsListView.setAdapter(mOngoingTripsListViewAdapter);
-        mOngoingTripsListView.addHeaderView(DateHelper.getTextViewWithText(getActivity(), "Your ongoing trips"), null, false);
+//        mOngoingTripsListView.addHeaderView(DateHelper.getTextViewWithText(getActivity(), "Your ongoing trips"), null, false);
         mOngoingTripsListView.setEmptyView(getActivity().findViewById(R.id.trips_ongoing_empty));
         mOngoingTripsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,7 +95,7 @@ public class DashBoardFragment extends Fragment {
         mHistoryTripsListView = (ListView) getActivity().findViewById(R.id.trips_history);
         mHistoryTripsListViewAdapter = new TripsAdapter(getActivity(), mHistoryTripsListViewItemResSrcId, ((TriApplication) getActivity().getApplication()).getgHistoryTrips());
         mHistoryTripsListView.setAdapter(mHistoryTripsListViewAdapter);
-        mHistoryTripsListView.addHeaderView(DateHelper.getTextViewWithText(getActivity(), "History trips"), null, false);
+//        mHistoryTripsListView.addHeaderView(DateHelper.getTextViewWithText(getActivity(), "History trips"), null, false);
         mHistoryTripsListView.setEmptyView(getActivity().findViewById(R.id.trips_history_empty));
         mHistoryTripsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
