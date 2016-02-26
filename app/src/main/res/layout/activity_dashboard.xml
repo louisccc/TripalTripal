@@ -15,28 +15,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tripal list"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/trips_range"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2014/01/28~2016/02/20"
-            android:textSize="20dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/trips_total_year_spend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="NT$54000"
-            android:textSize="20dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/trips_remaining_year_budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="NT$16000"
-            android:textSize="20dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <TextView

@@ -74,6 +74,7 @@ public class DashBoardFragment extends Fragment {
         }
         mRangeTextView.setText(DateHelper.getDateString(from) + "~" + DateHelper.getDateString(to));
         mYearSpentTextView.setText("Total year spend: NT$" + totalYearSpent);
+
         /* ongoing trips */
         mOngoingTripsListView = (ListView) getActivity().findViewById(R.id.trips_ongoing);
         mOngoingTripsListViewAdapter = new TripsAdapter(getActivity(), mOngoingTripsListViewItemResSrcId, ((TriApplication) getActivity().getApplication()).getgOngoingTrips());
