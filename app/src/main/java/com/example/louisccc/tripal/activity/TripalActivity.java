@@ -4,6 +4,7 @@ package com.example.louisccc.tripal.activity;
  * Created by louisccc on 16/01/03.
  */
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +30,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.sql.SQLException;
 
-public class TripalActivity extends FragmentActivity {
+public class TripalActivity extends FragmentActivity{
     private static int mTripalActivityResSrcId = R.layout.main;
     private static int mTripalActivityMenuItemResSrcId = R.layout.slidingmenu_list_item;
 
