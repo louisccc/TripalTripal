@@ -56,9 +56,9 @@
         android:id="@+id/trips_ongoing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="6dp"
         android:layout_weight="1"
         android:dividerHeight="1dp"
-        android:padding="12dp"
         android:textColor="@android:color/white" />
 
     <TextView
@@ -83,9 +83,10 @@
         android:id="@+id/trips_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="6dp"
         android:layout_weight="1"
         android:dividerHeight="1dp"
-        android:padding="12dp" />
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/trips_history_empty"
