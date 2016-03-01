@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     android:orientation="vertical"
     tools:context=".activity.TripalActivity">
 
@@ -15,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tripal list"
+            android:textColor="@android:color/white"
             android:textSize="24sp" />
 
         <TextView
@@ -22,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2014/01/28~2016/02/20"
+            android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -29,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="NT$54000"
+            android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -36,16 +40,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="NT$16000"
+            android:textColor="@android:color/white"
             android:textSize="16sp" />
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_margin="12dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="#4f4f4f"
         android:gravity="center"
-        android:text="Ongoing Trips" />
+        android:text="Ongoing Trips"
+        android:textColor="@android:color/white" />
 
     <ListView
         android:id="@+id/trips_ongoing"
@@ -53,7 +58,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:dividerHeight="1dp"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/trips_ongoing_empty"
@@ -62,15 +68,16 @@
         android:layout_margin="10dp"
         android:gravity="center"
         android:text="@string/empty_ongoing_trips"
+        android:textColor="@android:color/white"
         android:visibility="gone" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_margin="12dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="#4f4f4f"
         android:gravity="center"
-        android:text="Previous Trips" />
+        android:text="Previous Trips"
+        android:textColor="@android:color/white" />
 
     <ListView
         android:id="@+id/trips_history"

@@ -55,7 +55,7 @@ public class TripsAdapter extends ArrayAdapter<TriTrip> {
         }
         TriTrip trip = mTrips.get(position);
         TriApplication app = (TriApplication) getContext().getApplicationContext();
-        viewHolder.desc.setText(trip.getName());
+        viewHolder.desc.setText(trip.getName().trim());
         viewHolder.date.setText(DateHelper.getDateString(trip.getDateFrom())+"~"+DateHelper.getDateString(trip.getDateTo()));
         viewHolder.cost.setText("NT$" + trip.getTotalCost(app));
         return convertView;

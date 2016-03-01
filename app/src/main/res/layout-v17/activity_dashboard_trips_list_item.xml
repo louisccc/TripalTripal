@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_layout"
     android:layout_width="fill_parent"
-    android:layout_height="40dp"
-    android:padding="8dp">
+    android:layout_height="wrap_content">
 
 
     <ImageView
         android:id="@+id/trip_thumb"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/tripal_menu_sync" />
+        android:padding="1dp"
+        android:src="@drawable/bitmap" />
 
     <TextView
         android:id="@+id/ItemDate"
@@ -19,9 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/ItemDesc"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/ItemCurrBalance"
-        android:layout_toRightOf="@+id/trip_thumb"
-        android:gravity="left"
+        android:layout_margin="1dp"
+        android:singleLine="true"
         android:text="2014/02/07~2014/02/10"
         android:textColor="#a4a6a8"
         android:textSize="12sp" />
@@ -29,11 +28,11 @@
     <TextView
         android:id="@+id/ItemDesc"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/ItemDate"
-        android:layout_toLeftOf="@+id/ItemCurrBalance"
+        android:layout_margin="2dp"
         android:layout_toRightOf="@+id/trip_thumb"
+        android:singleLine="true"
         android:text="吃大便"
         android:textColor="#a4a6a8"
         android:textSize="14sp" />
@@ -42,19 +41,18 @@
         android:id="@+id/ItemCurrBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/ItemDesc"
         android:layout_toLeftOf="@+id/ItemArrow"
-        android:gravity="center_vertical"
-        android:textAlignment="center"
         android:text="NT$6000"
         android:textColor="#a4a6a8"
         android:textSize="12sp" />
 
-    <ImageView
+    <TextView
         android:id="@+id/ItemArrow"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:src="@drawable/tripal_menu_sync" />
+        android:layout_margin="4dp"
+        android:text=">"
+        android:textSize="24sp" />
 </RelativeLayout>
