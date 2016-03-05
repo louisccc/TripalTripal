@@ -6,16 +6,17 @@
     android:orientation="vertical"
     tools:context=".activity.TripalActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/trips_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tripal list"
+            android:text="@string/tripal_list"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
@@ -23,33 +24,57 @@
             android:id="@+id/trips_range"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/trips_title"
             android:text="2014/01/28~2016/02/20"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/trips_total_year_spend"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/trips_range"
+            android:text="@string/total_year_spent"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/trips_total_year_spend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/trips_range"
             android:text="NT$54000"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/trips_remaining_year_budget"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/trips_total_year_spend"
+            android:text="@string/remaining_your_budget"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/trips_remaining_year_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/trips_total_year_spend"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/trips_total_year_spend"
             android:text="NT$16000"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="#4f4f4f"
         android:gravity="center"
-        android:text="Ongoing Trips"
+        android:text="@string/ongoing_trips"
         android:textColor="@android:color/white" />
 
     <ListView
@@ -76,7 +101,7 @@
         android:layout_height="30dp"
         android:background="#4f4f4f"
         android:gravity="center"
-        android:text="Previous Trips"
+        android:text="@string/previous_trips"
         android:textColor="@android:color/white" />
 
     <ListView

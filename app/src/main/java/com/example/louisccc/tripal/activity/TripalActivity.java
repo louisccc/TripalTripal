@@ -82,7 +82,7 @@ public class TripalActivity extends FragmentActivity{
         });
         mMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 
-        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+        if(this.getActionBar() != null) { this.getActionBar().setDisplayHomeAsUpEnabled(true); }
     }
 
     @Override

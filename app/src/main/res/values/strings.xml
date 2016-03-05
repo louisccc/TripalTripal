@@ -5,4 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="empty_ongoing_trips">no ongoing trips~~</string>
     <string name="empty_history_trips">no history trips~~</string>
+    <string name="remaining_your_budget">Remaining Your Budget</string>
+    <string name="total_year_spent">Total Year Spent</string>
+    <string name="tripal_list">Tripal List</string>
+    <string name="ongoing_trips">Ongoing Trips</string>
+    <string name="previous_trips">Previous Trips</string>
 </resources>

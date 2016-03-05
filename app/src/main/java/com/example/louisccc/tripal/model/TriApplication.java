@@ -8,6 +8,7 @@ import junit.framework.Assert;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by louisccc on 2/11/16.
@@ -170,6 +171,7 @@ public class TriApplication extends Application {
         this.gTrips.clear();
         this.gTrips.addAll(gTrips);
     }
+    
     public ArrayList<TriTrip> getgOngoingTrips() {
         ArrayList<TriTrip> trips = new ArrayList<TriTrip>();
 

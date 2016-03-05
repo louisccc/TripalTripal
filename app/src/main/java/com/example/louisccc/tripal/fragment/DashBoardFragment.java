@@ -32,6 +32,7 @@ public class DashBoardFragment extends Fragment {
 
     private TextView mRangeTextView;
     private TextView mYearSpentTextView;
+    private TextView mBudgetTextView;
 
     private ListView mOngoingTripsListView;
     private TripsAdapter mOngoingTripsListViewAdapter;
@@ -39,6 +40,7 @@ public class DashBoardFragment extends Fragment {
     private ListView mHistoryTripsListView;
     private TripsAdapter mHistoryTripsListViewAdapter;
 
+    private TriApplication mApp;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -52,11 +54,14 @@ public class DashBoardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((TriApplication) getActivity().getApplication()).refreshGlobals();
+        mApp = (TriApplication) getActivity().getApplication();
+        mApp.refreshGlobals();
 
         mRangeTextView = (TextView) getActivity().findViewById(R.id.trips_range);
         mYearSpentTextView = (TextView) getActivity().findViewById(R.id.trips_total_year_spend);
-        ArrayList<TriTrip> trips = ((TriApplication) getActivity().getApplication()).getgTrips();
+        mBudgetTextView = (TextView) getActivity().findViewById(R.id.trips_remaining_year_budget);
+
+        ArrayList<TriTrip> trips = mApp.getgTrips();
         double totalYearSpent = 0;
         Date from = null;
         Date to = null;
@@ -72,20 +77,22 @@ public class DashBoardFragment extends Fragment {
             }
             else { from = trip.getDateFrom(); to = trip.getDateTo(); }
         }
+
         mRangeTextView.setText(DateHelper.getDateString(from) + "~" + DateHelper.getDateString(to));
-        mYearSpentTextView.setText("Total year spend: NT$" + totalYearSpent);
+        mYearSpentTextView.setText("NT$" + totalYearSpent);
+        mBudgetTextView.setText("NT$0");
+
 
         /* ongoing trips */
         mOngoingTripsListView = (ListView) getActivity().findViewById(R.id.trips_ongoing);
         mOngoingTripsListViewAdapter = new TripsAdapter(getActivity(), mOngoingTripsListViewItemResSrcId, ((TriApplication) getActivity().getApplication()).getgOngoingTrips());
         mOngoingTripsListView.setAdapter(mOngoingTripsListViewAdapter);
-//        mOngoingTripsListView.addHeaderView(DateHelper.getTextViewWithText(getActivity(), "Your ongoing trips"), null, false);
         mOngoingTripsListView.setEmptyView(getActivity().findViewById(R.id.trips_ongoing_empty));
         mOngoingTripsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TriTrip trip = (TriTrip) parent.getAdapter().getItem(position);
-                Intent i = new Intent(getActivity(), TripActivity.class);
+                Intent i = new Intent(parent.getContext(), TripActivity.class);
                 i.putExtra("trip", trip);
                 startActivity(i);
             }
@@ -96,13 +103,12 @@ public class DashBoardFragment extends Fragment {
         mHistoryTripsListView = (ListView) getActivity().findViewById(R.id.trips_history);
         mHistoryTripsListViewAdapter = new TripsAdapter(getActivity(), mHistoryTripsListViewItemResSrcId, ((TriApplication) getActivity().getApplication()).getgHistoryTrips());
         mHistoryTripsListView.setAdapter(mHistoryTripsListViewAdapter);
-//        mHistoryTripsListView.addHeaderView(DateHelper.getTextViewWithText(getActivity(), "History trips"), null, false);
         mHistoryTripsListView.setEmptyView(getActivity().findViewById(R.id.trips_history_empty));
         mHistoryTripsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TriTrip trip = (TriTrip) parent.getItemAtPosition(position);
-                Intent i = new Intent(getActivity(), TripActivity.class);
+                Intent i = new Intent(parent.getContext(), TripActivity.class);
                 i.putExtra("trip", trip);
                 startActivity(i);
             }
