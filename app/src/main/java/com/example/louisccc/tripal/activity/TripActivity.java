@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
  */
 public class TripActivity extends Activity {
 
+    private static int mTripActivityViewResSrcId = R.layout.activity_trip;
+
     TriTrip mTrip;
     TextView mTripNameTextView;
     TextView mRemainTimesTextView;
@@ -50,7 +53,7 @@ public class TripActivity extends Activity {
     RecordsAdapter mRecordsAdapter;
 
 
-    ImageButton mCheckImageButton;
+    Button mCheckImageButton;
 
     @Override
     protected void onResume() {
@@ -60,7 +63,7 @@ public class TripActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip);
+        setContentView(mTripActivityViewResSrcId);
 
         mTrip = getIntent().getParcelableExtra("trip");
         Assert.assertTrue(mTrip != null);
@@ -70,7 +73,7 @@ public class TripActivity extends Activity {
         mTripNameTextView.setText(mTrip.getName());
 
         mTotalSpentTextView = (TextView) this.findViewById(R.id.trip_total_spent);
-        mTotalSpentTextView.setText("Total Spent: $" + mTrip.getTotalCost((TriApplication)getApplication()));
+        mTotalSpentTextView.setText("NT$" + mTrip.getTotalCost((TriApplication)getApplication()));
 
         mRemainTimesTextView = (TextView) this.findViewById(R.id.trip_remain_times);
         if (DateHelper.getCalendarDay(0).getTime().compareTo(mTrip.getDateFrom()) >= 0 && DateHelper.getCalendarDay(0).getTime().compareTo(mTrip.getDateTo()) <= 0 ) {
@@ -82,7 +85,7 @@ public class TripActivity extends Activity {
             mRemainTimesTextView.setText(DateHelper.getDateString(mTrip.getDateFrom()) + "~" + DateHelper.getDateString(mTrip.getDateTo()));
         }
         mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
-        mCurrBalanceTextView.setText("curr balance: $" + mTrip.getCurrBalance((TriApplication)getApplication()) );
+        mCurrBalanceTextView.setText("NT$" + mTrip.getCurrBalance((TriApplication)getApplication()) );
 
         setupMembersListView();
         setupRecordsListView();
@@ -96,13 +99,13 @@ public class TripActivity extends Activity {
         ArrayList<TriFriend> members = mTrip.getMembers((TriApplication)getApplication());
         mMembersAdapter = new MembersAdapter( this, R.layout.activity_members_list_item, members, mTrip);
         mMembersListView.setAdapter(mMembersAdapter);
-        mMembersListView.addHeaderView(DateHelper.getTextViewWithText(this, "Members : Total " + mTrip.getMembers( (TriApplication)getApplication()).size()), null, false);
+//        mMembersListView.addHeaderView(DateHelper.getTextViewWithText(this, "Members : Total " + mTrip.getMembers( (TriApplication)getApplication()).size()), null, false);
         mMembersAdapter.notifyDataSetChanged();
         mMembersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TriFriend friend = (TriFriend) parent.getAdapter().getItem(position);
-                Intent i = new Intent(getBaseContext(), FriendActivity.class);
+                Intent i = new Intent(parent.getContext(), FriendActivity.class);
                 i.putExtra("friend", friend);
                 startActivity(i);
             }
@@ -114,7 +117,7 @@ public class TripActivity extends Activity {
         ArrayList<TriItem> items = mTrip.getRecords((TriApplication)getApplication());
         mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_items_list_item, items );
         mRecordsListView.setAdapter(mRecordsAdapter);
-        mRecordsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Items : Total " + mTrip.getRecords( (TriApplication)getApplication() ).size()), null, false);
+//        mRecordsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Items : Total " + mTrip.getRecords( (TriApplication)getApplication() ).size()), null, false);
         mRecordsListView.setEmptyView( this.findViewById(R.id.trip_records_empty) );
         mRecordsAdapter.notifyDataSetChanged();
         mRecordsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -171,7 +174,7 @@ public class TripActivity extends Activity {
     }
 
     public void setupCheckButton(){
-        mCheckImageButton = (ImageButton) this.findViewById(R.id.trip_check);
+        mCheckImageButton = (Button) this.findViewById(R.id.trip_check);
         mCheckImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
