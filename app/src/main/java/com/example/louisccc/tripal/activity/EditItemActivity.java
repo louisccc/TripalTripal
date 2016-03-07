@@ -109,6 +109,8 @@ public class EditItemActivity extends Activity {
         }
         else {
             setTitle("New Item");
+            mOwner = mTrip.getMembers((TriApplication) getApplication()).get(0);
+
             mItemOwnerTextView.setText("Owners-> amy: " + ((TriApplication)getApplication()).getgFriends().get(0).getLocalId() + " astrid: " +((TriApplication)getApplication()).getgFriends().get(1).getLocalId() );
         }
 
@@ -222,7 +224,7 @@ public class EditItemActivity extends Activity {
 
                     ArrayList<TriDept> depts = new ArrayList<TriDept>();
                     for (int i = 0; i < mDeptsAdapter.getCount(); i++ ){
-                        View v = mDeptsListView.getChildAt(i+1);
+                        View v = mDeptsListView.getChildAt(i);
                         EditText curr_balance = (EditText) v.findViewById(R.id.ItemAmount);
                         EditText proportion = (EditText) v.findViewById(R.id.ItemProportion);
 

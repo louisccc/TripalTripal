@@ -64,49 +64,11 @@
         android:text="Current balance"
         android:textColor="@android:color/white" />
 
-    <TextView
-        android:id="@+id/trip_members_banner"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@+id/trip_curr_balance"
-        android:background="#4f4f4f"
-        android:gravity="center"
-        android:text="Members"
-        android:textColor="@android:color/white" />
-
-    <ListView
-        android:id="@+id/trip_members"
+    <ExpandableListView
+        android:id="@+id/trip_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/trip_members_banner"
-        android:divider="#4f4f4f"
-        android:dividerHeight="1dp" />
-
-    <TextView
-        android:id="@+id/trip_records_banner"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@+id/trip_members"
-        android:background="#4f4f4f"
-        android:gravity="center"
-        android:text="Items"
-        android:textColor="@android:color/white" />
-
-    <ListView
-        android:id="@+id/trip_records"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/trip_records_banner"
-        android:divider="#4f4f4f"
-        android:dividerHeight="1dp" />
-
-    <TextView
-        android:id="@+id/trip_records_empty"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_below="@+id/trip_records_banner"
-        android:gravity="center"
-        android:text="add some items~" />
+        android:layout_below="@+id/trip_curr_balance" />
 
     <Button
         android:id="@+id/trip_check"

@@ -34,7 +34,7 @@ public class DeptRecordsAdapter extends ArrayAdapter<TriItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mVi.inflate(mResrc_id, null);
-        TextView name = (TextView) convertView.findViewById(R.id.ItemName);
+        TextView name = (TextView) convertView.findViewById(R.id.ItemNote);
         TextView note = (TextView) convertView.findViewById(R.id.ItemAmount);
 
         TriApplication app = ((TriApplication) getContext().getApplicationContext());
@@ -59,7 +59,7 @@ public class DeptRecordsAdapter extends ArrayAdapter<TriItem> {
             showingText += " user " + dept.getUserId() + " should get " + returns[ depts.indexOf(dept) ] + " back\n";
         }
 
-        Assert.assertTrue( total_proportion == 100 );
+//        Assert.assertTrue( total_proportion == 100 );
 //        Assert.assertTrue( total_money == mItems.get(position).getAmount() );
 
         name.setText( showingText );
