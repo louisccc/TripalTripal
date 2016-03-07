@@ -5,9 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,20 +15,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.louisccc.tripal.model.DBManager;
 import com.example.louisccc.tripal.model.TriApplication;
 import com.example.louisccc.tripal.model.TriDept;
-import com.example.louisccc.tripal.utility.DeptRecordsAdapter;
-import com.example.louisccc.tripal.utility.FriendsAdapter;
 import com.example.louisccc.tripal.R;
-import com.example.louisccc.tripal.utility.MembersAdapter;
-import com.example.louisccc.tripal.utility.RecordsAdapter;
 import com.example.louisccc.tripal.model.TriFriend;
 import com.example.louisccc.tripal.model.TriItem;
 import com.example.louisccc.tripal.model.TriTrip;
@@ -38,7 +28,6 @@ import com.example.louisccc.tripal.utility.DateHelper;
 
 import junit.framework.Assert;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -58,14 +47,8 @@ public class TripActivity extends Activity {
     private TextView mTotalSpentTextView;
     private TextView mCurrBalanceTextView;
 
-
-    private ListView mMembersListView;
-    private MembersAdapter mMembersAdapter;
-    private ListView mRecordsListView;
-    private RecordsAdapter mRecordsAdapter;
-    private ListView mDeptRecordsListView;
-    private DeptRecordsAdapter mDeptRecordsAdapter;
-
+    private ExpandableListView mDashboardExpandableListView;
+    private DashboardExpandableListViewAdapter mDashboardExpandableAdapter;
 
     private Button mCheckImageButton;
 
@@ -101,8 +84,8 @@ public class TripActivity extends Activity {
         mCurrBalanceTextView = (TextView) this.findViewById(R.id.trip_curr_balance);
         mCurrBalanceTextView.setText("NT$" + mTrip.getCurrBalance((TriApplication)getApplication()) );
 
-        ExpandableListView mDashboardExpandableListView = (ExpandableListView) this.findViewById(R.id.trip_dashboard);
-        DashboardExpandableListView mDashboardExpandableAdapter = new DashboardExpandableListView(getBaseContext());
+        mDashboardExpandableListView = (ExpandableListView) this.findViewById(R.id.trip_dashboard);
+        mDashboardExpandableAdapter = new DashboardExpandableListViewAdapter(getBaseContext());
         mDashboardExpandableAdapter.getItems().get(0).getChildItemList().addAll(mTrip.getMembers((TriApplication)getApplication()));
         mDashboardExpandableAdapter.getItems().get(1).getChildItemList().addAll(mTrip.getRecords((TriApplication)getApplication()));
         mDashboardExpandableAdapter.getItems().get(2).getChildItemList().addAll(((TriApplication) getApplication()).getgItems());
@@ -153,25 +136,22 @@ public class TripActivity extends Activity {
                                 Intent i;
                                 switch (which) {
                                     case 0: // view
-                                        item = (TriItem) ((DashboardExpandableListView)adapterView.getAdapter()).getItems().get(1).getChildItemList().get(child_position);
+                                        item = (TriItem) ((DashboardExpandableListViewAdapter)adapterView.getAdapter()).getItems().get(1).getChildItemList().get(child_position);
                                         i = new Intent(getBaseContext(), ItemActivity.class);
                                         i.putExtra("item", item);
                                         startActivity(i);
                                         break;
                                     case 1: // edit
-                                        item = (TriItem) ((DashboardExpandableListView)adapterView.getAdapter()).getItems().get(1).getChildItemList().get(child_position);
+                                        item = (TriItem) ((DashboardExpandableListViewAdapter)adapterView.getAdapter()).getItems().get(1).getChildItemList().get(child_position);
                                         i = new Intent(getBaseContext(), EditItemActivity.class);
                                         i.putExtra("item", item);
                                         i.putExtra("trip", mTrip);
                                         startActivity(i);
                                         break;
                                     case 2: // delete
-                                        item = (TriItem) ((DashboardExpandableListView)adapterView.getAdapter()).getItems().get(1).getChildItemList().get(child_position);
+                                        item = (TriItem) ((DashboardExpandableListViewAdapter)adapterView.getAdapter()).getItems().get(1).getChildItemList().get(child_position);
 // TODO                                ((TriApplication)getApplication()).getgItems().remove(item); // delete
                                         ((TriApplication) getApplication()).refreshGlobals();
-                                        mRecordsAdapter.clear();
-                                        mRecordsAdapter.addAll(((TriApplication) getApplication()).getgItems());
-                                        mRecordsAdapter.notifyDataSetChanged();
                                         break;
                                     default:
                                         break;
@@ -210,11 +190,11 @@ public class TripActivity extends Activity {
             return caption;
         }
     }
-    public class DashboardExpandableListView extends BaseExpandableListAdapter {
+    public class DashboardExpandableListViewAdapter extends BaseExpandableListAdapter {
         private ArrayList<DashboardCategoryItem> itemList;
         private LayoutInflater inflater;
 
-        public DashboardExpandableListView(Context context) {
+        public DashboardExpandableListViewAdapter(Context context) {
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.itemList = new ArrayList<DashboardCategoryItem>();
             this.itemList.add(new DashboardCategoryItem("Members"));
@@ -275,18 +255,16 @@ public class TripActivity extends Activity {
             View v = view;
             DashboardCategoryItem catItem = itemList.get(i);
             if ( i == 0 ) { // members
-                v = inflater.inflate(R.layout.activity_members_list_item, null);
+                v = inflater.inflate(mMembersListViewItemResSrcId, null);
                 TextView name = (TextView) v.findViewById(R.id.ItemName);
                 TextView curr_balance = (TextView) v.findViewById(R.id.ItemAmount);
-                // TextView proportion = (TextView) convertView.findViewById(R.id.ItemProportion);
-                // ImageView thumb = (ImageView) convertView.findViewById(R.id.ItemThumbnail);
                 TriFriend friend = (TriFriend) itemList.get(i).getChildItemList().get(i1);
                 name.setText(friend.getName());
                 double value_curr_balance = friend.getCurrBalance(getApplication().getBaseContext(), mTrip);
                 curr_balance.setText( "NT$" + Double.toString(value_curr_balance) );
             }
             else if ( i == 1 ) { // items
-                v = inflater.inflate(R.layout.activity_items_list_item, null);
+                v = inflater.inflate(mItemsListViewItemResSrcId, null);
                 TextView note = (TextView) v.findViewById(R.id.ItemNote);
                 TextView amount = (TextView) v.findViewById(R.id.ItemAmount);
                 TriItem item = (TriItem) itemList.get(i).getChildItemList().get(i1);
@@ -294,7 +272,7 @@ public class TripActivity extends Activity {
                 amount.setText( "NT$" + item.getAmount());
             }
             else if ( i == 2 ) { // balance
-                v = inflater.inflate(R.layout.activity_items_list_item, null);
+                v = inflater.inflate(mDeptRecordsItemResSrcId, null);
                 TextView name = (TextView) v.findViewById(R.id.ItemNote);
                 TextView note = (TextView) v.findViewById(R.id.ItemAmount);
                 TriItem item = (TriItem) itemList.get(i).getChildItemList().get(i1);
@@ -305,7 +283,6 @@ public class TripActivity extends Activity {
                         depts.add(dept);
                     }
                 }
-
                 double total_proportion = 0;
                 double total_money = 0;
                 Double[] returns = new Double[depts.size()];
@@ -319,14 +296,9 @@ public class TripActivity extends Activity {
                     returns[ depts.indexOf(dept) ] = dept.getPaid() - item.getAmount() *  (dept.getProportion() / total_proportion);
                     showingText += " user " + dept.getUserId() + " should get " + returns[ depts.indexOf(dept) ] + " back\n";
                 }
-
-//                Assert.assertTrue( total_proportion == 100 );
-                // Assert.assertTrue( total_money == mItems.get(position).getAmount() );
-
                 name.setText( showingText );
                 note.setText( item.getAmount() + "" );
             }
-
             return v;
         }
 
