@@ -29,11 +29,8 @@ public class RecordsAdapter extends ArrayAdapter<TriItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mVi.inflate(mResrc_id, null);
-//        TextView name = (TextView) convertView.findViewById(R.id.ItemName);
         TextView note = (TextView) convertView.findViewById(R.id.ItemNote);
         TextView amount = (TextView) convertView.findViewById(R.id.ItemAmount);
-
-//        name.setText( mItems.get(position).getName() );
         note.setText( mItems.get(position).getNote() );
         amount.setText( "NT$" + mItems.get(position).getAmount());
         return convertView;
