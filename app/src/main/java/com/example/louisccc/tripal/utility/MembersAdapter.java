@@ -36,20 +36,20 @@ public class MembersAdapter extends ArrayAdapter<TriFriend> {
         convertView = mVi.inflate(mResrc_id, null);
         TextView name = (TextView) convertView.findViewById(R.id.ItemName);
         TextView curr_balance = (TextView) convertView.findViewById(R.id.ItemAmount);
-        TextView proportion = (TextView) convertView.findViewById(R.id.ItemProportion);
+//        TextView proportion = (TextView) convertView.findViewById(R.id.ItemProportion);
 //        ImageView thumb = (ImageView) convertView.findViewById(R.id.ItemThumbnail);
         name.setText(mFriends.get(position).getName());
 
         double value_curr_balance = mFriends.get(position).getCurrBalance(getContext(), mTrip);
-        curr_balance.setText( "have spend:" + Double.toString(value_curr_balance) );
+        curr_balance.setText( "NT$" + Double.toString(value_curr_balance) );
 
-        if ( mTrip.getTotalCost( (TriApplication)getContext().getApplicationContext() ) <= 0) {
-            proportion.setText( "-"  + "%") ;
-        }
-        else {
-            double value_proportion = 100 * value_curr_balance / mTrip.getTotalCost((TriApplication) getContext().getApplicationContext());
-            proportion.setText(Double.toString((double) (Math.round(value_proportion * 100) / 100.0)) + "%");
-        }
+//        if ( mTrip.getTotalCost( (TriApplication)getContext().getApplicationContext() ) <= 0) {
+//            proportion.setText( "-"  + "%") ;
+//        }
+//        else {
+//            double value_proportion = 100 * value_curr_balance / mTrip.getTotalCost((TriApplication) getContext().getApplicationContext());
+//            proportion.setText(Double.toString((double) (Math.round(value_proportion * 100) / 100.0)) + "%");
+//        }
 //        thumb.setImageDrawable(getContext().getResources);
         return convertView;
     }

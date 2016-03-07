@@ -39,21 +39,23 @@ import java.util.ArrayList;
 public class TripActivity extends Activity {
 
     private static int mTripActivityViewResSrcId = R.layout.activity_trip;
+    private static int mMembersListViewItemResSrcId = R.layout.activity_members_list_item;
+    private static int mItemsListViewItemResSrcId = R.layout.activity_items_list_item;
 
-    TriTrip mTrip;
-    TextView mTripNameTextView;
-    TextView mRemainTimesTextView;
-    TextView mTotalSpentTextView;
-    TextView mCurrBalanceTextView;
-
-
-    ListView mMembersListView;
-    MembersAdapter mMembersAdapter;
-    ListView mRecordsListView;
-    RecordsAdapter mRecordsAdapter;
+    private TriTrip mTrip;
+    private TextView mTripNameTextView;
+    private TextView mRemainTimesTextView;
+    private TextView mTotalSpentTextView;
+    private TextView mCurrBalanceTextView;
 
 
-    Button mCheckImageButton;
+    private ListView mMembersListView;
+    private MembersAdapter mMembersAdapter;
+    private ListView mRecordsListView;
+    private RecordsAdapter mRecordsAdapter;
+
+
+    private Button mCheckImageButton;
 
     @Override
     protected void onResume() {
@@ -96,8 +98,7 @@ public class TripActivity extends Activity {
 
     public void setupMembersListView() {
         mMembersListView = (ListView) this.findViewById(R.id.trip_members);
-        ArrayList<TriFriend> members = mTrip.getMembers((TriApplication)getApplication());
-        mMembersAdapter = new MembersAdapter( this, R.layout.activity_members_list_item, members, mTrip);
+        mMembersAdapter = new MembersAdapter( this, mMembersListViewItemResSrcId, mTrip.getMembers((TriApplication)getApplication()), mTrip);
         mMembersListView.setAdapter(mMembersAdapter);
 //        mMembersListView.addHeaderView(DateHelper.getTextViewWithText(this, "Members : Total " + mTrip.getMembers( (TriApplication)getApplication()).size()), null, false);
         mMembersAdapter.notifyDataSetChanged();
@@ -115,7 +116,7 @@ public class TripActivity extends Activity {
     public void setupRecordsListView() {
         mRecordsListView = (ListView) this.findViewById(R.id.trip_records);
         ArrayList<TriItem> items = mTrip.getRecords((TriApplication)getApplication());
-        mRecordsAdapter = new RecordsAdapter( this, R.layout.activity_items_list_item, items );
+        mRecordsAdapter = new RecordsAdapter( this, mItemsListViewItemResSrcId, items );
         mRecordsListView.setAdapter(mRecordsAdapter);
 //        mRecordsListView.addHeaderView(DateHelper.getTextViewWithText(this, "Items : Total " + mTrip.getRecords( (TriApplication)getApplication() ).size()), null, false);
         mRecordsListView.setEmptyView( this.findViewById(R.id.trip_records_empty) );

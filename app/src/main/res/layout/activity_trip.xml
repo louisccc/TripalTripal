@@ -79,8 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_members_banner"
-        android:dividerHeight="1dp"
-        android:padding="10dp" />
+        android:divider="#4f4f4f"
+        android:dividerHeight="1dp" />
 
     <TextView
         android:id="@+id/trip_records_banner"
@@ -97,8 +97,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_records_banner"
-        android:dividerHeight="1dp"
-        android:padding="10dp" />
+        android:divider="#4f4f4f"
+        android:dividerHeight="1dp" />
 
     <TextView
         android:id="@+id/trip_records_empty"
